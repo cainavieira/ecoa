@@ -221,8 +221,7 @@ primária (`video_id`, `data`), `registrada_em`.
 
 **`conta_bloqueada_apagada`**: `usuario_tiktok` como chave primária,
 `apagada_em`. Sem chave estrangeira, porque a conta já não existe. Apagar de
-novo uma conta bloqueada com o mesmo @ atualiza a data, e o prazo da RN-65
-recomeça.
+novo uma conta bloqueada com o mesmo @ atualiza a data.
 
 Mais a `flyway_schema_history`, que é do Flyway e não se mexe à mão.
 

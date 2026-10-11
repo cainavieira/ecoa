@@ -202,7 +202,7 @@ motivo.
 - **RN-57** Do criador, o sistema guarda o nome e o e-mail vindos do Google, o
   @, o código de verificação e as datas de aceite (RN-09, RN-31). Não guarda
   CPF, chave Pix, endereço nem foto. Da conta apagada, guarda só o @ da que
-  estava bloqueada, pelo prazo da RN-65.
+  estava bloqueada (RN-65).
 - **RN-58** O criador pede a exclusão da conta ao operador, por fora do
   sistema, e o operador a apaga.
 - **RN-59** Apagar a conta de criador remove nome, e-mail, @ e código. Nas
@@ -213,13 +213,15 @@ motivo.
   é apagado, porque leva à conta do @.
 - **RN-60** Depois da exclusão, a mesma pessoa pode entrar de novo e recebe
   conta de criador nova, pendente, sem nada da anterior. Se a anterior estava
-  bloqueada e a nova informa o mesmo @, a verificação mostra o aviso da RN-65.
+  bloqueada e a nova informa o mesmo @, ela aparece com o aviso da RN-65.
 - **RN-65** Apagar conta de criador bloqueada guarda o @ dela e a data da
-  exclusão, sem ligação com conta nenhuma, por um ano. Nesse prazo, a conta
-  pendente com esse @ aparece na verificação com o aviso de que ele foi de
-  conta bloqueada e apagada, e a data. O aviso não impede a aprovação: quem
-  decide é o operador (RN-13). Conta apagada sem bloqueio não deixa registro,
-  e quem volta com outro @ não é reconhecido.
+  exclusão, sem ligação com conta nenhuma e sem prazo. Toda conta com esse @,
+  em qualquer situação, aparece na verificação e na lista de contas com o aviso
+  de que ele foi de conta bloqueada e apagada, e a data. Assim o aviso pega
+  quem volta com o mesmo @ e quem volta com outro e depois pede a correção
+  para o antigo (RN-15). O aviso não impede a aprovação nem a correção: quem
+  decide é o operador (RN-13, RN-17). Conta apagada sem bloqueio não deixa
+  registro, e quem volta e fica com outro @ não é reconhecido.
 
 ## Painel e exportação
 
@@ -268,3 +270,4 @@ Registradas para que não voltem como novidade.
 | Painel da gravadora em PDF | A gravadora vai querer mexer nos números numa planilha, e PDF exige layout |
 | Manter o link do vídeo do participante removido | O link leva à conta do @, e a exclusão promete não deixar dado pessoal (RN-59). Custo aceito: o vídeo de quem saiu aparece sem link no resultado e no CSV |
 | Guardar o @ de toda conta apagada, ou o motivo do bloqueio (RN-65) | Dado pessoal sem uso: só o @ da conta bloqueada serve para reconhecer quem volta. Custo aceito: o aviso não diz por que houve o bloqueio |
+| Prazo para o registro da RN-65 | Ele guarda só o @, e quem voltasse depois do prazo passaria sem aviso |

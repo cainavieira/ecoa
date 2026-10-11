@@ -95,9 +95,9 @@ Atores em `atores.md`, requisitos em `requisitos-funcionais.md`, regras em
 
 **Fluxos alternativos**
 
-- **1a** O @ foi de conta bloqueada e apagada no último ano: a fila mostra o
-  aviso, com a data da exclusão. A aprovação continua possível, e o operador
-  decide olhando o perfil. (RF-11, RN-65)
+- **1a** O @ foi de conta bloqueada e apagada: a fila mostra o aviso, com a
+  data da exclusão. A aprovação continua possível, e o operador decide olhando
+  o perfil. (RF-11, RN-65)
 - **2a** O código não está na bio: o operador recusa, com o motivo. A conta fica
   recusada, e o criador vê o motivo na tela dele. (RF-12, RF-13, RN-13)
 - **2b** O @ não existe no TikTok: recusa, com o motivo. (RN-13)
@@ -115,6 +115,9 @@ Atores em `atores.md`, requisitos em `requisitos-funcionais.md`, regras em
   bloqueada. (RF-14, RF-15, RN-11, RN-12, RN-15)
 - **4b** O código não está na bio do @ novo: o operador não corrige, e avisa o
   criador por fora. A conta continua aprovada com o @ antigo. (RN-15)
+- **4c** O @ novo foi de conta bloqueada e apagada: a correção acontece, e a
+  conta passa a aparecer com o aviso na lista de contas. O operador decide se
+  a bloqueia (UC-04). (RF-15, RN-17, RN-65)
 
 **Pós-condição:** conta aprovada ou recusada.
 
@@ -560,11 +563,11 @@ fim. (RN-27)
 - **3c** A pessoa entra de novo: recebe conta nova, pendente, sem nada da
   anterior. (RN-60)
 - **3d** As cópias de backup ainda têm a conta até o fim da retenção. (RNF-14)
-- **3e** A conta estava bloqueada: o @ fica guardado por um ano, para o aviso
-  na verificação. (RN-65)
+- **3e** A conta estava bloqueada: o @ fica guardado, sem prazo, para o aviso
+  na verificação e na lista de contas. (RN-65)
 
 **Pós-condição:** nenhum dado pessoal do criador permanece no banco, além do @
-da conta bloqueada, pelo prazo da RN-65. (RN-59, RN-65)
+da conta bloqueada. (RN-59, RN-65)
 
 ## UC-20 Cadastrar o primeiro operador
 

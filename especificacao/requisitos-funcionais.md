@@ -45,7 +45,7 @@ aposentados ficam listados no fim.
 - **RF-14** O sistema deve permitir que o AT-02 corrija o @ de conta aprovada ou
   bloqueada. (RN-11, RN-15)
 - **RF-15** O sistema deve listar ao AT-02 todas as contas de criador, com
-  situação e @.
+  situação, @ e o aviso de @ de conta bloqueada apagada. (RN-65)
 
 ## Bloqueio
 
