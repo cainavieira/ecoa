@@ -270,4 +270,5 @@ Registradas para que não voltem como novidade.
 | Painel da gravadora em PDF | A gravadora vai querer mexer nos números numa planilha, e PDF exige layout |
 | Manter o link do vídeo do participante removido | O link leva à conta do @, e a exclusão promete não deixar dado pessoal (RN-59). Custo aceito: o vídeo de quem saiu aparece sem link no resultado e no CSV |
 | Guardar o @ de toda conta apagada, ou o motivo do bloqueio (RN-65) | Dado pessoal sem uso: só o @ da conta bloqueada serve para reconhecer quem volta. Custo aceito: o aviso não diz por que houve o bloqueio |
+| Guardar o link dos vídeos de quem apagou a conta, para a RN-35 continuar valendo | É dado pessoal, e a exclusão promete não deixá-lo (RN-59). Custo aceito: quem apaga a conta e volta com o mesmo @ pode reenviar um link que a RN-35 recusaria, inclusive o desqualificado |
 | Prazo para o registro da RN-65 | Ele guarda só o @, e quem voltasse depois do prazo passaria sem aviso |

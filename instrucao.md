@@ -181,7 +181,7 @@ proibido nas convenções.
 
 ### Esquema
 
-Nove tabelas, nomes no singular, colunas em português sem acento
+Dez tabelas, nomes no singular, colunas em português sem acento
 (`convencoes-backend.md`).
 
 **`conta`**: `id`, `email` único e em minúsculas, `nome` nulo até o primeiro
