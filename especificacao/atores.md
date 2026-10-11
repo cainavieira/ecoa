@@ -67,3 +67,8 @@ Sistema externo. Autentica todos os atores e devolve nome e e-mail.
 - **Criador pendente, recusado ou bloqueado**: são situações do AT-01 (RN-10),
   não atores. Eles executam os mesmos casos de uso, com o que a situação
   permite.
+
+## Atores aposentados
+
+Nenhum até agora. O identificador é estável: ator removido tem o número
+aposentado e listado aqui, com o motivo, e o número não volta.

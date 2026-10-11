@@ -57,7 +57,7 @@ justamente por não ter tela.
 | Tarefa | Entrega | Estado |
 |:--|:--|:--|
 | T-01 | ambiente do backend: projeto Maven com o Maven Wrapper, Spring Boot e as versões da tabela de stack (ADR-0002), Spotless, Error Prone e NullAway em `regras/` (ADR-0013), `compose.dev.yml` só com o Postgres (RNF-27), `.env.example`, a estrutura de pasta do `arquitetura.md` (ADR-0003), e o log da aplicação só em erro (RNF-16) | a fazer |
-| T-02 | integração contínua com o Spotless e a compilação com Error Prone, artefato só na falha; cada camada de teste entra no job quando a primeira tarefa que a usa termina (ADR-0017, ADR-0018) | a fazer |
+| T-02 | integração contínua com o Spotless e a compilação com Error Prone, artefato só na falha; cada camada de teste entra no job quando a primeira tarefa que a usa termina, e o frontend entra com a checagem de tipos, o ESLint e a regeneração dos tipos do OpenAPI comparada com a versionada quando a T-26 terminar (ADR-0010, ADR-0017, ADR-0018) | a fazer |
 
 A T-02 depende do repositório remoto, que ainda não existe (`instrucao.md`,
 seção 6).
@@ -79,7 +79,7 @@ ADR-0013, RNF-28).
 | T-04 | `situacaoDaCampanha`, `validarDatasDaCampanha`, `podeEntrar`, `validarEnvioDeVideo`, `validarAprovacaoDeVideo`, e o teste de arquitetura com o ArchUnit | a fazer |
 | T-05 | `validarLeitura`, `leituraDeFechamento`, `numeroAtual` | a fazer |
 | T-06 | `calcularRanking`, `totalPorData`, `pendenciasDoEncerramento` | a fazer |
-| T-07 | `normalizarEmail`, `normalizarUsuarioTiktok`, `transicaoDaConta`, `validarGanhador` | a fazer |
+| T-07 | `normalizarEmail`, `normalizarUsuarioTiktok`, `transicaoDaConta`, `validarGanhador`, `validarRemocaoDeAcesso` | a fazer |
 
 ## Etapa 3: base das rotas e autenticação
 
@@ -129,7 +129,7 @@ falta método na etapa 2.
 | T-19 | `GET /campanhas/{id}/leituras`, `GET /videos/{id}/leituras`, `PUT /videos/{id}/leituras/{data}` e `DELETE /videos/{id}/leituras/{data}` (UC-11, ADR-0001) | a fazer |
 | T-20 | `GET /campanhas/{id}/resultado`, montado no service chamando `regras/`, sem e-mail em campo nenhum (UC-13, UC-16, RNF-12) | a fazer |
 | T-21 | `POST /campanhas/{id}/encerramento`, gravando o ranking final (UC-14) | a fazer |
-| T-22 | `POST /campanhas/{id}/ganhadores`, `PATCH /ganhadores/{id}` e `DELETE /ganhadores/{id}` (UC-15) | a fazer |
+| T-22 | `GET /campanhas/{id}/participantes`, `POST /campanhas/{id}/ganhadores`, `PATCH /ganhadores/{id}` e `DELETE /ganhadores/{id}` (UC-15) | a fazer |
 | T-23 | `GET /campanhas/{id}/exportacao`, no formato da planilha brasileira (UC-17) | a fazer |
 
 ## Exclusão de conta
@@ -177,7 +177,7 @@ para todas, e o gráfico nunca é a única forma de ler o dado.
 | Tarefa | Entrega | Estado |
 |:--|:--|:--|
 | T-35 | a VPS: Compose com caddy, api e db, o banco só na rede interna, o Caddyfile com HTTPS, retorno de `index.html` e repasse de `/api`, as duas imagens em dois estágios, SSH só com chave, firewall com 22, 80 e 443, atualizações automáticas, e os logs com 7 dias (ADR-0015, RNF-17, RNF-18, RNF-19, RNF-20, RNF-21) | a fazer |
-| T-36 | backup: dump diário na VPS com 7 dias e limpeza do token de renovação vencido; o agendamento na máquina do operador, com 30 dias, restauração local e aviso de homem morto; e o monitor externo de disponibilidade (ADR-0016, RNF-04, RNF-06, RNF-07, RNF-08, RNF-13, RNF-14, RNF-23) | a fazer |
+| T-36 | backup: dump diário na VPS com 7 dias e limpeza do token de renovação vencido; o agendamento na máquina do operador, com 30 dias, restauração local e aviso de homem morto só para dump do próprio dia; e o monitor externo de disponibilidade (ADR-0016, RNF-04, RNF-06, RNF-07, RNF-08, RNF-13, RNF-14, RNF-23) | a fazer |
 | T-37 | a integração contínua constrói e publica as imagens na `main` (ADR-0017) | a fazer |
 | T-38 | script de deploy com os cinco passos do `fluxo-de-trabalho.md`, que para no primeiro erro, e o `GET /saude` que o último passo e o monitor externo conferem (ADR-0006, ADR-0017, RNF-04, RNF-09) | a fazer |
 | T-39 | teste de fumaça do Playwright, com o token de renovação inserido no banco: entra como criador, vê a campanha e o ranking (ADR-0013) | a fazer |

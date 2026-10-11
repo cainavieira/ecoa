@@ -24,8 +24,9 @@ motivo.
 - **RN-05** Remover o acesso de um operador ou de alguém da gravadora apaga a
   conta. Se a pessoa entrar de novo com o mesmo e-mail, recebe conta de
   criador, como qualquer outra (RN-03).
-- **RN-06** O operador não remove a própria conta. Por isso sempre existe ao
-  menos um operador.
+- **RN-06** O operador não remove a própria conta, e a remoção que deixaria o
+  sistema sem nenhum operador é recusada. Assim sempre existe ao menos um
+  operador.
 - **RN-07** O primeiro operador é cadastrado por comando de linha no servidor,
   porque antes dele não existe quem cadastre.
 - **RN-08** Existe uma única gravadora no sistema, e toda conta de gravadora vê
@@ -53,7 +54,8 @@ motivo.
 - **RN-14** O criador pendente ou recusado pode corrigir o @. Corrigir o @ da
   conta recusada a devolve a pendente.
 - **RN-15** O @ da conta aprovada ou bloqueada só muda pelo operador, porque a
-  aprovação verificou aquele @.
+  aprovação verificou aquele @. Antes de corrigir, o operador confere o código
+  de verificação na bio do @ novo, como na aprovação (RN-12).
 - **RN-16** Só a conta aprovada entra em campanha e envia vídeo.
 
 ## Bloqueio
@@ -111,8 +113,8 @@ motivo.
 - **RN-33** O vídeo tem quatro situações: em análise, aprovado, recusado e
   desqualificado. Nasce em análise.
 - **RN-34** O participante envia o vídeo por link enquanto a campanha está
-  aberta. O link é um endereço https cujo domínio termina em `tiktok.com`. Não
-  há limite de vídeos por criador.
+  aberta. O link é um endereço https cujo domínio é `tiktok.com` ou termina em
+  `.tiktok.com`, com o ponto. Não há limite de vídeos por criador.
 - **RN-35** O mesmo link não entra de novo, em campanha nenhuma, enquanto o
   envio anterior estiver em análise, aprovado ou desqualificado. Depois de
   recusado, pode ser enviado de novo. O mesmo vídeo por outro link (o link
@@ -138,10 +140,11 @@ motivo.
 - **RN-40** A data da leitura não é futura nem anterior à data de publicação do
   vídeo. Há no máximo uma leitura por vídeo por data, e registrar outra na
   mesma data substitui a anterior.
-- **RN-41** A leitura de fechamento é a primeira leitura do vídeo com data igual
-  ou posterior ao fechamento da campanha. Depois dela, o vídeo não recebe
-  leitura com data posterior. As leituras anteriores ao fechamento são
-  parciais.
+- **RN-41** A leitura de fechamento é a leitura do vídeo com data igual ou
+  posterior ao fechamento da campanha, e cada vídeo tem no máximo uma. Gravar
+  outra leitura a partir do fechamento, em data diferente da que existe, é
+  recusado; para trocar a data, o operador apaga a leitura de fechamento antes.
+  As leituras anteriores ao fechamento são parciais.
 - **RN-42** Até o encerramento, o operador corrige ou apaga qualquer leitura.
 - **RN-43** O número atual do vídeo é a leitura mais recente dele, mostrada com
   a data ("lido em"). Vídeo aprovado cujas leituras foram todas apagadas conta

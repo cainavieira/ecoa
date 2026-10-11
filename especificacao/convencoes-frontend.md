@@ -96,6 +96,10 @@ Mesma regra do backend: domínio em português, vocabulário técnico em inglês
 - **Tipo da API não se escreve à mão** (ADR-0010). Ele sai do OpenAPI por um
   comando, e o resultado é versionado. Se o tipo está errado, o conserto é na
   api.
+- A integração contínua roda a checagem de tipos (`tsc --noEmit`), o ESLint e a
+  regeneração dos tipos, e falha se o arquivo regenerado diferir do versionado
+  (`fluxo-de-trabalho.md`). Sem isso, um campo renomeado na api passa em todos
+  os testes e quebra só em produção.
 
 ### Papel e tela
 

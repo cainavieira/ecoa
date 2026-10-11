@@ -139,8 +139,9 @@ Derivado das regras. Todo código novo entra aqui junto com a regra que o gera.
 | `NAO_ENCONTRADO` | 404 | recurso inexistente, ou de outro criador, sem distinguir os dois | RN-02 |
 | `EMAIL_JA_CADASTRADO` | 409 | cadastrar operador ou gravadora com e-mail que já tem conta | RN-04 |
 | `PROPRIA_CONTA` | 409 | operador removendo a própria conta | RN-06 |
+| `ULTIMO_OPERADOR` | 409 | remoção que deixaria o sistema sem nenhum operador | RN-06 |
 | `USUARIO_TIKTOK_INVALIDO` | 400 | @ vazio ou com espaço | RN-11 |
-| `USUARIO_TIKTOK_EM_USO` | 409 | aprovar conta, ou corrigir @, quando o @ já é de outra conta aprovada ou bloqueada | RN-11, RN-13 |
+| `USUARIO_TIKTOK_EM_USO` | 409 | aprovar conta, ou corrigir @, quando o @ já é de outra conta aprovada ou bloqueada | RN-11, RN-13, RN-15 |
 | `USUARIO_TIKTOK_FIXO` | 409 | criador tentando mudar o @ da conta aprovada ou bloqueada | RN-15 |
 | `CONTA_NAO_PENDENTE` | 409 | aprovar ou recusar conta que não está pendente | RN-13 |
 | `CONTA_SEM_USUARIO_TIKTOK` | 409 | aprovar ou recusar conta pendente que ainda não informou o @ | RN-13 |
@@ -158,7 +159,7 @@ Derivado das regras. Todo código novo entra aqui junto com a regra que o gera.
 | `ENTRADA_ENCERRADA` | 409 | entrar em campanha em apuração ou encerrada | RN-32 |
 | `NAO_PARTICIPANTE` | 403 | criador enviando vídeo, ou vendo resultado, de campanha em que não participa | RN-31, RN-47 |
 | `CAMPANHA_NAO_ABERTA` | 409 | enviar vídeo com a campanha agendada, em apuração ou encerrada | RN-34 |
-| `LINK_NAO_TIKTOK` | 400 | link de vídeo que não é https de `tiktok.com` | RN-34 |
+| `LINK_NAO_TIKTOK` | 400 | link de vídeo que não é https, ou cujo domínio não é `tiktok.com` nem termina em `.tiktok.com` | RN-34 |
 | `LINK_JA_ENVIADO` | 409 | link já enviado e não recusado | RN-35 |
 | `VIDEO_NAO_EM_ANALISE` | 409 | aprovar ou recusar vídeo que não está em análise | RN-36, RN-37 |
 | `PUBLICACAO_FORA_DO_PRAZO` | 409 | data de publicação fora do início e do fim | RN-36 |
@@ -167,7 +168,7 @@ Derivado das regras. Todo código novo entra aqui junto com a regra que o gera.
 | `VIEWS_INVALIDAS` | 400 | views negativas | RN-39 |
 | `DATA_FUTURA` | 400 | leitura ou entrega com data futura | RN-40, RN-52 |
 | `LEITURA_ANTES_DA_PUBLICACAO` | 400 | data da leitura anterior à publicação | RN-40 |
-| `LEITURA_DEPOIS_DO_FECHAMENTO` | 409 | leitura com data posterior à leitura de fechamento do vídeo | RN-41 |
+| `LEITURA_DEPOIS_DO_FECHAMENTO` | 409 | leitura a partir do fechamento, em data diferente da leitura de fechamento que o vídeo já tem | RN-41 |
 | `ENCERRAMENTO_ANTES_DO_FECHAMENTO` | 409 | encerrar antes da data de fechamento | RN-50 |
 | `ENCERRAMENTO_COM_PENDENCIA` | 409 | vídeo em análise, ou vídeo que conta sem leitura de fechamento; `itens` lista os vídeos | RN-50 |
 | `GANHADOR_ANTES_DO_INICIO` | 409 | registrar ganhador antes do início da campanha | RN-52 |
@@ -192,8 +193,9 @@ devolve.
 **Consulta ao banco** só acontece dentro do service (ADR-0005).
 
 **Conversão entre entidade e DTO** fica em `mapper/`, escrita à mão (ADR-0005).
-O DTO de quem não é o próprio criador não tem e-mail nem código de verificação
-(RN-57).
+O DTO servido a outro criador ou à gravadora não tem e-mail nem código de
+verificação (RN-57). O operador recebe o código na fila de verificação, porque
+é com ele que confere a bio (RF-11, RN-12).
 
 **Restrição de integridade que o banco consegue impor** vai para o banco
 **também**, e não em vez de: a aplicação devolve mensagem que a pessoa entende,

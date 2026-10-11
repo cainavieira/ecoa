@@ -157,6 +157,16 @@ script, e teste do jeito que o agendador roda.
 do Docker de pé. Se ele não subir junto com a máquina, o download acontece e a
 restauração falha, e o aviso de homem morto não deve disparar como sucesso.
 
+**Dump velho que restaura bem.** Se o agendamento da VPS parar, o "dump mais
+recente" continua sendo o último que deu certo, e baixá-lo e restaurá-lo passa
+todo dia. O agendamento confere a data do dump antes de avisar o homem morto, e
+o ensaio do deploy confere antes de ensaiar (RNF-08).
+
+**Remoção cruzada de operadores.** Dois operadores que removem um ao outro ao
+mesmo tempo passam os dois pela conferência de "não é o último" se ela não
+bloquear a leitura. A contagem e a remoção acontecem na mesma transação, com
+bloqueio das linhas de operador (RN-06).
+
 **Chave lida no código e ausente no `.env`.** Mantenha o `.env.example`
 sincronizado, e faça variável obrigatória ausente derrubar a subida.
 
@@ -264,6 +274,7 @@ recebem dados e devolvem valores.
 | `totalPorData` | RN-49 |
 | `pendenciasDoEncerramento` | RN-50 |
 | `validarGanhador` | RN-52 |
+| `validarRemocaoDeAcesso` | RN-06 |
 
 As fronteiras onde a regra decide, e que por isso precisam de teste:
 
@@ -282,9 +293,9 @@ As fronteiras onde a regra decide, e que por isso precisam de teste:
 - publicação no dia do início e no dia do fim é aceita; na véspera do início, e
   no dia seguinte ao fim, recusada (RN-36)
 - leitura na data da publicação é aceita, e na véspera, recusada (RN-40)
-- leitura de fechamento: é a primeira com data igual ou posterior ao
-  fechamento; outra com data posterior a ela é recusada; outra na mesma data a
-  substitui (RN-40, RN-41)
+- leitura de fechamento: com fechamento em 30/11, gravar 02/12 a cria; depois,
+  01/12 e 03/12 são recusadas, e outra em 02/12 a substitui; apagada a de 02/12,
+  01/12 passa a ser aceita (RN-40, RN-41)
 - views menores que as da leitura anterior são aceitas (RN-39)
 - vídeo aprovado sem leitura conta zero, com a marca de que não tem leitura
   (RN-43)
@@ -292,8 +303,11 @@ As fronteiras onde a regra decide, e que por isso precisam de teste:
   participante sem vídeo que conta ficam fora (RN-45, RN-46)
 - total por data: soma, de cada vídeo, a leitura mais recente até a data; vídeo
   sem leitura até a data não soma (RN-49)
-- encerramento: vídeo em análise pende; vídeo que conta sem leitura de
-  fechamento pende; vídeo de criador bloqueado não pende (RN-50)
+- encerramento: vídeo em análise pende, inclusive o de criador bloqueado;
+  vídeo que conta sem leitura de fechamento pende; vídeo aprovado de criador
+  bloqueado não pende, porque não conta (RN-45, RN-50)
+- remoção de acesso: remover o outro operador, quando há dois, é aceito;
+  remover o último operador é recusado (RN-06)
 - ganhador: antes do início é recusado, no dia do início é aceito, bloqueado é
   recusado (RN-52)
 

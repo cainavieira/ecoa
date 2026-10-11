@@ -107,8 +107,11 @@ Atores em `atores.md`, requisitos em `requisitos-funcionais.md`, regras em
 - **3b** Duas contas pendentes têm o mesmo @: só o dono consegue pôr o código na
   bio. O operador aprova essa e recusa a outra. (RN-11, RN-12)
 - **4a** O criador aprovado trocou de @ no TikTok e pediu a correção por fora: o
-  operador corrige o @ na lista de contas. O @ novo não pode pertencer a outra
-  conta aprovada ou bloqueada. (RF-14, RF-15, RN-11, RN-15)
+  operador confere o código de verificação na bio do @ novo e corrige o @ na
+  lista de contas. O @ novo não pode pertencer a outra conta aprovada ou
+  bloqueada. (RF-14, RF-15, RN-11, RN-12, RN-15)
+- **4b** O código não está na bio do @ novo: o operador não corrige, e avisa o
+  criador por fora. A conta continua aprovada com o @ antigo. (RN-15)
 
 **Pós-condição:** conta aprovada ou recusada.
 
@@ -333,9 +336,10 @@ fim. (RN-27)
   removem views falsas. (RN-39)
 - **2e** Data igual ou posterior ao fechamento: é a leitura de fechamento do
   vídeo. (RN-41)
-- **2f** O vídeo já tem leitura de fechamento, e a data nova é posterior a ela:
-  recusada. Para corrigir, o operador edita ou apaga a leitura de fechamento.
-  (RN-41, RN-42)
+- **2f** O vídeo já tem leitura de fechamento, e a data nova também é igual ou
+  posterior ao fechamento, mas diferente da dela: recusada. Para corrigir o
+  número, o operador grava de novo na mesma data; para trocar a data, apaga a
+  leitura de fechamento antes. (RN-41, RN-42)
 - **2g** O vídeo saiu do ar, ficou privado ou a conta foi banida: o operador o
   desqualifica (UC-12). (RN-38)
 - **2h** O operador digitou errado: corrige ou apaga a leitura, no histórico do
@@ -435,8 +439,8 @@ fim. (RN-27)
 
 **Fluxo principal**
 
-1. O operador escolhe o participante, conforme o regulamento e o ranking, e
-   escreve o prêmio. (RF-35, RN-51)
+1. O operador escolhe o participante na lista de participantes da campanha,
+   conforme o regulamento e o ranking, e escreve o prêmio. (RF-35, RN-51)
 2. Confirma. O ganhador aparece para quem vê o ranking. (RN-54)
 3. Quando a gravadora entrega o prêmio, por fora do sistema, o operador
    informa a data de entrega. (RF-36, RN-55)
@@ -522,6 +526,8 @@ fim. (RN-27)
   minutos. (RF-07, RN-05, ADR-0008)
 - **4b** O operador tenta remover a própria conta: recusado. (RN-06)
 - **4c** A pessoa removida entra de novo: recebe conta de criador. (RN-05)
+- **4d** A remoção deixaria o sistema sem nenhum operador, como quando dois
+  operadores removem um ao outro ao mesmo tempo: recusada. (RN-06)
 
 **Pós-condição:** conta de operador ou gravadora cadastrada, ou removida.
 
@@ -569,3 +575,8 @@ primeiro operador não existe quem cadastre. (RN-07)
 - **2a** O e-mail já tem conta: o comando informa e não muda nada. (RN-04)
 
 **Pós-condição:** existe ao menos um operador. (RN-06)
+
+## Casos de uso aposentados
+
+Nenhum até agora. O identificador é estável: caso de uso removido tem o número
+aposentado e listado aqui, com o motivo, e o número não volta.

@@ -39,7 +39,10 @@ quê. RNF sem número é adjetivo.
   de homem morto num serviço externo: o agendamento avisa o serviço depois de
   restaurar, e o silêncio no horário esperado dispara o alerta. Máquina
   desligada é a causa mais provável, e é justamente o que o alerta precisa
-  pegar.
+  pegar. O agendamento só avisa quando o dump baixado é do próprio dia: se o
+  dump da VPS parou de ser feito, o mais recente é velho, a restauração dele
+  passa, e sem essa conferência o alerta ficaria quieto. Pelo mesmo motivo, o
+  ensaio do deploy recusa dump com mais de um dia (RNF-09).
 - **RNF-09** Antes de cada deploy, o dump mais recente é restaurado num banco
   descartável e recebe as migrações novas. Se uma das duas etapas falhar, o
   deploy para (ADR-0006, ADR-0017).
@@ -116,3 +119,8 @@ quê. RNF sem número é adjetivo.
   automatizado. São a parte onde o erro passa despercebido: um bloqueado que
   continua no ranking, um vídeo fora do prazo aprovado, um encerramento com
   leitura faltando (ADR-0012, ADR-0013).
+
+## Requisitos aposentados
+
+Nenhum até agora. O identificador é estável: requisito removido tem o número
+aposentado e listado aqui, com o motivo, e o número não volta.

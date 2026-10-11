@@ -44,6 +44,7 @@ este documento está datado.
 | `GET` | `/campanhas/{id}/meus-videos` | criador participante | os vídeos dele na campanha, em todas as situações, com as leituras | RF-31 |
 | `POST` | `/campanhas/{id}/videos` | criador participante | envia o link de um vídeo | RF-26 |
 | `GET` | `/campanhas/{id}/leituras` | operador | a planilha de leituras: os vídeos que contam, com o número atual e se já têm leitura de fechamento | RF-32 |
+| `GET` | `/campanhas/{id}/participantes` | operador | lista os participantes da campanha, com @ e situação da conta, inclusive quem não tem vídeo que conta; é de onde sai a escolha do ganhador | RF-35 |
 | `POST` | `/campanhas/{id}/ganhadores` | operador | registra um ganhador, com o prêmio em texto | RF-35 |
 | `GET` | `/videos` | operador | lista vídeos por situação; `?situacao=em_analise` é a fila de conferência | RF-27 |
 | `POST` | `/videos/{id}/aprovacao` | operador | aprova, com a data de publicação e as views da primeira leitura | RF-28 |
@@ -123,6 +124,14 @@ planilha de leituras, corrigir o número do dia é o caso comum.
 A planilha (`GET /campanhas/{id}/leituras`) grava linha a linha, uma chamada
 por vídeo. Uma chamada em lote exigiria decidir o que fazer quando uma das 150
 linhas falha, e linha a linha a recusa aparece na linha certa.
+
+### Entrar de novo na campanha devolve a participação que existe
+
+`POST /campanhas/{id}/participacao` de quem já participa responde 200 com a
+participação existente, em vez de recusar. O caso real é o duplo clique, ou duas
+abas: as duas requisições passam pela conferência antes de qualquer gravação, e
+a segunda esbarra na chave única do banco. O tratador traduz essa violação na
+mesma resposta, e nenhum código de erro novo é preciso.
 
 ### A situação da campanha é calculada, não gravada
 

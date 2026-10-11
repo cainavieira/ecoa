@@ -78,6 +78,10 @@ Roda local e roda na integração contínua (ADR-0017), e os dois têm que passa
 - a compilação com Error Prone, e o NullAway no pacote de regras;
 - JUnit, nas duas camadas do backend, com o ArchUnit conferindo a regra de
   dependência (`arquitetura.md`);
+- a checagem de tipos do TypeScript e o ESLint, no frontend;
+- a regeneração dos tipos do OpenAPI a partir do backend, que falha se o
+  resultado diferir do arquivo versionado: é o que força contrato e frontend a
+  concordarem (ADR-0010);
 - Vitest, nos componentes que decidem;
 - o teste de fumaça do Playwright, quando existir.
 

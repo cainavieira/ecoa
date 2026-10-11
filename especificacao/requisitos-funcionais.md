@@ -24,7 +24,8 @@ aposentados ficam listados no fim.
 - **RF-06** O sistema deve permitir que o AT-02 cadastre um e-mail como
   operador ou como gravadora. (RN-03, RN-04)
 - **RF-07** O sistema deve permitir que o AT-02 remova o acesso de um operador
-  ou de alguém da gravadora, menos o próprio. (RN-05, RN-06)
+  ou de alguém da gravadora, menos o próprio, e sem deixar o sistema sem
+  operador. (RN-05, RN-06)
 - **RF-08** O sistema deve oferecer um comando de linha que cadastra o primeiro
   operador. (RN-07)
 
