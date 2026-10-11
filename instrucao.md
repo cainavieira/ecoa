@@ -326,7 +326,7 @@ Peça ao interessado antes da tarefa em que faz falta:
 | Repositório público no GitHub, com o remoto conectado | T-02 | integração contínua (ADR-0018) |
 | Projeto no console do Google, com os endereços de retorno local e de produção, publicado em produção | T-10 | sem isso, ninguém entra (ADR-0007) |
 | Contato da operação para a tela de bloqueio | T-28 | RN-18 |
-| Termos de uso e política de privacidade, com o aceite do ranking | T-26 | RN-09, RNF-15. O texto não é escrito pela assistência |
+| Termos de uso e política de privacidade, com o aceite do ranking | T-35 | RN-09, RNF-15. Em desenvolvimento, a tela de entrada aponta para uma página provisória. O texto não é escrito pela assistência |
 | Nome público e domínio, decididos com o Mateus | T-35 | HTTPS e endereço de retorno do Google |
 | VPS contratada | T-35 | produção (ADR-0015) |
 | Serviço de monitor externo, para disponibilidade e homem morto | T-36 | RNF-04, RNF-08 |
