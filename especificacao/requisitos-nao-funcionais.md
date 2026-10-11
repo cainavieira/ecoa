@@ -53,7 +53,10 @@ quê. RNF sem número é adjetivo.
 ## Privacidade
 
 - **RNF-11** O dado pessoal guardado é o mínimo da RN-57. CPF, chave Pix e
-  endereço ficam com a gravadora, que os pede só ao ganhador (RN-55).
+  endereço ficam com a gravadora, que os pede só ao ganhador (RN-55). O @ de
+  conta bloqueada apagada sai do banco um ano depois da exclusão (RN-65), pelo
+  mesmo agendamento diário que faz o dump e remove o token de renovação
+  vencido (RNF-23).
 - **RNF-12** O @ e as views de um criador aparecem só para os participantes da
   mesma campanha, para a gravadora e para os operadores (RN-47). Não existe
   página pública.

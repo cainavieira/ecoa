@@ -55,13 +55,13 @@ este documento está datado.
 | `DELETE` | `/videos/{id}/leituras/{data}` | operador | apaga a leitura da data | RF-33 |
 | `PATCH` | `/ganhadores/{id}` | operador | informa a data de entrega | RF-36 |
 | `DELETE` | `/ganhadores/{id}` | operador | apaga o registro | RF-37 |
-| `GET` | `/criadores` | operador | lista as contas de criador; `?situacao=pendente` é a fila de verificação, só com quem já informou o @ | RF-11, RF-15 |
+| `GET` | `/criadores` | operador | lista as contas de criador; `?situacao=pendente` é a fila de verificação, só com quem já informou o @, com o código e, quando o @ foi de conta bloqueada apagada, a data da exclusão | RF-11, RF-15 |
 | `POST` | `/criadores/{id}/aprovacao` | operador | aprova a conta pendente | RF-12 |
 | `POST` | `/criadores/{id}/recusa` | operador | recusa a conta pendente, com motivo | RF-12 |
 | `PUT` | `/criadores/{id}/usuario-tiktok` | operador | corrige o @ de conta aprovada ou bloqueada | RF-14 |
 | `POST` | `/criadores/{id}/bloqueio` | operador | bloqueia, com motivo | RF-16 |
 | `POST` | `/criadores/{id}/desbloqueio` | operador | desbloqueia, com motivo | RF-18 |
-| `POST` | `/criadores/{id}/exclusao` | operador | apaga a conta, com o e-mail digitado no corpo | RF-41 |
+| `POST` | `/criadores/{id}/exclusao` | operador | apaga a conta, com o e-mail digitado no corpo; se ela estava bloqueada, guarda o @ | RF-41 |
 | `GET` | `/acessos` | operador | lista as contas de operador e de gravadora | RF-06, RF-07 |
 | `POST` | `/acessos` | operador | cadastra e-mail e papel | RF-06 |
 | `DELETE` | `/acessos/{id}` | operador | remove o acesso e apaga a conta | RF-07 |
@@ -98,7 +98,8 @@ requisição seguinte, e não em até 15 minutos.
 `GET /campanhas/{id}/resultado` devolve, de uma vez:
 
 - o ranking: posição, @ ou "participante removido", soma e, de cada vídeo que
-  conta, o link, o número atual e a data dele (RN-45, RN-46, RN-59);
+  conta, o link (ausente no vídeo do participante removido), o número atual e
+  a data dele (RN-45, RN-46, RN-59);
 - o total na data de hoje, o número de criadores no ranking e o de vídeos que
   contam (RN-61);
 - a série do gráfico: uma entrada por data com leitura, com o total naquela

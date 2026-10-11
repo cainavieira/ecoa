@@ -36,7 +36,8 @@ aposentados ficam listados no fim.
 - **RF-10** O sistema deve apresentar ao AT-01 o código de verificação e como
   usá-lo. (RN-12)
 - **RF-11** O sistema deve listar ao AT-02 as contas pendentes que já
-  informaram o @, com o @ e o código. (RN-12, RN-13)
+  informaram o @, com o @, o código e o aviso de @ de conta bloqueada apagada.
+  (RN-12, RN-13, RN-65)
 - **RF-12** O sistema deve permitir que o AT-02 aprove ou recuse conta
   pendente, com motivo na recusa. (RN-11, RN-13)
 - **RF-13** O sistema deve apresentar ao AT-01 a situação da conta, com o motivo
@@ -121,7 +122,7 @@ aposentados ficam listados no fim.
 ## Dados pessoais
 
 - **RF-41** O sistema deve permitir que o AT-02 apague conta de criador.
-  (RN-58, RN-59, RN-60)
+  (RN-58, RN-59, RN-60, RN-65)
 
 ## Formato
 

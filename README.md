@@ -17,7 +17,7 @@ uma campanha por vez e até 50 criadores.
 
 O que existe hoje:
 
-- `especificacao/`: 64 regras de negócio, 42 requisitos funcionais, 20 casos de
+- `especificacao/`: 65 regras de negócio, 42 requisitos funcionais, 20 casos de
   uso, 28 requisitos não funcionais, 18 ADR, arquitetura, convenções e o
   contrato da API.
 - `visao/`: a visão do produto, para aprovação, e a pesquisa das redes, para a

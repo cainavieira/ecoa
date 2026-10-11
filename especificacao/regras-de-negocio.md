@@ -201,16 +201,25 @@ motivo.
 
 - **RN-57** Do criador, o sistema guarda o nome e o e-mail vindos do Google, o
   @, o código de verificação e as datas de aceite (RN-09, RN-31). Não guarda
-  CPF, chave Pix, endereço nem foto.
+  CPF, chave Pix, endereço nem foto. Da conta apagada, guarda só o @ da que
+  estava bloqueada, pelo prazo da RN-65.
 - **RN-58** O criador pede a exclusão da conta ao operador, por fora do
   sistema, e o operador a apaga.
 - **RN-59** Apagar a conta de criador remove nome, e-mail, @ e código. Nas
   campanhas não encerradas, remove também a participação, os vídeos, as
   leituras e os registros de ganhador dele. Nas encerradas, vídeos, leituras,
   posição final e prêmios permanecem como "participante removido", para o
-  ranking final e o relatório já entregue não mudarem.
+  ranking final e o relatório já entregue não mudarem, e o link de cada vídeo
+  é apagado, porque leva à conta do @.
 - **RN-60** Depois da exclusão, a mesma pessoa pode entrar de novo e recebe
-  conta de criador nova, pendente, sem nada da anterior.
+  conta de criador nova, pendente, sem nada da anterior. Se a anterior estava
+  bloqueada e a nova informa o mesmo @, a verificação mostra o aviso da RN-65.
+- **RN-65** Apagar conta de criador bloqueada guarda o @ dela e a data da
+  exclusão, sem ligação com conta nenhuma, por um ano. Nesse prazo, a conta
+  pendente com esse @ aparece na verificação com o aviso de que ele foi de
+  conta bloqueada e apagada, e a data. O aviso não impede a aprovação: quem
+  decide é o operador (RN-13). Conta apagada sem bloqueio não deixa registro,
+  e quem volta com outro @ não é reconhecido.
 
 ## Painel e exportação
 
@@ -220,7 +229,8 @@ motivo.
 - **RN-62** A exportação gera um CSV com uma linha por vídeo que conta: posição
   do criador, @, link, data de publicação, número atual e data da leitura. Na
   campanha encerrada, os números são os do ranking final, e o participante
-  removido aparece assim (RN-59). Gravadora e operador exportam.
+  removido aparece assim, com o vídeo sem link (RN-59). Gravadora e operador
+  exportam.
 
 ## Data e formato
 
@@ -256,3 +266,5 @@ Registradas para que não voltem como novidade.
 | Exclusão de conta pelo próprio criador | Rara com 50 criadores, e o operador já apaga pela tela dele |
 | Apagar tudo do criador também nas campanhas encerradas | Mudaria o ranking final e o relatório já entregue à gravadora |
 | Painel da gravadora em PDF | A gravadora vai querer mexer nos números numa planilha, e PDF exige layout |
+| Manter o link do vídeo do participante removido | O link leva à conta do @, e a exclusão promete não deixar dado pessoal (RN-59). Custo aceito: o vídeo de quem saiu aparece sem link no resultado e no CSV |
+| Guardar o @ de toda conta apagada, ou o motivo do bloqueio (RN-65) | Dado pessoal sem uso: só o @ da conta bloqueada serve para reconhecer quem volta. Custo aceito: o aviso não diz por que houve o bloqueio |

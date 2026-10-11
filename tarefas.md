@@ -66,7 +66,7 @@ seção 6).
 
 | Tarefa | Entrega | Estado |
 |:--|:--|:--|
-| T-03 | as oito tabelas na primeira migração do Flyway, escrita em SQL, com as restrições e os índices únicos parciais do desenho; as entidades JPA, conferidas pelo `validate`; e o modo `migrar` do `.jar` (ADR-0004, ADR-0005, ADR-0006, RNF-11) | a fazer |
+| T-03 | as nove tabelas na primeira migração do Flyway, escrita em SQL, com as restrições e os índices únicos parciais do desenho; as entidades JPA, conferidas pelo `validate`; e o modo `migrar` do `.jar` (ADR-0004, ADR-0005, ADR-0006, RNF-11) | a fazer |
 
 ## Etapa 2: camada de regras
 
@@ -136,7 +136,7 @@ falta método na etapa 2.
 
 | Tarefa | Entrega | Estado |
 |:--|:--|:--|
-| T-24 | `POST /criadores/{id}/exclusao`, apagando as participações das campanhas não encerradas antes da conta (UC-19) | a fazer |
+| T-24 | `POST /criadores/{id}/exclusao`, apagando as participações das campanhas não encerradas e o link dos vídeos das encerradas antes da conta, e guardando o @ da conta bloqueada (UC-19) | a fazer |
 
 Vem depois de todas as tabelas terem rota, de propósito. É a operação que
 apaga tudo, e escrita antes ela nasce contra um esquema pela metade.
@@ -177,7 +177,7 @@ para todas, e o gráfico nunca é a única forma de ler o dado.
 | Tarefa | Entrega | Estado |
 |:--|:--|:--|
 | T-35 | a VPS: Compose com caddy, api e db, o banco só na rede interna, o Caddyfile com HTTPS, retorno de `index.html` e repasse de `/api`, as duas imagens em dois estágios, SSH só com chave, firewall com 22, 80 e 443, atualizações automáticas, e os logs com 7 dias (ADR-0015, RNF-17, RNF-18, RNF-19, RNF-20, RNF-21) | a fazer |
-| T-36 | backup: dump diário na VPS com 7 dias e limpeza do token de renovação vencido; o agendamento na máquina do operador, com 30 dias, restauração local e aviso de homem morto só para dump do próprio dia; e o monitor externo de disponibilidade (ADR-0016, RNF-04, RNF-06, RNF-07, RNF-08, RNF-13, RNF-14, RNF-23) | a fazer |
+| T-36 | backup: dump diário na VPS com 7 dias, limpeza do token de renovação vencido e do @ de conta bloqueada apagada há mais de um ano; o agendamento na máquina do operador, com 30 dias, restauração local e aviso de homem morto só para dump do próprio dia; e o monitor externo de disponibilidade (ADR-0016, RNF-04, RNF-06, RNF-07, RNF-08, RNF-11, RNF-13, RNF-14, RNF-23) | a fazer |
 | T-37 | a integração contínua constrói e publica as imagens na `main` (ADR-0017) | a fazer |
 | T-38 | script de deploy com os cinco passos do `fluxo-de-trabalho.md`, que para no primeiro erro, e o `GET /saude` que o último passo e o monitor externo conferem (ADR-0006, ADR-0017, RNF-04, RNF-09) | a fazer |
 | T-39 | teste de fumaça do Playwright, com o token de renovação inserido no banco: entra como criador, vê a campanha e o ranking (ADR-0013) | a fazer |

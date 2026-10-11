@@ -95,6 +95,9 @@ Atores em `atores.md`, requisitos em `requisitos-funcionais.md`, regras em
 
 **Fluxos alternativos**
 
+- **1a** O @ foi de conta bloqueada e apagada no último ano: a fila mostra o
+  aviso, com a data da exclusão. A aprovação continua possível, e o operador
+  decide olhando o perfil. (RF-11, RN-65)
 - **2a** O código não está na bio: o operador recusa, com o motivo. A conta fica
   recusada, e o criador vê o motivo na tela dele. (RF-12, RF-13, RN-13)
 - **2b** O @ não existe no TikTok: recusa, com o motivo. (RN-13)
@@ -478,7 +481,7 @@ fim. (RN-27)
   e ranking vazio, em vez de erro.
 - **2b** A campanha está encerrada: os números são os do ranking final. (RN-48)
 - **2c** Um participante teve a conta apagada, em campanha encerrada: aparece
-  como "participante removido". (RN-59)
+  como "participante removido", com os vídeos sem link. (RN-59)
 - **2d** A gravadora não tem ação de escrita: o painel só lê. (RF-05)
 
 **Pós-condição:** nenhuma mudança de estado.
@@ -497,7 +500,8 @@ fim. (RN-27)
 - **2a** Nenhum vídeo conta: o arquivo sai só com o cabeçalho, em vez de erro.
   Arquivo vazio é resposta válida para campanha sem resultado.
 - **2b** A campanha está encerrada: os números são os do ranking final. (RN-62)
-- **2c** Participante removido: aparece assim, no lugar do @. (RN-62)
+- **2c** Participante removido: aparece assim, no lugar do @, e a linha vai sem
+  link. (RN-62)
 
 **Pós-condição:** nenhuma mudança de estado.
 
@@ -551,12 +555,16 @@ fim. (RN-27)
   vídeos, as leituras e os prêmios dele nessa campanha somem, e o ranking dela
   se recalcula sem ele. (RN-59)
 - **3b** O criador participou de campanha encerrada: ali ele permanece como
-  "participante removido", com a posição, os números e os prêmios. (RN-59)
+  "participante removido", com a posição, os números e os prêmios, e os vídeos
+  perdem o link. (RN-59)
 - **3c** A pessoa entra de novo: recebe conta nova, pendente, sem nada da
   anterior. (RN-60)
 - **3d** As cópias de backup ainda têm a conta até o fim da retenção. (RNF-14)
+- **3e** A conta estava bloqueada: o @ fica guardado por um ano, para o aviso
+  na verificação. (RN-65)
 
-**Pós-condição:** nenhum dado pessoal do criador permanece no banco. (RN-59)
+**Pós-condição:** nenhum dado pessoal do criador permanece no banco, além do @
+da conta bloqueada, pelo prazo da RN-65. (RN-59, RN-65)
 
 ## UC-20 Cadastrar o primeiro operador
 

@@ -2,7 +2,7 @@
 
 Documento de partida para quem for **implementar** o MVP do Ecoa. A
 especificação já existe inteira em `especificacao/` e não precisa ser
-redescoberta: 64 regras de negócio, 42 requisitos funcionais, 20 casos de uso,
+redescoberta: 65 regras de negócio, 42 requisitos funcionais, 20 casos de uso,
 28 requisitos não funcionais e 18 ADR, todos com identificador estável.
 
 Este documento não repete nada disso. Ele diz como ler a especificação, o que
@@ -111,7 +111,9 @@ só na migração. A conferência da subida não os vê (ADR-0005).
 **A chave estrangeira com `ON DELETE SET NULL` anonimiza tudo.** É ela que deixa
 o criador apagado como "participante removido" nas campanhas encerradas. Mas,
 nas não encerradas, a regra manda apagar a participação (RN-59): o service
-apaga essas antes de apagar a conta, ou elas viram anônimas também.
+apaga essas antes de apagar a conta, ou elas viram anônimas também. Ela também
+não alcança o link do vídeo, que leva ao @: o service apaga o link dos vídeos
+das campanhas encerradas na mesma transação.
 
 **Calcular o ranking de campanha encerrada a partir do estado atual.** Um
 criador desbloqueado depois do encerramento voltaria a um ranking que é final
@@ -179,7 +181,7 @@ proibido nas convenções.
 
 ### Esquema
 
-Oito tabelas, nomes no singular, colunas em português sem acento
+Nove tabelas, nomes no singular, colunas em português sem acento
 (`convencoes-backend.md`).
 
 **`conta`**: `id`, `email` único e em minúsculas, `nome` nulo até o primeiro
@@ -207,8 +209,8 @@ token nunca é gravado, só o hash), `criado_em`, `expira_em`.
 `posicao_final` e `total_final`, nulos até o encerramento e nulos para quem
 ficou fora do ranking final.
 
-**`video`**: `id`, `participacao_id` com `ON DELETE CASCADE`, `link`,
-`situacao` (`em_analise`, `aprovado`, `recusado`, `desqualificado`),
+**`video`**: `id`, `participacao_id` com `ON DELETE CASCADE`, `link`, nulo só
+no vídeo de participante removido (RN-59), `situacao` (`em_analise`, `aprovado`, `recusado`, `desqualificado`),
 `data_publicacao` nula até a aprovação, `motivo` nulo, `enviado_em`.
 
 **`leitura`**: `video_id` com `ON DELETE CASCADE`, `data`, `views`, com chave
@@ -216,6 +218,11 @@ primária (`video_id`, `data`), `registrada_em`.
 
 **`ganhador`**: `id`, `campanha_id`, `participacao_id` com `ON DELETE CASCADE`,
 `premio`, `entregue_em` nula, `registrado_em`.
+
+**`conta_bloqueada_apagada`**: `usuario_tiktok` como chave primária,
+`apagada_em`. Sem chave estrangeira, porque a conta já não existe. Apagar de
+novo uma conta bloqueada com o mesmo @ atualiza a data, e o prazo da RN-65
+recomeça.
 
 Mais a `flyway_schema_history`, que é do Flyway e não se mexe à mão.
 
@@ -247,7 +254,8 @@ Restrições que **não** vão para o banco, e por quê:
 - Fechamento futuro (RN-26), leitura e entrega não futuras (RN-40, RN-52):
   `CHECK` precisa ser imutável, e `current_date` não é.
 - Publicação entre início e fim (RN-27, RN-36), ganhador da mesma campanha
-  (RN-52): atravessam tabelas.
+  (RN-52), link nulo só no vídeo de participante removido (RN-59): atravessam
+  tabelas.
 - Leitura de fechamento (RN-41) e pendências do encerramento (RN-50):
   atravessam linhas.
 - Ao menos um link de referência (RN-22): o banco não exige "ao menos um" sem
