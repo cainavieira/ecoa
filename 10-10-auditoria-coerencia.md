@@ -5,7 +5,8 @@
   identificadores)
 - **Auditado:** `64d5399`, a especificação inteira recém-escrita
 - **Correções:** `fea1dc2`
-- **Estado:** dez achados corrigidos; dois esperam decisão do interessado
+- **Estado:** dez achados corrigidos; dos dois que esperavam decisão, um é
+  risco aceito e o outro tem caminho escolhido em 11-10, ainda não aplicado
 
 Oito agentes: um auditor e um cético por frente. Os auditores acharam 31
 defeitos; o cético derrubou 16. Os 15 confirmados se reduzem a 12 problemas,
@@ -57,6 +58,22 @@ A primeira cumpre o que a exclusão promete. A leitura de LGPD é de advogado.
 **Junto do item 1:** o ADR-0009 diz que o e-mail e o código "não saem para mais
 ninguém", e o operador precisa do código (RF-11). A convenção já foi corrigida;
 a frase do ADR depende da mesma escolha entre ADR novo e correção no lugar.
+
+## Decidido em 11-10
+
+- **Item 1:** risco aceito, sem conserto. Exige operador removido agindo de
+  má-fé dentro de 15 minutos, e a volta dele aparece na lista de acessos. O
+  ADR-0008 fica como está.
+- **ADR-0009:** a frase foi corrigida no lugar, por exceção do interessado à
+  regra de não reescrever ADR. Não é defeito em auditoria futura.
+- **Item 2:** caminho (c), apresentado na conversa depois desta auditoria:
+  apagar o link dos vídeos do participante removido, como o resto do dado
+  pessoal, e guardar, só para a operação, um registro mínimo da conta apagada
+  (o @ e se estava bloqueada), para reconhecer o bloqueado que volta com conta
+  nova. O interessado respondeu "concordo"; a leitura como (c) se confirma na
+  próxima sessão, junto com quanto tempo esse registro fica guardado. Não
+  aplicado: mexe em regras, casos de uso, requisitos não funcionais, esquema e
+  contrato, e pede auditoria desde o commit em que entrar.
 
 ## Derrubados pelo cético
 
