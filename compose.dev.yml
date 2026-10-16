@@ -1,0 +1,16 @@
+# Postgres de desenvolvimento (RNF-27). A api roda fora do Compose, direto na máquina.
+# Subir: docker compose -f compose.dev.yml --env-file backend/.env up -d
+name: ecoa
+services:
+  db:
+    image: postgres:18
+    environment:
+      POSTGRES_DB: ecoa
+      POSTGRES_USER: ${ECOA_DB_USUARIO:?defina ECOA_DB_USUARIO no backend/.env}
+      POSTGRES_PASSWORD: ${ECOA_DB_SENHA:?defina ECOA_DB_SENHA no backend/.env}
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - dados:/var/lib/postgresql
+volumes:
+  dados:
