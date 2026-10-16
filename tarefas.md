@@ -56,7 +56,7 @@ justamente por não ter tela.
 
 | Tarefa | Entrega | Estado |
 |:--|:--|:--|
-| T-01 | ambiente do backend: projeto Maven com o Maven Wrapper, Spring Boot e as versões da tabela de stack (ADR-0002), Spotless, Error Prone e NullAway em `regras/` (ADR-0013), `compose.dev.yml` só com o Postgres (RNF-27), `.env.example`, a estrutura de pasta do `arquitetura.md` (ADR-0003), e o log da aplicação só em erro (RNF-16) | a fazer |
+| T-01 | ambiente do backend: projeto Maven com o Maven Wrapper, Spring Boot e as versões da tabela de stack (ADR-0002), Spotless, Error Prone e NullAway em `regras/` (ADR-0013), `compose.dev.yml` só com o Postgres (RNF-27), `.env.example`, a estrutura de pasta do `arquitetura.md` (ADR-0003), e o log da aplicação só em erro (RNF-16) | fazendo |
 | T-02 | integração contínua com o Spotless e a compilação com Error Prone, artefato só na falha; cada camada de teste entra no job quando a primeira tarefa que a usa termina, e o frontend entra com a checagem de tipos e o ESLint quando a T-26 terminar, e com a regeneração dos tipos do OpenAPI comparada com a versionada quando a T-27 terminar (ADR-0010, ADR-0017, ADR-0018) | a fazer |
 
 A T-02 depende do repositório remoto, que ainda não existe (`instrucao.md`,

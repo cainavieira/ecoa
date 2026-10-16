@@ -15,7 +15,7 @@ não se declara no `pom.xml`, para não brigar com o resto do conjunto.
 |:--|:--|
 | Linguagem | Java 25 (LTS) |
 | Framework | Spring Boot 4.1, com Spring MVC e Spring Security 7.1 |
-| Build | Maven 3.9, pelo Maven Wrapper |
+| Build | Maven 3.10, pelo Maven Wrapper |
 | Acesso ao banco | Spring Data JPA, com Hibernate 7.4, versão do Spring Boot |
 | Migração | Flyway, versão do Spring Boot |
 | Banco | PostgreSQL 18 |

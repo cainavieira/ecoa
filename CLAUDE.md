@@ -5,8 +5,8 @@ com a música dela. O **MVP é só TikTok**, com as views lidas à mão pela
 operação, uma gravadora, uma campanha por vez e até 50 criadores. O sistema
 mede e mostra; o prêmio é texto, e a gravadora paga direto ao ganhador.
 
-**Estado: a especificação do MVP está completa e não existe código de
-aplicação.**
+**Estado: a especificação do MVP está completa, e a construção começou; o
+andamento está no `tarefas.md`.**
 
 ## Onde está a verdade
 
