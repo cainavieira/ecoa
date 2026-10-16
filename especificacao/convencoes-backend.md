@@ -10,6 +10,8 @@ dependência, regras, nomes, testes e proibido.
 Conferida em 10/10/2026, nas fontes oficiais: Maven Central, postgresql.org e
 o GitHub do Caddy. Versão "do Spring Boot" é a que o Spring Boot gerencia: ela
 não se declara no `pom.xml`, para não brigar com o resto do conjunto.
+O mesmo vale para o google-java-format, que fica na versão que o Spotless traz:
+a 1.37 avulsa quebra o Spotless 3.10.
 
 | Camada | Tecnologia |
 |:--|:--|
@@ -23,7 +25,7 @@ não se declara no `pom.xml`, para não brigar com o resto do conjunto.
 | Login Google e JWT | Spring Security OAuth2 Client e Resource Server, versão do Spring Boot |
 | Contrato de API | springdoc-openapi 3.1, só no perfil de desenvolvimento |
 | Testes | JUnit 6 e Testcontainers 2.0, versões do Spring Boot; ArchUnit 1.5 |
-| Formatação | Spotless 3.10, com google-java-format 1.37 |
+| Formatação | Spotless 3.10, com o google-java-format da versão do Spotless |
 | Análise | Error Prone 2.50, com NullAway 0.14 no pacote de regras |
 | Contêiner | Docker, com Compose |
 | Servidor web | Caddy 2.11 |
