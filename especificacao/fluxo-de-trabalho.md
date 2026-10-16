@@ -161,8 +161,9 @@ O que **não** entra: `.env`, `target/`, `node_modules/`, a ferramenta local em
 Manual, por script que para no primeiro erro (ADR-0017), rodado na VPS:
 
 1. baixar as imagens da api e do frontend com a etiqueta escolhida;
-2. rodar o ensaio: restaurar o dump mais recente num banco descartável e
-   aplicar nele as migrações novas (RNF-09, ADR-0006);
+2. rodar o ensaio: restaurar o dump mais recente num banco descartável,
+   recusando dump com mais de um dia, e aplicar nele as migrações novas
+   (RNF-08, RNF-09, ADR-0006);
 3. rodar a migração na produção, num contêiner de uma execução só;
 4. subir a versão nova com o Compose;
 5. conferir que `GET /saude` responde, para o deploy não terminar em silêncio
