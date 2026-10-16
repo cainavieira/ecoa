@@ -16,7 +16,8 @@ Só o modo escuro.
 | fundo | `#141210` | a página, quase preto quente |
 | superfície | `#1C1916` | cartão, planilha, painel |
 | superfície de campo | `#25211D` | fundo de campo, de aba e de item em foco |
-| borda | `#3A342E` | borda e divisória |
+| borda | `#3A342E` | divisória e borda de cartão |
+| borda de campo | `#78716C` | borda de campo e de caixa de seleção |
 | texto | `#F5F1EC` | texto, quase branco quente |
 | texto suave | `#A8A29E` | texto secundário, data e situação de espera |
 | laranja | `#E8742E` | ação: botão, link e foco |
@@ -24,6 +25,7 @@ Só o modo escuro.
 | verde | `#4ADE80` | situação que está valendo |
 | amarelo | `#FACC15` | situação que pede atenção |
 | vermelho | `#F87171` | situação que está fora, e ação que apaga ou bloqueia |
+| texto sobre o vermelho | `#141210` | o texto dentro do botão que apaga ou bloqueia |
 
 Fundo e texto não são preto e branco puros. O par puro dá contraste de 21 para
 1, cansa a vista e vibra na tela; o par escolhido dá 16,6 e continua muito
@@ -31,16 +33,16 @@ acima do mínimo.
 
 **Contraste.** Texto comum tem razão de contraste de no mínimo 4,5 contra o
 fundo; texto grande e borda de componente, 3 (WCAG 2, nível AA). Branco sobre
-o laranja dá 3,0 e não passa, por isso o texto em cima do laranja é escuro
-(6,2).
+o laranja dá 3,0 e não passa, por isso o texto em cima do laranja e do
+vermelho é escuro (6,2 e 6,8). A divisória é decorativa e não tem mínimo.
 
 **O laranja é ação:** botão, link e foco. Nunca indica situação nem destaca
 linha.
 
 ## Situação
 
-A cor segue o significado, e o selo sempre tem texto: a cor reforça, nunca diz
-sozinha.
+A cor segue o significado. O selo é texto colorido, com contorno da mesma cor,
+sobre o fundo; não é preenchido. A cor reforça o texto, nunca diz sozinha.
 
 | Cor | Significa | Conta | Vídeo | Campanha |
 |:--|:--|:--|:--|:--|

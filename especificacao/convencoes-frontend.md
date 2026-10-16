@@ -176,7 +176,8 @@ fica como isso vira código.
 | fundo | `--background` |
 | superfície | `--card`, `--popover` |
 | superfície de campo | `--muted`, `--secondary`, `--accent` |
-| borda | `--border`, `--input` |
+| borda | `--border` |
+| borda de campo | `--input` |
 | texto | `--foreground` e os pares `-foreground` que não aparecem abaixo |
 | texto suave | `--muted-foreground` |
 | laranja | `--primary`, `--ring` |
@@ -184,6 +185,7 @@ fica como isso vira código.
 | verde | `--success` |
 | amarelo | `--warning` |
 | vermelho | `--destructive` |
+| texto sobre o vermelho | `--destructive-foreground` |
 
 O canto arredondado é `--radius: 0.625rem`.
 
