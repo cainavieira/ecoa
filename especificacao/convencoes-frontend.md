@@ -158,6 +158,35 @@ Quatro itens verificáveis.
 - **O gráfico não é a única forma de ler o dado.** O ranking em tabela, os
   números e as leituras listadas existem também para quem não lê o gráfico.
 
+### Identidade visual
+
+Cada cor, fonte e tamanho, com o valor, está no `identidade-visual.md`. Aqui
+fica como isso vira código.
+
+- Cada cor é uma variável CSS no `:root` do estilo global, com o nome que o
+  shadcn/ui usa. Não existe bloco `.dark`: o sistema só tem o modo escuro.
+- Componente usa o token, nunca o valor. Trocar a marca é trocar a variável.
+- `--success` e `--warning` não vêm no shadcn/ui. Entram no `:root` e no bloco
+  `@theme inline` do Tailwind, para virar classe (`bg-success`,
+  `text-warning`).
+- Coluna de número usa a classe `tabular-nums`.
+
+| Cor | Token |
+|:--|:--|
+| fundo | `--background` |
+| superfície | `--card`, `--popover` |
+| superfície de campo | `--muted`, `--secondary`, `--accent` |
+| borda | `--border`, `--input` |
+| texto | `--foreground` e os pares `-foreground` que não aparecem abaixo |
+| texto suave | `--muted-foreground` |
+| laranja | `--primary`, `--ring` |
+| texto sobre o laranja | `--primary-foreground` |
+| verde | `--success` |
+| amarelo | `--warning` |
+| vermelho | `--destructive` |
+
+O canto arredondado é `--radius: 0.625rem`.
+
 ## 5. Nomes
 
 | O quê | Regra | Exemplo |
@@ -198,3 +227,5 @@ Seguem o ADR-0013 e a seção Testes do `fluxo-de-trabalho.md`.
 11. Diálogo feito à mão. Usa o do shadcn/ui, que trata foco preso, Escape e
     retorno de foco (ADR-0010).
 12. Segredo no build.
+13. Cor escrita direto no componente, fora dos tokens.
+14. Laranja em selo de situação ou em destaque de linha.

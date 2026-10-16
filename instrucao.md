@@ -26,11 +26,12 @@ Leia nesta ordem. É a ordem de dependência, não de importância.
 5. `especificacao/requisitos-nao-funcionais.md`. Repare na assimetria: não há
    meta de disponibilidade, e a leitura é o dado que não se recupera.
 6. `especificacao/arquitetura.md`.
-7. `especificacao/convencoes-backend.md` e `convencoes-frontend.md`, com a
+7. `especificacao/identidade-visual.md`, antes de qualquer tela.
+8. `especificacao/convencoes-backend.md` e `convencoes-frontend.md`, com a
    stack em versão fixa.
-8. `especificacao/endpoints.md`.
-9. `especificacao/fluxo-de-trabalho.md`.
-10. Os ADR, por assunto, quando a tarefa chegar nele.
+9. `especificacao/endpoints.md`.
+10. `especificacao/fluxo-de-trabalho.md`.
+11. Os ADR, por assunto, quando a tarefa chegar nele.
 
 A visão do produto (`visao/`) descreve a ideia inteira, e quase tudo nela é
 depois do MVP. Ela não decide comportamento: quem decide é a especificação.

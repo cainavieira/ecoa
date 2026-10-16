@@ -145,7 +145,7 @@ apaga tudo, e escrita antes ela nasce contra um esquema pela metade.
 
 | Tarefa | Entrega | Estado |
 |:--|:--|:--|
-| T-25 | design das telas com shadcn/ui, a partir dos casos de uso, no Claude Design; fluxo que faltar nos casos de uso volta para a especificação antes de virar tela | a fazer |
+| T-25 | design das telas com shadcn/ui, a partir dos casos de uso, no Claude Design, seguindo o `identidade-visual.md`; fluxo que faltar nos casos de uso volta para a especificação antes de virar tela | a fazer |
 
 ## Etapa 9: base do frontend
 
