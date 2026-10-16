@@ -204,7 +204,9 @@ motivo.
   CPF, chave Pix, endereço nem foto. Da conta apagada, guarda só o @ da que
   estava bloqueada (RN-65).
 - **RN-58** O criador pede a exclusão da conta ao operador, por fora do
-  sistema, e o operador a apaga.
+  sistema, e o operador a apaga. O operador também pode apagar, por iniciativa
+  própria, a conta aprovada ou bloqueada cujo @ outra conta provou ser dela,
+  com o próprio código na bio (UC-03 3a): sem isso, o @ ficaria preso.
 - **RN-59** Apagar a conta de criador remove nome, e-mail, @ e código. Nas
   campanhas não encerradas, remove também a participação, os vídeos, as
   leituras e os registros de ganhador dele. Nas encerradas, vídeos, leituras,
@@ -272,3 +274,4 @@ Registradas para que não voltem como novidade.
 | Guardar o @ de toda conta apagada, ou o motivo do bloqueio (RN-65) | Dado pessoal sem uso: só o @ da conta bloqueada serve para reconhecer quem volta. Custo aceito: o aviso não diz por que houve o bloqueio |
 | Guardar o link dos vídeos de quem apagou a conta, para a RN-35 continuar valendo | É dado pessoal, e a exclusão promete não deixá-lo (RN-59). Custo aceito: quem apaga a conta e volta com o mesmo @ pode reenviar um link que a RN-35 recusaria, inclusive o desqualificado |
 | Prazo para o registro da RN-65 | Ele guarda só o @, e quem voltasse depois do prazo passaria sem aviso |
+| Tirar o @ da conta errada e mantê-la | Conta aprovada ou bloqueada sempre tem @ (RN-13); sem ele, a bloqueada voltaria a pendente e sairia do bloqueio |

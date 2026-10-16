@@ -106,7 +106,8 @@ Atores em `atores.md`, requisitos em `requisitos-funcionais.md`, regras em
 - **2d** O operador tenta recusar sem motivo: o sistema não aceita. (RN-13)
 - **3a** O @ já pertence a outra conta aprovada ou bloqueada: o sistema recusa a
   aprovação. O operador confere qual das duas tem o código na bio e age sobre a
-  errada. (RN-11, RN-13)
+  errada: se é a pendente, recusa; se é a aprovada ou bloqueada, pede ao dono a
+  correção do @ (4a) ou, sem ela, apaga a conta (UC-19). (RN-11, RN-13, RN-58)
 - **3b** Duas contas pendentes têm o mesmo @: só o dono consegue pôr o código na
   bio. O operador aprova essa e recusa a outra. (RN-11, RN-12)
 - **4a** O criador aprovado trocou de @ no TikTok e pediu a correção por fora: o
@@ -541,7 +542,8 @@ fim. (RN-27)
 ## UC-19 Apagar conta de criador
 
 **Ator:** AT-02
-**Pré-condição:** o criador pediu a exclusão, por fora do sistema. (RN-58)
+**Pré-condição:** o criador pediu a exclusão, por fora do sistema, ou outra
+conta provou ser dona do @ dela (UC-03 3a). (RN-58)
 
 **Fluxo principal**
 
