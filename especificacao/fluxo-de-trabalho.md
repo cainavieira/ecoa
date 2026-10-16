@@ -46,6 +46,10 @@ codificação errada vira lixo.
 Commit por assunto: mudança com decisão própria (uma regra, um ADR, uma rota)
 vai sozinha; correções mecânicas vão juntas.
 
+**Tamanho:** até umas 400 a 500 linhas de lógica por commit. Documentação,
+formatação e configuração não entram na conta. Trabalho maior se divide em
+blocos que fazem sentido sozinhos, cada um com o seu porquê.
+
 ## Testes
 
 Todo teste passa por uma pergunta antes de ser proposto: **que defeito real ele
