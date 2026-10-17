@@ -63,7 +63,7 @@ justamente por não ter tela.
 
 | Tarefa | Entrega | Estado |
 |:--|:--|:--|
-| T-03 | as dez tabelas na primeira migração do Flyway, escrita em SQL, com as restrições e os índices únicos parciais do desenho; as entidades JPA, conferidas pelo `validate`; e o modo `migrar` do `.jar` (ADR-0004, ADR-0005, ADR-0006, RNF-11) | a fazer |
+| T-03 | as dez tabelas na primeira migração do Flyway, escrita em SQL, com as restrições e os índices únicos parciais do desenho; as entidades JPA, conferidas pelo `validate`; e o modo `migrar` do `.jar` (ADR-0004, ADR-0005, ADR-0006, RNF-11) | feito |
 
 ## Etapa 2: camada de regras
 
