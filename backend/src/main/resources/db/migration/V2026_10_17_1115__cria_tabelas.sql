@@ -4,7 +4,7 @@
 
 create table conta (
     id_conta int generated always as identity primary key,
-    email text not null unique,
+    email text not null unique check (email = lower(email)),
     nome text,
     funcao text not null
         check (funcao in ('criador', 'operador', 'gravadora')),
@@ -21,8 +21,11 @@ create table criador (
     motivo_bloqueio text,
     motivo_desbloqueio text,
     aceite_termos_em timestamptz not null,
-    constraint criador_usuario_tiktok_check
+    constraint criador_usuario_tiktok_exigido_check
         check (status = 'pendente' or usuario_tiktok is not null),
+    constraint criador_usuario_tiktok_normalizado_check
+        check (usuario_tiktok = lower(usuario_tiktok)
+            and usuario_tiktok !~ '^@|\s' and usuario_tiktok <> ''),
     constraint criador_motivo_recusa_check
         check (status <> 'recusada' or motivo_recusa is not null),
     constraint criador_motivo_bloqueio_check
@@ -119,6 +122,8 @@ create table ganhador (
 
 -- RN-65: sem chave estrangeira, porque a conta já não existe
 create table conta_bloqueada_apagada (
-    usuario_tiktok text primary key,
+    usuario_tiktok text primary key
+        check (usuario_tiktok = lower(usuario_tiktok)
+            and usuario_tiktok !~ '^@|\s' and usuario_tiktok <> ''),
     apagada_em timestamptz not null
 );

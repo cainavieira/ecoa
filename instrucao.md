@@ -231,10 +231,11 @@ Restrições que **vão** para o banco, junto com a verificação na aplicação
 
 | Restrição | Regra |
 |:--|:--|
-| `conta.email` único | RN-01 |
+| `conta.email` único e em minúsculas | RN-01 |
 | `conta.funcao` em criador, operador, gravadora | RN-02 |
 | `criador.status` nos quatro valores | RN-10 |
 | `criador.usuario_tiktok` único entre os status aprovada e bloqueada, por índice único parcial | RN-11 |
+| `usuario_tiktok`, no `criador` e na `conta_bloqueada_apagada`: em minúsculas, sem arroba no começo, sem espaço e não vazio | RN-11 |
 | `criador`: status diferente de pendente exige `usuario_tiktok` | RN-13 |
 | `criador`: recusada exige `motivo_recusa`; bloqueada exige `motivo_bloqueio` | RN-13, RN-17 |
 | `criador.codigo_verificacao` único | RN-12 |
