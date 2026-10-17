@@ -10,6 +10,8 @@ participa, o ranking (RN-47); a gravadora só lê (RN-08); o operador opera. O
 e-mail e o código de verificação do criador não saem para outro criador nem
 para a gravadora (RN-57). O operador vê o código na fila de verificação e na
 lista de contas, porque é com ele que confere a bio (RF-11, RF-15, RN-12).
+Na lista de contas, vê também o e-mail, que digita para confirmar a exclusão
+(UC-19).
 
 As tabelas guardam os dados de todos juntos, e uma consulta que esqueça o
 filtro alcança dado alheio.

@@ -198,6 +198,8 @@ devolve.
 O DTO servido a outro criador ou à gravadora não tem e-mail nem código de
 verificação (RN-57). O operador recebe o código na fila de verificação e na
 lista de contas, porque é com ele que confere a bio (RF-11, RF-15, RN-12).
+Na lista de contas, recebe também o e-mail, que digita para confirmar a
+exclusão (UC-19).
 
 **Restrição de integridade que o banco consegue impor** vai para o banco
 **também**, e não em vez de: a aplicação devolve mensagem que a pessoa entende,

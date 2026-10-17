@@ -55,7 +55,7 @@ este documento está datado.
 | `DELETE` | `/videos/{id}/leituras/{data}` | operador | apaga a leitura da data | RF-33 |
 | `PATCH` | `/ganhadores/{id}` | operador | informa a data de entrega | RF-36 |
 | `DELETE` | `/ganhadores/{id}` | operador | apaga o registro | RF-37 |
-| `GET` | `/criadores` | operador | lista as contas de criador, com o código e, quando o @ foi de conta bloqueada apagada, a data da exclusão; `?status=pendente` é a fila de verificação, só com quem já informou o @ | RF-11, RF-15 |
+| `GET` | `/criadores` | operador | lista as contas de criador, com o e-mail, o código e, quando o @ foi de conta bloqueada apagada, a data da exclusão; `?status=pendente` é a fila de verificação, só com quem já informou o @ | RF-11, RF-15 |
 | `POST` | `/criadores/{id}/aprovacao` | operador | aprova a conta pendente | RF-12 |
 | `POST` | `/criadores/{id}/recusa` | operador | recusa a conta pendente, com motivo | RF-12 |
 | `PUT` | `/criadores/{id}/usuario-tiktok` | operador | corrige o @ de conta aprovada ou bloqueada | RF-14 |
