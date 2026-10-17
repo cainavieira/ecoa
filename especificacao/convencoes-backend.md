@@ -90,7 +90,8 @@ está, porque é assim que se fala.
   de dois bilhões mais rápido do que parece.
 - Data de regra (início, fim, fechamento, publicação, leitura, entrega) é
   `LocalDate` (ADR-0014). Instante que não decide regra (aceite, criação) é
-  `OffsetDateTime`, em `timestamptz`.
+  `Instant`, em `timestamptz`: o banco guarda só o instante, e um
+  `OffsetDateTime` voltaria com outro fuso, que engana o `equals`.
 - O "hoje" vem de um bean só, o relógio do sistema, no horário de Brasília
   (ADR-0014). Nenhum `LocalDate.now()` solto: o teste fixa o relógio, e a
   virada do dia não vira acaso.
