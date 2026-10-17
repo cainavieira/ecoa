@@ -243,12 +243,16 @@ O mesmo `.jar` tem três modos:
 | O quê | Regra | Exemplo |
 |:--|:--|:--|
 | Tabela | singular, snake_case, nome da entidade | `participacao` |
-| Coluna | snake_case, sem repetir o nome da tabela | `video.link`, nunca `video.video_link` |
-| Chave estrangeira | `<entidade>_id` | `campanha_id` |
+| Coluna | snake_case, sem repetir o nome da tabela, fora a chave primária | `video.link`, nunca `video.video_link` |
+| Chave primária | `id_<tabela>` | `campanha.id_campanha` |
+| Chave estrangeira | `xid_<tabela apontada>` | `video.xid_participacao` |
 | Campo Java e coluna | camelCase no código, snake_case no banco | `dataFechamento` e `data_fechamento` |
 | Classe de regra | pelo assunto, em `regras/` | `regras/Ranking.java` |
 | Campo no JSON | camelCase, igual ao campo do DTO | `numeroAtual`, `dataPublicacao` |
 | Teste | classe testada + `Test` | `RankingTest` |
+
+Nas chaves, o prefixo diz se a coluna é a chave da própria tabela ou aponta
+para outra.
 
 ## 6. Testes
 

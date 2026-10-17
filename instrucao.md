@@ -185,40 +185,41 @@ proibido nas convenções.
 Dez tabelas, nomes no singular, colunas em português sem acento
 (`convencoes-backend.md`).
 
-**`conta`**: `id`, `email` único e em minúsculas, `nome` nulo até o primeiro
+**`conta`**: `id_conta`, `email` único e em minúsculas, `nome` nulo até o primeiro
 acesso de conta cadastrada pelo operador, `papel` (`criador`, `operador`,
 `gravadora`), `criado_em`.
 
-**`criador`**: `conta_id` como chave primária, apontando para `conta` com
+**`criador`**: `id_criador` como chave primária, apontando para `conta` com
 `ON DELETE CASCADE`; `usuario_tiktok` nulo até ser informado;
 `codigo_verificacao` único; `situacao` (`pendente`, `recusada`, `aprovada`,
 `bloqueada`); `motivo_recusa`, `motivo_bloqueio` e `motivo_desbloqueio`,
 nulos; `aceite_termos_em`.
 
-**`token_renovacao`**: `id`, `conta_id` com `ON DELETE CASCADE`, `hash` único (o
-token nunca é gravado, só o hash), `criado_em`, `expira_em`.
+**`token_renovacao`**: `id_token_renovacao`, `xid_conta` com `ON DELETE CASCADE`,
+`hash` único (o token nunca é gravado, só o hash), `criado_em`, `expira_em`.
 
-**`campanha`**: `id`, `musica`, `artista`, `regulamento`, `data_inicio`,
-`data_fim`, `data_fechamento`, `encerrada_em` nulo até o encerramento,
-`criado_em`.
+**`campanha`**: `id_campanha`, `musica`, `artista`, `regulamento`,
+`data_inicio`, `data_fim`, `data_fechamento`, `encerrada_em` nulo até o
+encerramento, `criado_em`.
 
-**`link_referencia`**: `id`, `campanha_id` com `ON DELETE CASCADE`, `url`,
-`descricao` nula.
+**`link_referencia`**: `id_link_referencia`, `xid_campanha` com
+`ON DELETE CASCADE`, `url`, `descricao` nula.
 
-**`participacao`**: `id`, `campanha_id`, `criador_id` apontando para
-`criador` com `ON DELETE SET NULL` (é a anonimização da RN-59), `aceite_em`,
-`posicao_final` e `total_final`, nulos até o encerramento e nulos para quem
-ficou fora do ranking final.
+**`participacao`**: `id_participacao`, `xid_campanha`, `xid_criador` apontando
+para `criador` com `ON DELETE SET NULL` (é a anonimização da RN-59),
+`aceite_em`, `posicao_final` e `total_final`, nulos até o encerramento e nulos
+para quem ficou fora do ranking final.
 
-**`video`**: `id`, `participacao_id` com `ON DELETE CASCADE`, `link`, nulo só
-no vídeo de participante removido (RN-59), `situacao` (`em_analise`, `aprovado`, `recusado`, `desqualificado`),
-`data_publicacao` nula até a aprovação, `motivo` nulo, `enviado_em`.
+**`video`**: `id_video`, `xid_participacao` com `ON DELETE CASCADE`, `link`,
+nulo só no vídeo de participante removido (RN-59), `situacao` (`em_analise`,
+`aprovado`, `recusado`, `desqualificado`), `data_publicacao` nula até a
+aprovação, `motivo` nulo, `enviado_em`.
 
-**`leitura`**: `video_id` com `ON DELETE CASCADE`, `data`, `views`, com chave
-primária (`video_id`, `data`), `registrada_em`.
+**`leitura`**: `xid_video` com `ON DELETE CASCADE`, `data`, `views`, com chave
+primária (`xid_video`, `data`), `registrada_em`.
 
-**`ganhador`**: `id`, `participacao_id` com `ON DELETE CASCADE`, `premio`,
-`entregue_em` nula, `registrado_em`.
+**`ganhador`**: `id_ganhador`, `xid_participacao` com `ON DELETE CASCADE`,
+`premio`, `entregue_em` nula, `registrado_em`.
 
 **`conta_bloqueada_apagada`**: `usuario_tiktok` como chave primária,
 `apagada_em`. Sem chave estrangeira, porque a conta já não existe. Apagar de
@@ -238,16 +239,16 @@ Restrições que **vão** para o banco, junto com a verificação na aplicação
 | `criador`: recusada exige `motivo_recusa`; bloqueada exige `motivo_bloqueio` | RN-13, RN-17 |
 | `criador.codigo_verificacao` único | RN-12 |
 | `campanha`: `data_inicio` ≤ `data_fim` ≤ `data_fechamento` | RN-24 |
-| `participacao.campanha_id` sem cascata: campanha com participante não se apaga | RN-30 |
-| `participacao` única por (`campanha_id`, `criador_id`) | RN-31 |
+| `participacao.xid_campanha` sem cascata: campanha com participante não se apaga | RN-30 |
+| `participacao` única por (`xid_campanha`, `xid_criador`) | RN-31 |
 | `video.situacao` nos quatro valores | RN-33 |
 | `video.link` único entre as situações diferentes de recusado, por índice único parcial | RN-35 |
 | `video`: aprovado ou desqualificado exige `data_publicacao`; recusado ou desqualificado exige `motivo` | RN-36, RN-37, RN-38 |
-| `leitura` única por (`video_id`, `data`) | RN-40 |
+| `leitura` única por (`xid_video`, `data`) | RN-40 |
 | `leitura.views` zero ou maior | RN-39 |
 
-A unicidade da participação deixa várias linhas com `criador_id` nulo, que é o
-que acontece com vários participantes removidos na mesma campanha: o Postgres
+A unicidade da participação deixa várias linhas com `xid_criador` nulo, que é
+o que acontece com vários participantes removidos na mesma campanha: o Postgres
 não considera dois nulos iguais.
 
 Restrições que **não** vão para o banco, e por quê:
