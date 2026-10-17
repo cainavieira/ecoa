@@ -238,6 +238,7 @@ Restrições que **vão** para o banco, junto com a verificação na aplicação
 | `criador`: recusada exige `motivo_recusa`; bloqueada exige `motivo_bloqueio` | RN-13, RN-17 |
 | `criador.codigo_verificacao` único | RN-12 |
 | `campanha`: `data_inicio` ≤ `data_fim` ≤ `data_fechamento` | RN-24 |
+| `participacao.campanha_id` sem cascata: campanha com participante não se apaga | RN-30 |
 | `participacao` única por (`campanha_id`, `criador_id`) | RN-31 |
 | `video.situacao` nos quatro valores | RN-33 |
 | `video.link` único entre as situações diferentes de recusado, por índice único parcial | RN-35 |
