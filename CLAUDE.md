@@ -44,6 +44,8 @@ Ao mexer numa regra, leia todos os documentos que a citam, contra ela
 - Mostre o texto antes de gravar. Commit depois da mensagem aprovada. **Push é
   sempre dele.**
 - Não busque na web sem ele pedir.
+- Teste só entra se pega defeito real, e quem o propõe diz qual em uma
+  linha. O critério inteiro está na seção Testes do `fluxo-de-trabalho.md`.
 - Sem travessão, em documento, commit ou conversa.
 - Mensagem de commit sem acento; documento com acento.
 - `especificacao/` é versionada de propósito. `.env`, `target/`,
