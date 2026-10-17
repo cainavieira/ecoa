@@ -19,6 +19,11 @@ existe uma versão: a que está no ar.
 Ramo curto significa dias, não semanas. Ramo que vive um mês acumula conflito
 com `main` e vira um segundo projeto.
 
+Cada ramo vira um pull request, só como registro; a descrição sai da skill
+`pr-description`. O merge não usa o botão do GitHub, que cria commits novos:
+com a integração contínua verde, `git merge --ff-only` local e push da `main`,
+que fecha o pull request.
+
 ## Commit
 
 Formato:
