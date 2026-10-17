@@ -217,8 +217,8 @@ no vídeo de participante removido (RN-59), `situacao` (`em_analise`, `aprovado`
 **`leitura`**: `video_id` com `ON DELETE CASCADE`, `data`, `views`, com chave
 primária (`video_id`, `data`), `registrada_em`.
 
-**`ganhador`**: `id`, `campanha_id`, `participacao_id` com `ON DELETE CASCADE`,
-`premio`, `entregue_em` nula, `registrado_em`.
+**`ganhador`**: `id`, `participacao_id` com `ON DELETE CASCADE`, `premio`,
+`entregue_em` nula, `registrado_em`.
 
 **`conta_bloqueada_apagada`**: `usuario_tiktok` como chave primária,
 `apagada_em`. Sem chave estrangeira, porque a conta já não existe. Apagar de
@@ -253,9 +253,8 @@ Restrições que **não** vão para o banco, e por quê:
 
 - Fechamento futuro (RN-26), leitura e entrega não futuras (RN-40, RN-52):
   `CHECK` precisa ser imutável, e `current_date` não é.
-- Publicação entre início e fim (RN-27, RN-36), ganhador da mesma campanha
-  (RN-52), link nulo só no vídeo de participante removido (RN-59): atravessam
-  tabelas.
+- Publicação entre início e fim (RN-27, RN-36) e link nulo só no vídeo de
+  participante removido (RN-59): atravessam tabelas.
 - Leitura de fechamento (RN-41) e pendências do encerramento (RN-50):
   atravessam linhas.
 - Ao menos um link de referência (RN-22): o banco não exige "ao menos um" sem
