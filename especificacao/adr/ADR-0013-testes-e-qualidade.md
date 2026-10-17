@@ -5,9 +5,9 @@
 
 ## Contexto
 
-A RNF-28 exige cobertura das regras de situação, leitura de fechamento,
+A RNF-28 exige cobertura das regras de status, leitura de fechamento,
 ranking e encerramento. As regras não importam framework (ADR-0012), o que
-permite testá-las sem banco. O isolamento entre papéis e entre criadores
+permite testá-las sem banco. O isolamento entre funções e entre criadores
 (ADR-0009) só se prova contra o banco de verdade.
 
 Qualidade de código são três trabalhos diferentes: formatação, defeito que

@@ -71,7 +71,7 @@ A camada de cada teste está no ADR-0013.
 ### TDD
 
 Nas partes críticas, o teste vem antes do código: o pacote de regras (RNF-28),
-e as recusas, o papel e o isolamento das rotas (ADR-0009). Nas outras partes, o
+e as recusas, a função e o isolamento das rotas (ADR-0009). Nas outras partes, o
 TDD pode ficar de lado por ponderação de quem escreve.
 
 1. **Vermelho:** escrever o teste do comportamento novo e ver ele falhar. Se

@@ -24,16 +24,16 @@ este documento está datado.
 
 ## Lista
 
-| Método | Caminho | Papel | Faz | Requisito |
+| Método | Caminho | Função | Faz | Requisito |
 |:--|:--|:--|:--|:--|
 | `GET` | `/auth/login` | qualquer | redireciona para o Google | RF-01 |
 | `GET` | `/auth/callback` | qualquer | recebe o código, acha ou cria a conta, emite os tokens e redireciona para a aplicação; em qualquer falha, redireciona para a tela de entrada com o motivo | RF-01, RF-02, RF-03 |
 | `POST` | `/auth/renovacao` | qualquer | troca o token de renovação por um token de acesso novo e empurra a validade da renovação | RNF-23 |
 | `POST` | `/auth/logout` | qualquer | apaga o token de renovação e expira os dois cookies | RF-04 |
-| `GET` | `/eu` | qualquer | nome, e-mail e papel; do criador, também situação, @, código e motivo da recusa ou do bloqueio | RF-05, RF-10, RF-13, RF-17 |
+| `GET` | `/eu` | qualquer | nome, e-mail e função; do criador, também status, @, código e motivo da recusa ou do bloqueio | RF-05, RF-10, RF-13, RF-17 |
 | `PUT` | `/eu/usuario-tiktok` | criador | informa ou corrige o @ da própria conta | RF-09 |
-| `GET` | `/campanhas` | criador, operador, gravadora | lista as campanhas com a situação; para o criador, marca as que ele participa | RF-22 |
-| `GET` | `/campanhas/{id}` | criador, operador, gravadora | dados, regulamento, links, datas e situação | RF-23 |
+| `GET` | `/campanhas` | criador, operador, gravadora | lista as campanhas com o status; para o criador, marca as que ele participa | RF-22 |
+| `GET` | `/campanhas/{id}` | criador, operador, gravadora | dados, regulamento, links, datas e status | RF-23 |
 | `POST` | `/campanhas` | operador | cria a campanha | RF-19 |
 | `PATCH` | `/campanhas/{id}` | operador | edita textos, links e datas | RF-20 |
 | `DELETE` | `/campanhas/{id}` | operador | apaga a campanha sem participante | RF-21 |
@@ -41,12 +41,12 @@ este documento está datado.
 | `POST` | `/campanhas/{id}/participacao` | criador | entra na campanha, com o aceite no corpo | RF-25 |
 | `GET` | `/campanhas/{id}/resultado` | criador participante, operador, gravadora | ranking, total, contagens, série do gráfico e ganhadores, numa resposta | RF-34, RF-38, RF-39 |
 | `GET` | `/campanhas/{id}/exportacao` | operador, gravadora | o resultado em CSV | RF-40 |
-| `GET` | `/campanhas/{id}/meus-videos` | criador participante | os vídeos dele na campanha, em todas as situações, com as leituras | RF-31 |
+| `GET` | `/campanhas/{id}/meus-videos` | criador participante | os vídeos dele na campanha, em todos os status, com as leituras | RF-31 |
 | `POST` | `/campanhas/{id}/videos` | criador participante | envia o link de um vídeo | RF-26 |
 | `GET` | `/campanhas/{id}/leituras` | operador | a planilha de leituras: os vídeos que contam, com o número atual e se já têm leitura de fechamento | RF-32 |
-| `GET` | `/campanhas/{id}/participantes` | operador | lista os participantes da campanha, com @ e situação da conta, inclusive quem não tem vídeo que conta; é de onde sai a escolha do ganhador | RF-35 |
+| `GET` | `/campanhas/{id}/participantes` | operador | lista os participantes da campanha, com @ e status da conta, inclusive quem não tem vídeo que conta; é de onde sai a escolha do ganhador | RF-35 |
 | `POST` | `/campanhas/{id}/ganhadores` | operador | registra um ganhador, com o prêmio em texto | RF-35 |
-| `GET` | `/videos` | operador | lista vídeos por situação; `?situacao=em_analise` é a fila de conferência | RF-27 |
+| `GET` | `/videos` | operador | lista vídeos por status; `?status=em_analise` é a fila de conferência | RF-27 |
 | `POST` | `/videos/{id}/aprovacao` | operador | aprova, com a data de publicação e as views da primeira leitura | RF-28 |
 | `POST` | `/videos/{id}/recusa` | operador | recusa, com motivo | RF-29 |
 | `POST` | `/videos/{id}/desqualificacao` | operador | desqualifica, com motivo | RF-30 |
@@ -55,7 +55,7 @@ este documento está datado.
 | `DELETE` | `/videos/{id}/leituras/{data}` | operador | apaga a leitura da data | RF-33 |
 | `PATCH` | `/ganhadores/{id}` | operador | informa a data de entrega | RF-36 |
 | `DELETE` | `/ganhadores/{id}` | operador | apaga o registro | RF-37 |
-| `GET` | `/criadores` | operador | lista as contas de criador, com o código e, quando o @ foi de conta bloqueada apagada, a data da exclusão; `?situacao=pendente` é a fila de verificação, só com quem já informou o @ | RF-11, RF-15 |
+| `GET` | `/criadores` | operador | lista as contas de criador, com o código e, quando o @ foi de conta bloqueada apagada, a data da exclusão; `?status=pendente` é a fila de verificação, só com quem já informou o @ | RF-11, RF-15 |
 | `POST` | `/criadores/{id}/aprovacao` | operador | aprova a conta pendente | RF-12 |
 | `POST` | `/criadores/{id}/recusa` | operador | recusa a conta pendente, com motivo | RF-12 |
 | `PUT` | `/criadores/{id}/usuario-tiktok` | operador | corrige o @ de conta aprovada ou bloqueada | RF-14 |
@@ -63,16 +63,16 @@ este documento está datado.
 | `POST` | `/criadores/{id}/desbloqueio` | operador | desbloqueia, com motivo | RF-18 |
 | `POST` | `/criadores/{id}/exclusao` | operador | apaga a conta, com o e-mail digitado no corpo; se ela estava bloqueada, guarda o @ | RF-41 |
 | `GET` | `/acessos` | operador | lista as contas de operador e de gravadora | RF-06, RF-07 |
-| `POST` | `/acessos` | operador | cadastra e-mail e papel | RF-06 |
+| `POST` | `/acessos` | operador | cadastra e-mail e função | RF-06 |
 | `DELETE` | `/acessos/{id}` | operador | remove o acesso e apaga a conta | RF-07 |
 | `GET` | `/saude` | sem login | responde se a api está no ar; o monitor externo e o deploy conferem por ela | RNF-04, ADR-0017 |
 
 ## As decisões que não se leem na lista
 
-### Papel errado responde 403; dado de outro criador, 404
+### Função errada responde 403; dado de outro criador, 404
 
-Cada rota declara o papel que a aceita (ADR-0009). Papel errado responde 403,
-com `SEM_PERMISSAO`: a rota existe, e o papel não a alcança, sem dado nenhum em
+Cada rota declara a função que a aceita (ADR-0009). Função errada responde
+403, com `SEM_PERMISSAO`: a rota existe, e a função não a alcança, sem dado nenhum em
 jogo.
 
 Recurso de outro criador e recurso inexistente dão o mesmo resultado, 404, com
@@ -90,7 +90,7 @@ Bloqueado, o criador continua entrando (RN-18). As rotas de `auth/` e o
 deve abrir a tela de bloqueio. Toda outra rota responde 403 com
 `CONTA_BLOQUEADA`, para a regra não depender de a tela estar certa.
 
-A situação da conta não vai no token (ADR-0008), então o bloqueio vale na
+O status da conta não vai no token (ADR-0008), então o bloqueio vale na
 requisição seguinte, e não em até 15 minutos.
 
 ### O resultado é uma resposta só
@@ -134,10 +134,10 @@ abas: as duas requisições passam pela conferência antes de qualquer gravaçã
 a segunda esbarra na chave única do banco. O tratador traduz essa violação na
 mesma resposta, e nenhum código de erro novo é preciso.
 
-### A situação da campanha é calculada, não gravada
+### O status da campanha é calculado, não gravado
 
-A resposta traz a situação (RN-25), calculada a cada leitura a partir das datas
-e do encerramento. Gravar a situação faria a campanha precisar de alguém que a
+A resposta traz o status (RN-25), calculado a cada leitura a partir das datas
+e do encerramento. Gravar o status faria a campanha precisar de alguém que o
 mudasse à meia-noite.
 
 ### A exclusão de conta é um POST, não um DELETE
@@ -193,7 +193,7 @@ renovação uma vez e repete a chamada.
 | 204 | exclusão bem-sucedida |
 | 400 | valor recusado por regra (link, datas, views, motivo ausente, aceite ausente, data futura) |
 | 401 | sem token de acesso válido; na renovação, sem token de renovação válido |
-| 403 | papel sem permissão, criador bloqueado, ou criador fora da campanha |
+| 403 | função sem permissão, criador bloqueado, ou criador fora da campanha |
 | 404 | recurso que não existe, ou de outro criador, sem distinguir os dois |
-| 409 | a situação atual não permite a ação (conta, vídeo, campanha encerrada, prazo, leitura de fechamento, pendência de encerramento, @ ou link em uso) |
+| 409 | o status atual não permite a ação (conta, vídeo, campanha encerrada, prazo, leitura de fechamento, pendência de encerramento, @ ou link em uso) |
 | 422 | corpo malformado, antes de chegar à regra de negócio |

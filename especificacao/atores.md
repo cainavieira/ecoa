@@ -11,7 +11,7 @@ quer ser premiado por isso.
 - Entra sozinho, pela conta Google (AT-04). Não precisa de convite (RN-03).
 - Informa o @ do TikTok e prova que é dele pondo um código na bio (RN-11,
   RN-12). Até o operador aprovar, não entra em campanha (RN-16).
-- Participa de campanhas, envia vídeos por link e acompanha a situação de cada
+- Participa de campanhas, envia vídeos por link e acompanha o status de cada
   um, o ranking e os ganhadores das campanhas em que participa (RN-31, RN-47).
 - Vê os próprios dados e, das campanhas em que participa, o @ e as views dos
   outros participantes. Nada além disso (RN-47).
@@ -64,8 +64,8 @@ Sistema externo. Autentica todos os atores e devolve nome e e-mail.
   sistema externo.
 - **Visitante sem conta**: não existe página pública. Quem não entrou vê só a
   tela de entrada (RNF-12).
-- **Criador pendente, recusado ou bloqueado**: são situações do AT-01 (RN-10),
-  não atores. Eles executam os mesmos casos de uso, com o que a situação
+- **Criador pendente, recusado ou bloqueado**: são status do AT-01 (RN-10),
+  não atores. Eles executam os mesmos casos de uso, com o que o status
   permite.
 
 ## Atores aposentados

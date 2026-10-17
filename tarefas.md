@@ -27,7 +27,7 @@ Identificador de tarefa é estável, e número aposentado não volta.
 
 - **Testes** seguem a seção Testes do `fluxo-de-trabalho.md`: só entra teste
   que pega defeito real, e nas partes críticas ele vem antes do código.
-- **Toda rota** tem teste de papel errado e, quando lida com dado de criador,
+- **Toda rota** tem teste de função errada e, quando lida com dado de criador,
   teste de que um criador não alcança o dado de outro (ADR-0009). Recusa sai no
   formato único, com o código do catálogo.
 - **Todo "hoje"** vem do relógio do sistema, no horário de Brasília (ADR-0014).
@@ -73,7 +73,7 @@ ADR-0013, RNF-28).
 
 | Tarefa | Entrega | Estado |
 |:--|:--|:--|
-| T-04 | `situacaoDaCampanha`, `validarDatasDaCampanha`, `podeEntrar`, `validarEnvioDeVideo`, `validarAprovacaoDeVideo`, e o teste de arquitetura com o ArchUnit | a fazer |
+| T-04 | `statusDaCampanha`, `validarDatasDaCampanha`, `podeEntrar`, `validarEnvioDeVideo`, `validarAprovacaoDeVideo`, e o teste de arquitetura com o ArchUnit | a fazer |
 | T-05 | `validarLeitura`, `leituraDeFechamento`, `numeroAtual` | a fazer |
 | T-06 | `calcularRanking`, `totalPorData`, `pendenciasDoEncerramento` | a fazer |
 | T-07 | `normalizarEmail`, `normalizarUsuarioTiktok`, `transicaoDaConta`, `validarGanhador`, `validarRemocaoDeAcesso` | a fazer |
@@ -82,7 +82,7 @@ ADR-0013, RNF-28).
 
 | Tarefa | Entrega | Estado |
 |:--|:--|:--|
-| T-08 | o que toda rota usa: o formato único de erro num tratador global, o relógio do sistema no horário de Brasília, a guarda de papel e a recusa do criador bloqueado (ADR-0009, ADR-0014) | a fazer |
+| T-08 | o que toda rota usa: o formato único de erro num tratador global, o relógio do sistema no horário de Brasília, a guarda de função e a recusa do criador bloqueado (ADR-0009, ADR-0014) | a fazer |
 | T-09 | modo `cadastrar-operador <e-mail>` do `.jar` (UC-20) | a fazer |
 | T-10 | `GET /auth/login`, `GET /auth/callback`, `POST /auth/renovacao` e `POST /auth/logout`, pelo Spring Security: só e-mail verificado, conta de criador criada no primeiro acesso, os dois tokens em cookie, a renovação, e a falha redirecionando com o motivo (UC-01, ADR-0007, ADR-0008, RNF-22, RNF-23) | a fazer |
 | T-11 | `GET /eu` e `PUT /eu/usuario-tiktok` (UC-02) | a fazer |
@@ -161,7 +161,7 @@ para todas, e o gráfico nunca é a única forma de ler o dado.
 
 | Tarefa | Entrega | Estado |
 |:--|:--|:--|
-| T-28 | criador: @ e verificação, situação da conta e tela de bloqueio (UC-02, UC-04, ADR-0011) | a fazer |
+| T-28 | criador: @ e verificação, status da conta e tela de bloqueio (UC-02, UC-04, ADR-0011) | a fazer |
 | T-29 | criador: campanhas, participar, enviar vídeo, meus vídeos com gráfico, ranking e ganhadores (UC-08, UC-09, UC-13) | a fazer |
 | T-30 | operador: contas, verificação, bloqueio, exclusão e acessos (UC-03, UC-04, UC-18, UC-19) | a fazer |
 | T-31 | operador: criar, editar, apagar e encerrar campanha (UC-05, UC-06, UC-07, UC-14) | a fazer |

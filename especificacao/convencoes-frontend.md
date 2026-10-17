@@ -49,7 +49,7 @@ Atualizar uma versão é mudança desta tabela, no mesmo commit que a muda no
         │       ├── TabelaRanking.tsx       componente de tela
         │       └── TabelaRanking.test.tsx  teste, ao lado do arquivo
         └── shared/         o que mais de uma feature usa: formatação de data
-                            e de views, estados de tela, guarda de papel
+                            e de views, estados de tela, guarda de função
 
 Sem subpastas dentro da feature: cresce primeiro numa pasta só, e separa quando
 pesar.
@@ -101,11 +101,11 @@ Mesma regra do backend: domínio em português, vocabulário técnico em inglês
   (`fluxo-de-trabalho.md`). Sem isso, um campo renomeado na api passa em todos
   os testes e quebra só em produção.
 
-### Papel e tela
+### Função e tela
 
-- A tela que a pessoa vê depende do papel e, no criador, da situação da conta,
+- A tela que a pessoa vê depende da função e, no criador, do status da conta,
   lidos de `GET /eu`. O criador bloqueado vê só a tela de bloqueio (RN-18).
-- A guarda de papel no frontend é conveniência de navegação. Quem decide é a
+- A guarda de função no frontend é conveniência de navegação. Quem decide é a
   api (ADR-0009): tela escondida não é permissão.
 
 ### Formatação de número e data
@@ -205,7 +205,7 @@ Seguem o ADR-0013 e a seção Testes do `fluxo-de-trabalho.md`.
 - **Vitest com Testing Library**, testando o que a pessoa vê, não detalhe
   interno do componente.
 - Testa-se o componente que **decide**: a tela que escolhe entre bloqueio,
-  pendência e campanhas; a mensagem de cada situação de vídeo; a linha de
+  pendência e campanhas; a mensagem de cada status de vídeo; a linha de
   leitura que marca a leitura de fechamento; o ranking com empate; a formatação
   de views e de data.
 - A API é simulada trocando o `fetch` por uma API falsa, com dado inventado no
@@ -230,4 +230,4 @@ Seguem o ADR-0013 e a seção Testes do `fluxo-de-trabalho.md`.
     retorno de foco (ADR-0010).
 12. Segredo no build.
 13. Cor escrita direto no componente, fora dos tokens.
-14. Laranja em selo de situação ou em destaque de linha.
+14. Laranja em selo de status ou em destaque de linha.

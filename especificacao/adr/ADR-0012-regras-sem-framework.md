@@ -1,4 +1,4 @@
-# ADR-0012 Regras de situação e de ranking sem framework
+# ADR-0012 Regras de status e de ranking sem framework
 
 - **Data:** 10-10-2026
 - **Situação:** aceito
@@ -6,7 +6,7 @@
 ## Contexto
 
 O Ecoa não tem fórmula de prêmio (RN-51). O que ele tem de regra está em
-situação e em data: a situação da campanha derivada das datas (RN-25), as
+status e em data: o status da campanha derivado das datas (RN-25), as
 transições da conta e do vídeo (RN-10, RN-33), a leitura de fechamento
 (RN-41), o ranking com empate (RN-45, RN-46), o total por data (RN-49) e as
 pendências do encerramento (RN-50).

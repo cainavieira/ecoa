@@ -10,7 +10,7 @@ pontos que erram em silêncio: o `state`, o `nonce`, a troca do código pelo
 token e a verificação da assinatura do `id_token`. Errar qualquer um ainda
 produz um login bem-sucedido.
 
-Depois do login, o sistema reconhece a pessoa e o papel a cada requisição. A
+Depois do login, o sistema reconhece a pessoa e a função a cada requisição. A
 RNF-23 pede sessão de 30 dias renovada a cada uso, e a RF-04, encerramento
 explícito. Frontend e api ficam na mesma origem (ADR-0015).
 
@@ -24,7 +24,7 @@ O sistema emite dois tokens, cada um num cookie `httpOnly`, `Secure` e
 `SameSite=Lax`:
 
 - um **token de acesso**, JWT assinado com RS256, válido por 15 minutos, com o
-  identificador da conta e o papel, conferido só pela assinatura;
+  identificador da conta e a função, conferido só pela assinatura;
 - um **token de renovação**, aleatório, válido por 30 dias, guardado no banco
   como hash e enviado só para as rotas de autenticação. Cada uso empurra a
   validade para mais 30 dias, e ele não é trocado a cada uso.
@@ -36,9 +36,9 @@ token de proteção contra CSRF.
 
 ## Consequências
 
-O papel vai no token porque não muda (RN-02). A situação da conta de criador
-não vai: ela muda a qualquer momento (bloqueio, aprovação) e é lida do banco
-nas rotas que dependem dela.
+A função vai no token porque não muda (RN-02). O status da conta de criador
+não vai: ele muda a qualquer momento (bloqueio, aprovação) e é lido do banco
+nas rotas que dependem dele.
 
 Conta removida (RN-05) perde a renovação na hora, e o token de acesso que já
 existia vale no máximo mais 15 minutos. Aceito (UC-18 4a).

@@ -20,8 +20,8 @@ Atores em `atores.md`, requisitos em `requisitos-funcionais.md`, regras em
    Google. (RN-09)
 2. O AT-04 autentica e devolve nome e e-mail. (RF-01)
 3. O sistema procura a conta daquele e-mail. (RN-01)
-4. Existindo conta, o sistema abre a sessão e apresenta a tela do papel: o
-   criador vê as campanhas e a situação da conta; o operador, a operação; a
+4. Existindo conta, o sistema abre a sessão e apresenta a tela da função: o
+   criador vê as campanhas e o status da conta; o operador, a operação; a
    gravadora, o painel. (RF-05)
 5. Não existindo, o sistema cria conta de criador pendente, com a data do
    aceite, e pede o @ (UC-02). (RF-02, RN-03, RN-10)
@@ -37,7 +37,7 @@ Atores em `atores.md`, requisitos em `requisitos-funcionais.md`, regras em
 - **2c** O AT-04 está indisponível: nenhum login novo acontece. Sessão já
   aberta continua válida.
 - **4a** A conta foi cadastrada por um operador e este é o primeiro acesso: o
-  sistema completa o nome vindo do AT-04 e abre a tela do papel cadastrado.
+  sistema completa o nome vindo do AT-04 e abre a tela da função cadastrada.
   (RF-03, RN-03)
 - **4b** A conta de criador está bloqueada: o sistema abre a tela de bloqueio, e
   só ela. (RF-17, RN-18)
@@ -167,7 +167,7 @@ Atores em `atores.md`, requisitos em `requisitos-funcionais.md`, regras em
 1. O operador informa o nome da música, o artista, o regulamento escrito pela
    gravadora e ao menos um link de referência. (RF-19, RN-22, RN-23)
 2. Informa o início, o fim e o fechamento. (RN-24)
-3. Confirma. A campanha aparece na lista, com a situação derivada das datas.
+3. Confirma. A campanha aparece na lista, com o status derivado das datas.
    (RF-22, RN-25)
 
 **Fluxos alternativos**
@@ -267,7 +267,7 @@ fim. (RN-27)
 1. O criador posta o vídeo no TikTok, por fora do sistema, com o som da
    campanha.
 2. Cola o link no sistema e envia. (RF-26)
-3. O vídeo fica em análise e aparece na lista dele com essa situação. (RN-33,
+3. O vídeo fica em análise e aparece na lista dele com esse status. (RN-33,
    RF-31)
 
 **Fluxos alternativos**
@@ -386,7 +386,7 @@ fim. (RN-27)
 **Fluxo principal**
 
 1. O criador abre a campanha.
-2. Vê os próprios vídeos, com a situação, o motivo de recusa ou
+2. Vê os próprios vídeos, com o status, o motivo de recusa ou
    desqualificação, o número atual e o gráfico das leituras. (RF-31)
 3. Vê o ranking: posição, @ e soma de cada participante, com os vídeos de cada
    um embaixo. (RF-34, RN-45, RN-46)
@@ -472,7 +472,7 @@ fim. (RN-27)
 
 **Fluxo principal**
 
-1. A pessoa abre o painel e vê a lista de campanhas, com a situação de cada
+1. A pessoa abre o painel e vê a lista de campanhas, com o status de cada
    uma. (RF-22)
 2. Escolhe uma, e vê o total de views na data de hoje, o número de criadores no
    ranking, o número de vídeos que contam, o ranking, o gráfico do total e os
@@ -515,7 +515,7 @@ fim. (RN-27)
 
 **Fluxo principal**
 
-1. O operador informa um e-mail e o papel: operador ou gravadora. (RF-06,
+1. O operador informa um e-mail e a função: operador ou gravadora. (RF-06,
    RN-03)
 2. A conta fica cadastrada, à espera do primeiro acesso da pessoa (UC-01 4a).
    (RF-03)
@@ -523,10 +523,10 @@ fim. (RN-27)
 
 **Fluxos alternativos**
 
-- **1a** O e-mail já tem conta de criador: recusado. Para mudar o papel, a conta
+- **1a** O e-mail já tem conta de criador: recusado. Para mudar a função, a conta
   de criador é apagada antes (UC-19). (RN-04)
 - **1b** O e-mail já tem conta de operador ou de gravadora: recusado, dizendo
-  que já está cadastrado. Para trocar o papel, o acesso é removido antes (4a).
+  que já está cadastrado. Para trocar a função, o acesso é removido antes (4a).
   (RN-04)
 - **1c** O e-mail vem com maiúsculas: guardado em minúsculas. (RN-01)
 - **4a** Remover: o operador remove o acesso, e a conta é apagada. A sessão

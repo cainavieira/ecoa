@@ -8,18 +8,18 @@ O identificador é estável: regra removida tem o número aposentado, nunca
 reaproveitado por outra regra. As aposentadas ficam listadas no fim, com o
 motivo.
 
-## Conta e papel
+## Conta e função
 
 - **RN-01** Toda pessoa entra pela conta Google (AT-04), identificada pelo
   e-mail que o Google devolve como verificado, guardado em minúsculas. O
   sistema não guarda senha.
-- **RN-02** Cada conta tem um papel só: criador, operador ou gravadora. O papel
-  decide o que a pessoa vê e faz, e não muda.
+- **RN-02** Cada conta tem uma função só: criador, operador ou gravadora. A
+  função decide o que a pessoa vê e faz, e não muda.
 - **RN-03** Conta de operador ou de gravadora nasce de cadastro feito por um
   operador, pelo e-mail, antes do primeiro acesso da pessoa. Quem entra com um
   e-mail sem conta recebe conta de criador.
 - **RN-04** Cadastrar como operador ou gravadora um e-mail que já tem conta é
-  recusado. Para mudar o papel de alguém, a conta antiga é apagada antes: a de
+  recusado. Para mudar a função de alguém, a conta antiga é apagada antes: a de
   criador pela RN-59, a de operador ou gravadora pela RN-05.
 - **RN-05** Remover o acesso de um operador ou de alguém da gravadora apaga a
   conta. Se a pessoa entrar de novo com o mesmo e-mail, recebe conta de
@@ -38,7 +38,7 @@ motivo.
 
 ## Conta de criador
 
-- **RN-10** A conta de criador tem quatro situações: pendente, recusada,
+- **RN-10** A conta de criador tem quatro status: pendente, recusada,
   aprovada e bloqueada. Nasce pendente.
 - **RN-11** O criador informa o @ do TikTok. O @ é guardado sem o arroba, em
   minúsculas e sem espaços. Duas contas aprovadas ou bloqueadas não têm o mesmo
@@ -86,7 +86,7 @@ motivo.
   dia em que vale publicar; fim, o último; fechamento, o dia a partir do qual a
   leitura vale para o resultado (RN-41). A distância entre fim e fechamento é a
   estabilização, e pode ser zero.
-- **RN-25** A situação da campanha é derivada: agendada antes do início; aberta
+- **RN-25** O status da campanha é derivado: agendada antes do início; aberta
   do início ao fim; em apuração depois do fim, até ser encerrada; encerrada
   depois do encerramento (RN-50).
 - **RN-26** Ao criar a campanha, ou ao mudar a data de fechamento, o fechamento
@@ -110,7 +110,7 @@ motivo.
 
 ## Vídeo
 
-- **RN-33** O vídeo tem quatro situações: em análise, aprovado, recusado e
+- **RN-33** O vídeo tem quatro status: em análise, aprovado, recusado e
   desqualificado. Nasce em análise.
 - **RN-34** O participante envia o vídeo por link enquanto a campanha está
   aberta. O link é um endereço https cujo domínio é `tiktok.com` ou termina em
@@ -193,7 +193,7 @@ motivo.
 
 ## Avisos
 
-- **RN-56** O sistema não envia e-mail nem notificação. A situação da conta, a
+- **RN-56** O sistema não envia e-mail nem notificação. O status da conta, o
   de cada vídeo, com o motivo da recusa ou da desqualificação, e os prêmios
   aparecem na tela quando o criador entra.
 
@@ -218,7 +218,7 @@ motivo.
   bloqueada e a nova informa o mesmo @, ela aparece com o aviso da RN-65.
 - **RN-65** Apagar conta de criador bloqueada guarda o @ dela e a data da
   exclusão, sem ligação com conta nenhuma e sem prazo. Toda conta com esse @,
-  em qualquer situação, aparece na verificação e na lista de contas com o aviso
+  em qualquer status, aparece na verificação e na lista de contas com o aviso
   de que ele foi de conta bloqueada e apagada, e a data. Assim o aviso pega
   quem volta com o mesmo @ e quem volta com outro e depois pede a correção
   para o antigo (RN-15). O aviso não impede a aprovação nem a correção: quem

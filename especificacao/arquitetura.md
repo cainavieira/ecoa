@@ -68,7 +68,7 @@ flowchart TB
 |:--|:--|:--|
 | SPA React | telas, estado de tela, validação de forma | ADR-0002, ADR-0010, ADR-0011 |
 | caddy | HTTPS, entrega do build, `index.html` para caminho que não é arquivo, repasse de `/api` | ADR-0015 |
-| api | regras de negócio, contrato de API, autenticação, papel | ADR-0002, ADR-0008, ADR-0009 |
+| api | regras de negócio, contrato de API, autenticação, função | ADR-0002, ADR-0008, ADR-0009 |
 | db | dado, restrições de integridade | ADR-0004, ADR-0015 |
 | dumps diários | cópia na VPS, 7 dias, de onde o operador baixa e o ensaio restaura | ADR-0006, ADR-0016 |
 | máquina do operador | segunda cópia, 30 dias, restauração diária de teste | ADR-0016 |

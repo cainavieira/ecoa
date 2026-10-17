@@ -186,12 +186,12 @@ Dez tabelas, nomes no singular, colunas em português sem acento
 (`convencoes-backend.md`).
 
 **`conta`**: `id_conta`, `email` único e em minúsculas, `nome` nulo até o primeiro
-acesso de conta cadastrada pelo operador, `papel` (`criador`, `operador`,
+acesso de conta cadastrada pelo operador, `funcao` (`criador`, `operador`,
 `gravadora`), `criado_em`.
 
 **`criador`**: `id_criador` como chave primária, apontando para `conta` com
 `ON DELETE CASCADE`; `usuario_tiktok` nulo até ser informado;
-`codigo_verificacao` único; `situacao` (`pendente`, `recusada`, `aprovada`,
+`codigo_verificacao` único; `status` (`pendente`, `recusada`, `aprovada`,
 `bloqueada`); `motivo_recusa`, `motivo_bloqueio` e `motivo_desbloqueio`,
 nulos; `aceite_termos_em`.
 
@@ -211,7 +211,7 @@ para `criador` com `ON DELETE SET NULL` (é a anonimização da RN-59),
 para quem ficou fora do ranking final.
 
 **`video`**: `id_video`, `xid_participacao` com `ON DELETE CASCADE`, `link`,
-nulo só no vídeo de participante removido (RN-59), `situacao` (`em_analise`,
+nulo só no vídeo de participante removido (RN-59), `status` (`em_analise`,
 `aprovado`, `recusado`, `desqualificado`), `data_publicacao` nula até a
 aprovação, `motivo` nulo, `enviado_em`.
 
@@ -232,17 +232,17 @@ Restrições que **vão** para o banco, junto com a verificação na aplicação
 | Restrição | Regra |
 |:--|:--|
 | `conta.email` único | RN-01 |
-| `conta.papel` em criador, operador, gravadora | RN-02 |
-| `criador.situacao` nos quatro valores | RN-10 |
-| `criador.usuario_tiktok` único entre as situações aprovada e bloqueada, por índice único parcial | RN-11 |
-| `criador`: situação diferente de pendente exige `usuario_tiktok` | RN-13 |
+| `conta.funcao` em criador, operador, gravadora | RN-02 |
+| `criador.status` nos quatro valores | RN-10 |
+| `criador.usuario_tiktok` único entre os status aprovada e bloqueada, por índice único parcial | RN-11 |
+| `criador`: status diferente de pendente exige `usuario_tiktok` | RN-13 |
 | `criador`: recusada exige `motivo_recusa`; bloqueada exige `motivo_bloqueio` | RN-13, RN-17 |
 | `criador.codigo_verificacao` único | RN-12 |
 | `campanha`: `data_inicio` ≤ `data_fim` ≤ `data_fechamento` | RN-24 |
 | `participacao.xid_campanha` sem cascata: campanha com participante não se apaga | RN-30 |
 | `participacao` única por (`xid_campanha`, `xid_criador`) | RN-31 |
-| `video.situacao` nos quatro valores | RN-33 |
-| `video.link` único entre as situações diferentes de recusado, por índice único parcial | RN-35 |
+| `video.status` nos quatro valores | RN-33 |
+| `video.link` único entre os status diferentes de recusado, por índice único parcial | RN-35 |
 | `video`: aprovado ou desqualificado exige `data_publicacao`; recusado ou desqualificado exige `motivo` | RN-36, RN-37, RN-38 |
 | `leitura` única por (`xid_video`, `data`) | RN-40 |
 | `leitura.views` zero ou maior | RN-39 |
@@ -261,7 +261,7 @@ Restrições que **não** vão para o banco, e por quê:
   atravessam linhas.
 - Ao menos um link de referência (RN-22): o banco não exige "ao menos um" sem
   gatilho.
-- Papel e isolamento (ADR-0009).
+- Função e isolamento (ADR-0009).
 
 ### Camada de regras
 
@@ -272,7 +272,7 @@ recebem dados e devolvem valores.
 |:--|:--|
 | `normalizarEmail`, `normalizarUsuarioTiktok` | RN-01, RN-11 |
 | `transicaoDaConta` (aprovar, recusar, corrigir o @, bloquear, desbloquear) | RN-11, RN-13, RN-14, RN-15, RN-17, RN-21 |
-| `situacaoDaCampanha` | RN-25 |
+| `statusDaCampanha` | RN-25 |
 | `validarDatasDaCampanha` | RN-24, RN-26, RN-27 |
 | `podeEntrar` | RN-16, RN-32 |
 | `validarEnvioDeVideo` | RN-34, RN-35 |
@@ -287,7 +287,7 @@ recebem dados e devolvem valores.
 
 As fronteiras onde a regra decide, e que por isso precisam de teste:
 
-- situação: o dia do início e o dia do fim são de campanha aberta; o dia
+- status: o dia do início e o dia do fim são de campanha aberta; o dia
   seguinte ao fim é de apuração; o encerramento vence as datas (RN-25)
 - fechamento igual a hoje é recusado, e amanhã é aceito (RN-26)
 - mudar o fim para a véspera da publicação de um vídeo aprovado é recusado, e

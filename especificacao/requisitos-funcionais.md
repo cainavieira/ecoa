@@ -14,11 +14,11 @@ aposentados ficam listados no fim.
 - **RF-02** O sistema deve criar conta de criador, pendente, no primeiro acesso
   de um e-mail sem conta, guardando a data desse acesso como data do aceite dos
   termos. (RN-03, RN-09, RN-10)
-- **RF-03** O sistema deve dar à conta cadastrada por um operador o papel
-  cadastrado, e completar nela o nome vindo do AT-04 no primeiro acesso da
+- **RF-03** O sistema deve dar à conta cadastrada por um operador a função
+  cadastrada, e completar nela o nome vindo do AT-04 no primeiro acesso da
   pessoa. (RN-03)
 - **RF-04** O sistema deve permitir que qualquer ator encerre a própria sessão.
-- **RF-05** O sistema deve restringir cada tela e cada rota ao papel: o AT-01 vê
+- **RF-05** O sistema deve restringir cada tela e cada rota à função: o AT-01 vê
   os próprios dados, as campanhas e o ranking das campanhas em que participa; o
   AT-03 só lê; o AT-02 opera. (RN-02, RN-08, RN-47)
 - **RF-06** O sistema deve permitir que o AT-02 cadastre um e-mail como
@@ -40,12 +40,12 @@ aposentados ficam listados no fim.
   (RN-12, RN-13, RN-65)
 - **RF-12** O sistema deve permitir que o AT-02 aprove ou recuse conta
   pendente, com motivo na recusa. (RN-11, RN-13)
-- **RF-13** O sistema deve apresentar ao AT-01 a situação da conta, com o motivo
+- **RF-13** O sistema deve apresentar ao AT-01 o status da conta, com o motivo
   da recusa quando houver. (RN-10, RN-13, RN-56)
 - **RF-14** O sistema deve permitir que o AT-02 corrija o @ de conta aprovada ou
   bloqueada. (RN-11, RN-15)
 - **RF-15** O sistema deve listar ao AT-02 todas as contas de criador, com
-  situação, @, código e o aviso de @ de conta bloqueada apagada. (RN-15,
+  status, @, código e o aviso de @ de conta bloqueada apagada. (RN-15,
   RN-65)
 
 ## Bloqueio
@@ -65,7 +65,7 @@ aposentados ficam listados no fim.
   (RN-24, RN-26, RN-27, RN-28)
 - **RF-21** O sistema deve permitir que o AT-02 apague campanha sem
   participante. (RN-30)
-- **RF-22** O sistema deve listar as campanhas com a situação de cada uma ao
+- **RF-22** O sistema deve listar as campanhas com o status de cada uma ao
   AT-01 não bloqueado, ao AT-02 e ao AT-03, indicando ao AT-01 as campanhas em
   que participa. (RN-25, RN-29)
 - **RF-23** O sistema deve apresentar o regulamento, os links de referência e
@@ -89,7 +89,7 @@ aposentados ficam listados no fim.
 - **RF-30** O sistema deve permitir que o AT-02 desqualifique vídeo aprovado,
   com motivo. (RN-38)
 - **RF-31** O sistema deve apresentar ao AT-01 os próprios vídeos de cada
-  campanha, com a situação, o motivo de recusa ou desqualificação, o número
+  campanha, com o status, o motivo de recusa ou desqualificação, o número
   atual e o gráfico das leituras. (RN-43, RN-49, RN-56)
 
 ## Leitura

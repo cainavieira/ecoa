@@ -77,7 +77,7 @@ identificador.
 | Tabela | português, singular, snake_case | `conta`, `campanha`, `participacao`, `video`, `leitura`, `ganhador` |
 | Coluna | português, snake_case | `usuario_tiktok`, `data_inicio`, `data_fechamento`, `views`, `motivo_recusa` |
 | Classe | assunto em português, papel em inglês | `Campanha`, `VideoService`, `CampanhaController`, `RankingResponse` |
-| Método de regra | português, camelCase | `situacaoDaCampanha`, `calcularRanking`, `leituraDeFechamento` |
+| Método de regra | português, camelCase | `statusDaCampanha`, `calcularRanking`, `leituraDeFechamento` |
 | Vocabulário técnico | inglês | `controller`, `service`, `repository`, `mapper`, `config` |
 
 O motivo: os termos do domínio não têm tradução limpa, e traduzir obriga a
@@ -136,7 +136,7 @@ Derivado das regras. Todo código novo entra aqui junto com a regra que o gera.
 |:--|:--|:--|:--|
 | `LOGIN_NAO_CONCLUIDO` | redirecionamento | cancelamento no Google ou verificação do retorno falha; vai como `motivo` na URL da tela de entrada | RN-01 |
 | `EMAIL_NAO_VERIFICADO` | redirecionamento | o Google não devolveu o e-mail como verificado; vai como `motivo` | RN-01 |
-| `SEM_PERMISSAO` | 403 | o papel não permite a rota | RN-02 |
+| `SEM_PERMISSAO` | 403 | a função não permite a rota | RN-02 |
 | `CONTA_BLOQUEADA` | 403 | criador bloqueado chamando rota que não seja a da própria conta ou as de autenticação | RN-18 |
 | `NAO_ENCONTRADO` | 404 | recurso inexistente, ou de outro criador, sem distinguir os dois | RN-02 |
 | `EMAIL_JA_CADASTRADO` | 409 | cadastrar operador ou gravadora com e-mail que já tem conta | RN-04 |
@@ -203,7 +203,7 @@ lista de contas, porque é com ele que confere a bio (RF-11, RF-15, RN-12).
 **também**, e não em vez de: a aplicação devolve mensagem que a pessoa entende,
 e o banco pega o caminho que alguém esqueceu de validar (ADR-0004).
 
-**Papel e isolamento** ficam na aplicação, e só nela (ADR-0009).
+**Função e isolamento** ficam na aplicação, e só nela (ADR-0009).
 
 ### Configuração
 
@@ -260,7 +260,7 @@ Seguem o ADR-0013 e a seção Testes do `fluxo-de-trabalho.md`.
 
 - Regra é testada sem banco. Rota é testada contra Postgres real, pelo
   Testcontainers, nunca contra SQLite ou um falso no lugar do banco.
-- Toda rota tem teste de papel errado; a que lida com dado de criador tem teste
+- Toda rota tem teste de função errada; a que lida com dado de criador tem teste
   de que um criador não alcança o dado de outro (ADR-0009).
 - Toda recusa do catálogo tem teste que a provoca.
 - Dado de teste é inventado, nunca copiado de criador real: e-mail e @ são de

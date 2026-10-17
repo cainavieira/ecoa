@@ -115,7 +115,7 @@ quê. RNF sem número é adjetivo.
 
 ## Manutenibilidade
 
-- **RNF-28** As transições de situação (conta, vídeo, campanha), a leitura de
+- **RNF-28** As transições de status (conta, vídeo, campanha), a leitura de
   fechamento, o ranking e as pendências do encerramento são cobertos por teste
   automatizado. São a parte onde o erro passa despercebido: um bloqueado que
   continua no ranking, um vídeo fora do prazo aprovado, um encerramento com

@@ -1,11 +1,11 @@
-# ADR-0009 Papel e isolamento conferidos na aplicação
+# ADR-0009 Função e isolamento conferidos na aplicação
 
 - **Data:** 10-10-2026
 - **Situação:** aceito
 
 ## Contexto
 
-Há três papéis (RN-02). O criador vê os próprios dados e, das campanhas em que
+Há três funções (RN-02). O criador vê os próprios dados e, das campanhas em que
 participa, o ranking (RN-47); a gravadora só lê (RN-08); o operador opera. O
 e-mail e o código de verificação do criador não saem para outro criador nem
 para a gravadora (RN-57). O operador vê o código na fila de verificação e na
@@ -18,15 +18,15 @@ filtro alcança dado alheio.
 
 Na aplicação, e só nela.
 
-- Cada rota declara o papel que a aceita, e o Spring Security recusa os outros.
+- Cada rota declara a função que a aceita, e o Spring Security recusa as outras.
 - Toda consulta de dado de criador recebe o identificador da conta autenticada.
 - O ranking e os ganhadores conferem a participação antes de responder.
-- Cada rota tem teste de papel errado e, quando lida com dado de criador, teste
+- Cada rota tem teste de função errada e, quando lida com dado de criador, teste
   de que um criador não alcança o dado de outro.
 
 ## Consequências
 
-Papel errado responde 403. Recurso de outro criador e recurso inexistente dão o
+Função errada responde 403. Recurso de outro criador e recurso inexistente dão o
 mesmo resultado, 404, porque saber que existe exigiria a consulta sem filtro
 que esta decisão proíbe (`endpoints.md`).
 
