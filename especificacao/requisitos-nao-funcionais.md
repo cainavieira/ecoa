@@ -63,7 +63,8 @@ quê. RNF sem número é adjetivo.
   máquina.
 - **RNF-14** Conta apagada continua nas cópias de backup até o fim da retenção
   de 30 dias. A restauração vai sempre ao dump mais recente, para as exclusões
-  feitas antes do problema continuarem valendo.
+  feitas antes dele continuarem valendo, e o operador refaz as feitas depois
+  dele.
 - **RNF-15** O sistema trata dado pessoal com fim econômico e está inteiro sob a
   LGPD. Os termos de uso e a política de privacidade (RN-09) existem antes do
   piloto, e o texto deles não é escrito aqui (`instrucao.md`, seção 6).
