@@ -2,6 +2,7 @@ package ecoa.regras;
 
 import static ecoa.regras.RegrasDaCampanha.statusDaCampanha;
 import static ecoa.regras.RegrasDaCampanha.validarDatasDaCampanha;
+import static ecoa.regras.RegrasDaCampanha.validarEntrada;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -10,6 +11,8 @@ import java.time.LocalDate;
 import java.util.List;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 class RegrasDaCampanhaTest {
 
@@ -146,6 +149,29 @@ class RegrasDaCampanhaTest {
                 List.of(new VideoAprovado(1, publicacao)),
                 ANTES_DA_CAMPANHA),
         Recusa.DATAS_EXCLUEM_VIDEO);
+  }
+
+  @ParameterizedTest
+  @EnumSource(value = StatusCriador.class, names = "APROVADA", mode = EnumSource.Mode.EXCLUDE)
+  void recusaEntradaDeContaQueNaoEstaAprovada(StatusCriador conta) {
+    recusado(() -> validarEntrada(conta, StatusCampanha.ABERTA), Recusa.CONTA_NAO_APROVADA);
+  }
+
+  @ParameterizedTest
+  @EnumSource(
+      value = StatusCampanha.class,
+      names = {"AGENDADA", "ABERTA"})
+  void aceitaEntradaEmCampanhaAgendadaOuAberta(StatusCampanha campanha) {
+    assertThatCode(() -> validarEntrada(StatusCriador.APROVADA, campanha))
+        .doesNotThrowAnyException();
+  }
+
+  @ParameterizedTest
+  @EnumSource(
+      value = StatusCampanha.class,
+      names = {"EM_APURACAO", "ENCERRADA"})
+  void recusaEntradaEmCampanhaEmApuracaoOuEncerrada(StatusCampanha campanha) {
+    recusado(() -> validarEntrada(StatusCriador.APROVADA, campanha), Recusa.ENTRADA_ENCERRADA);
   }
 
   private static void recusado(ThrowingCallable chamada, Recusa recusa) {

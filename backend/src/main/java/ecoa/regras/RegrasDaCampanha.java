@@ -57,6 +57,18 @@ public final class RegrasDaCampanha {
     }
   }
 
+  /** Só a conta aprovada entra, e só em campanha agendada ou aberta (RN-16, RN-32). */
+  public static void validarEntrada(StatusCriador conta, StatusCampanha campanha) {
+    if (conta != StatusCriador.APROVADA) {
+      throw new RegraVioladaException(
+          Recusa.CONTA_NAO_APROVADA, "Só a conta aprovada entra em campanha.");
+    }
+    if (campanha != StatusCampanha.AGENDADA && campanha != StatusCampanha.ABERTA) {
+      throw new RegraVioladaException(
+          Recusa.ENTRADA_ENCERRADA, "A campanha não aceita mais participantes.");
+    }
+  }
+
   private static void validarOrdem(DatasDaCampanha datas) {
     if (datas.fim().isBefore(datas.inicio()) || datas.fechamento().isBefore(datas.fim())) {
       throw new RegraVioladaException(

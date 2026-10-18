@@ -275,7 +275,7 @@ recebem dados e devolvem valores.
 | `transicaoDaConta` (aprovar, recusar, corrigir o @, bloquear, desbloquear) | RN-11, RN-13, RN-14, RN-15, RN-17, RN-21 |
 | `statusDaCampanha` | RN-25 |
 | `validarDatasDaCampanha` | RN-24, RN-26, RN-27 |
-| `podeEntrar` | RN-16, RN-32 |
+| `validarEntrada` | RN-16, RN-32 |
 | `validarEnvioDeVideo` | RN-34, RN-35 |
 | `validarAprovacaoDeVideo` | RN-19, RN-36 |
 | `validarLeitura` | RN-39, RN-40, RN-41 |
