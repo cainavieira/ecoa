@@ -22,8 +22,7 @@ documento tem seção listando os seus aposentados com o motivo.
 
 `especificacao/adr/` tem 18 decisões, cada uma com a alternativa que perdeu e o
 motivo. A seção **Decisões recusadas** do `regras-de-negocio.md` faz o mesmo
-para regra de produto. O `historico/10-10-grill-mvp.md` registra como o MVP foi
-recortado.
+para regra de produto. O `grill-mvp.md` registra como o MVP foi recortado.
 
 Se você sentir vontade de propor a API do TikTok no MVP, login pelo TikTok,
 upload de arquivo, cálculo automático de prêmio, CPF ou Pix no sistema, e-mail,

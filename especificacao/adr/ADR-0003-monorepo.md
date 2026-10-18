@@ -11,8 +11,8 @@ Uma pessoa desenvolve.
 
 ## Decisão
 
-Um repositório só, com `backend/`, `frontend/`, `especificacao/`, `visao/` e
-`historico/` lado a lado.
+Um repositório só, com `backend/`, `frontend/`, `especificacao/` e `visao/` lado
+a lado.
 
 ## Consequências
 

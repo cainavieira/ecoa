@@ -22,8 +22,6 @@ O que existe hoje:
   contrato da API.
 - `visao/`: a visão do produto, para aprovação, e a pesquisa das redes, para a
   Fase 2 em diante.
-- `historico/`: o registro das decisões que recortaram o MVP e o que o Mateus
-  pediu.
 
 ## Onde ler o quê
 
@@ -31,7 +29,7 @@ O que existe hoje:
 |:--|:--|
 | a ideia completa, além do MVP | [visao/visao-do-produto.md](visao/visao-do-produto.md) |
 | APIs, legalidade e aprovação em cada rede | [visao/pesquisa-das-redes.md](visao/pesquisa-das-redes.md) |
-| por que o MVP é como é | [historico/10-10-grill-mvp.md](historico/10-10-grill-mvp.md) |
+| por que o MVP é como é | [grill-mvp.md](grill-mvp.md) |
 | quem usa o sistema | [especificacao/atores.md](especificacao/atores.md) |
 | o que é permitido, recusado e por quê | [especificacao/regras-de-negocio.md](especificacao/regras-de-negocio.md) |
 | o que o sistema faz | [especificacao/requisitos-funcionais.md](especificacao/requisitos-funcionais.md) |
