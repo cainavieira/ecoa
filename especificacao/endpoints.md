@@ -47,7 +47,7 @@ este documento está datado.
 | `GET` | `/campanhas/{id}/participantes` | operador | lista os participantes da campanha, com @ e status da conta, inclusive quem não tem vídeo que conta; é de onde sai a escolha do ganhador | RF-35 |
 | `POST` | `/campanhas/{id}/ganhadores` | operador | registra um ganhador, com o prêmio em texto | RF-35 |
 | `GET` | `/videos` | operador | lista vídeos por status; `?status=em_analise` é a fila de conferência | RF-27 |
-| `POST` | `/videos/{id}/aprovacao` | operador | aprova, com a data de publicação e as views da primeira leitura | RF-28 |
+| `POST` | `/videos/{id}/aprovacao` | operador | aprova, com a data de publicação e as views da primeira leitura, que leva a data de hoje | RF-28 |
 | `POST` | `/videos/{id}/recusa` | operador | recusa, com motivo | RF-29 |
 | `POST` | `/videos/{id}/desqualificacao` | operador | desqualifica, com motivo | RF-30 |
 | `GET` | `/videos/{id}/leituras` | operador | o histórico de leituras do vídeo | RF-33 |

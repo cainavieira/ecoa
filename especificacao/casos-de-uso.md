@@ -313,6 +313,8 @@ fim. (RN-27)
 - **3b** Views negativas ou não inteiras: recusado. (RN-39)
 - **3c** A campanha já passou do fim: a aprovação acontece normalmente, porque o
   que vale é a data de publicação. (RN-36)
+- **3d** A data de publicação é depois de hoje: o sistema recusa a aprovação,
+  porque a primeira leitura, de hoje, ficaria antes da publicação. (RN-36, RN-40)
 
 **Pós-condição:** vídeo aprovado, com uma leitura, ou recusado, com motivo.
 

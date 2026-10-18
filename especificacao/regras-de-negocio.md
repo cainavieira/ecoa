@@ -122,7 +122,9 @@ motivo.
 - **RN-36** O operador aprova o vídeo em análise depois de conferir que ele é
   público, é da conta do @ verificado, usa o som da campanha e cumpre o
   regulamento. Na aprovação, informa a data de publicação, que fica entre o
-  início e o fim da campanha, e registra a primeira leitura (RN-39).
+  início e o fim da campanha, e registra a primeira leitura (RN-39), com a data
+  de hoje. Como a leitura não é anterior à publicação (RN-40), a publicação não
+  é futura.
 - **RN-37** O operador recusa o vídeo em análise, com motivo, que aparece na
   tela do criador. Enquanto a campanha estiver aberta, o criador pode enviar
   outro. Vídeo aprovado não se troca nem volta à análise.
