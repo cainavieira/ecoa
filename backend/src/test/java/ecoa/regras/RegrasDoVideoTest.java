@@ -1,10 +1,12 @@
 package ecoa.regras;
 
+import static ecoa.regras.RegrasDoVideo.validarAprovacaoDeVideo;
 import static ecoa.regras.RegrasDoVideo.validarEnvioDeVideo;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.time.LocalDate;
 import java.util.List;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.Test;
@@ -15,6 +17,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 class RegrasDoVideoTest {
 
   private static final String LINK = "https://www.tiktok.com/@fulano/video/1";
+  private static final LocalDate INICIO = LocalDate.of(2026, 11, 1);
+  private static final LocalDate FIM = LocalDate.of(2026, 11, 30);
 
   @ParameterizedTest
   @ValueSource(
@@ -61,6 +65,40 @@ class RegrasDoVideoTest {
     assertThatCode(
             () -> validarEnvioDeVideo(LINK, StatusCampanha.ABERTA, List.of(StatusVideo.RECUSADO)))
         .doesNotThrowAnyException();
+  }
+
+  @Test
+  void aceitaPublicacaoNoDiaDoInicioENoDiaDoFim() {
+    assertThatCode(() -> aprovar(INICIO)).doesNotThrowAnyException();
+    assertThatCode(() -> aprovar(FIM)).doesNotThrowAnyException();
+  }
+
+  @Test
+  void recusaPublicacaoNaVesperaDoInicioENoDiaSeguinteAoFim() {
+    recusado(() -> aprovar(INICIO.minusDays(1)), Recusa.PUBLICACAO_FORA_DO_PRAZO);
+    recusado(() -> aprovar(FIM.plusDays(1)), Recusa.PUBLICACAO_FORA_DO_PRAZO);
+  }
+
+  @ParameterizedTest
+  @EnumSource(value = StatusVideo.class, names = "EM_ANALISE", mode = EnumSource.Mode.EXCLUDE)
+  void recusaAprovarVideoQueNaoEstaEmAnalise(StatusVideo video) {
+    recusado(
+        () -> validarAprovacaoDeVideo(video, StatusCriador.APROVADA, INICIO, INICIO, FIM),
+        Recusa.VIDEO_NAO_EM_ANALISE);
+  }
+
+  @Test
+  void recusaAprovarVideoDeCriadorBloqueado() {
+    recusado(
+        () ->
+            validarAprovacaoDeVideo(
+                StatusVideo.EM_ANALISE, StatusCriador.BLOQUEADA, INICIO, INICIO, FIM),
+        Recusa.CRIADOR_BLOQUEADO);
+  }
+
+  private static void aprovar(LocalDate publicacao) {
+    validarAprovacaoDeVideo(
+        StatusVideo.EM_ANALISE, StatusCriador.APROVADA, publicacao, INICIO, FIM);
   }
 
   private static void recusado(ThrowingCallable chamada, Recusa recusa) {

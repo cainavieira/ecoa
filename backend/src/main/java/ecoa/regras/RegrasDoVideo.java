@@ -2,6 +2,7 @@ package ecoa.regras;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
 
@@ -27,6 +28,37 @@ public final class RegrasDoVideo {
     }
     if (enviosDoLink.stream().anyMatch(status -> status != StatusVideo.RECUSADO)) {
       throw new RegraVioladaException(Recusa.LINK_JA_ENVIADO, "Este vídeo já está na plataforma.");
+    }
+  }
+
+  /**
+   * Só o vídeo em análise, de criador que não está bloqueado (RN-19), com a publicação entre o
+   * início e o fim (RN-36).
+   */
+  public static void validarAprovacaoDeVideo(
+      StatusVideo video,
+      StatusCriador criador,
+      LocalDate dataPublicacao,
+      LocalDate inicio,
+      LocalDate fim) {
+    if (video != StatusVideo.EM_ANALISE) {
+      throw new RegraVioladaException(
+          Recusa.VIDEO_NAO_EM_ANALISE, "Só o vídeo em análise pode ser aprovado.");
+    }
+    if (criador == StatusCriador.BLOQUEADA) {
+      throw new RegraVioladaException(
+          Recusa.CRIADOR_BLOQUEADO,
+          "O criador está bloqueado, e o vídeo dele não pode ser aprovado enquanto durar o"
+              + " bloqueio.");
+    }
+    if (dataPublicacao.isBefore(inicio) || dataPublicacao.isAfter(fim)) {
+      throw new RegraVioladaException(
+          Recusa.PUBLICACAO_FORA_DO_PRAZO,
+          "A data de publicação precisa estar entre "
+              + Formato.data(inicio)
+              + " e "
+              + Formato.data(fim)
+              + ".");
     }
   }
 
