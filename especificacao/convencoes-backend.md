@@ -250,9 +250,9 @@ O mesmo `.jar` tem três modos:
 | Chave primária | `id_<tabela>` | `campanha.id_campanha` |
 | Chave estrangeira | `xid_<tabela apontada>` | `video.xid_participacao` |
 | Campo Java e coluna | camelCase no código, snake_case no banco | `dataFechamento` e `data_fechamento` |
-| Classe de regra | pelo assunto, em `regras/` | `regras/Ranking.java` |
+| Classe de regra | `RegrasDa` ou `RegrasDo` mais o assunto, em `regras/` | `regras/RegrasDaCampanha.java` |
 | Campo no JSON | camelCase, igual ao campo do DTO | `numeroAtual`, `dataPublicacao` |
-| Teste | classe testada + `Test` | `RankingTest` |
+| Teste | classe testada + `Test` | `RegrasDaCampanhaTest` |
 
 Nas chaves, o prefixo diz se a coluna é a chave da própria tabela ou aponta
 para outra.
