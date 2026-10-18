@@ -278,7 +278,7 @@ recebem dados e devolvem valores.
 | `validarEntrada` | RN-16, RN-32 |
 | `validarEnvioDeVideo` | RN-34, RN-35 |
 | `validarAprovacaoDeVideo` | RN-19, RN-36 |
-| `validarLeitura` | RN-39, RN-40, RN-41 |
+| `validarLeitura` | RN-40, RN-41 |
 | `leituraDeFechamento`, `numeroAtual` | RN-41, RN-43 |
 | `calcularRanking` | RN-45, RN-46 |
 | `totalPorData` | RN-49 |
@@ -306,7 +306,6 @@ As fronteiras onde a regra decide, e que por isso precisam de teste:
 - leitura de fechamento: com fechamento em 30/11, gravar 02/12 a cria; depois,
   01/12 e 03/12 são recusadas, e outra em 02/12 a substitui; apagada a de 02/12,
   01/12 passa a ser aceita (RN-40, RN-41)
-- views menores que as da leitura anterior são aceitas (RN-39)
 - vídeo aprovado sem leitura conta zero, com a marca de que não tem leitura
   (RN-43)
 - ranking: empate fica 1, 1, 3; criador bloqueado, vídeo desqualificado e
