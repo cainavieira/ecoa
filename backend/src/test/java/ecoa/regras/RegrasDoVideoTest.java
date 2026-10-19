@@ -2,6 +2,7 @@ package ecoa.regras;
 
 import static ecoa.regras.RegrasDoVideo.validarAprovacaoDeVideo;
 import static ecoa.regras.RegrasDoVideo.validarEnvioDeVideo;
+import static ecoa.regras.RegrasDoVideo.validarVideoAprovado;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -94,6 +95,12 @@ class RegrasDoVideoTest {
             validarAprovacaoDeVideo(
                 StatusVideo.EM_ANALISE, StatusCriador.BLOQUEADA, INICIO, INICIO, FIM),
         Recusa.CRIADOR_BLOQUEADO);
+  }
+
+  @ParameterizedTest
+  @EnumSource(value = StatusVideo.class, names = "APROVADO", mode = EnumSource.Mode.EXCLUDE)
+  void recusaVideoQueNaoEstaAprovado(StatusVideo video) {
+    recusado(() -> validarVideoAprovado(video), Recusa.VIDEO_NAO_APROVADO);
   }
 
   private static void aprovar(LocalDate publicacao) {

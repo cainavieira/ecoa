@@ -62,6 +62,14 @@ public final class RegrasDoVideo {
     }
   }
 
+  /** Só o vídeo aprovado é desqualificado ou recebe leitura (RN-38, RN-39). */
+  public static void validarVideoAprovado(StatusVideo video) {
+    if (video != StatusVideo.APROVADO) {
+      throw new RegraVioladaException(
+          Recusa.VIDEO_NAO_APROVADO, "Esta ação só vale para vídeo aprovado.");
+    }
+  }
+
   /** O domínio é tiktok.com ou termina em .tiktok.com, com o ponto (RN-34). */
   private static boolean linkDoTiktok(String link) {
     URI uri;

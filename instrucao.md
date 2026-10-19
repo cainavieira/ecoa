@@ -278,6 +278,7 @@ recebem dados e devolvem valores.
 | `validarEntrada` | RN-16, RN-32 |
 | `validarEnvioDeVideo` | RN-34, RN-35 |
 | `validarAprovacaoDeVideo` | RN-19, RN-36 |
+| `validarVideoAprovado` | RN-38, RN-39 |
 | `validarLeitura` | RN-40, RN-41 |
 | `leituraDeFechamento`, `numeroAtual` | RN-41, RN-43 |
 | `calcularRanking` | RN-45, RN-46 |
