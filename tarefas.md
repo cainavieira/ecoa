@@ -74,7 +74,7 @@ ADR-0013, RNF-28).
 | Tarefa | Entrega | Estado |
 |:--|:--|:--|
 | T-04 | `statusDaCampanha`, `validarDatasDaCampanha`, `validarEntrada`, `validarEnvioDeVideo`, `validarAprovacaoDeVideo`, e o teste de arquitetura com o ArchUnit | feito |
-| T-05 | `validarVideoAprovado`, `validarLeitura`, `leituraDeFechamento`, `numeroAtual` | a fazer |
+| T-05 | `validarVideoAprovado`, `validarLeitura`, `leituraDeFechamento`, `numeroAtual` | feito |
 | T-06 | `calcularRanking`, `totalPorData`, `pendenciasDoEncerramento` | a fazer |
 | T-07 | `normalizarEmail`, `normalizarUsuarioTiktok`, `transicaoDaConta`, `validarGanhador`, `validarRemocaoDeAcesso` | a fazer |
 
