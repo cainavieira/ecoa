@@ -2,6 +2,7 @@ package ecoa.regras;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Stream;
 
 public final class RegrasDaCampanha {
 
@@ -66,6 +67,39 @@ public final class RegrasDaCampanha {
     if (campanha != StatusCampanha.AGENDADA && campanha != StatusCampanha.ABERTA) {
       throw new RegraVioladaException(
           Recusa.ENTRADA_ENCERRADA, "A campanha não aceita mais participantes.");
+    }
+  }
+
+  /**
+   * A partir do fechamento, sem vídeo em análise, nem de criador bloqueado, e com leitura de
+   * fechamento em todo vídeo que conta, que são os do ranking (RN-45, RN-50).
+   */
+  public static void validarEncerramento(
+      List<ParticipanteDaCampanha> participantes, LocalDate fechamento, LocalDate hoje) {
+    if (hoje.isBefore(fechamento)) {
+      throw new RegraVioladaException(
+          Recusa.ENCERRAMENTO_ANTES_DO_FECHAMENTO,
+          "A campanha só pode ser encerrada a partir do fechamento, "
+              + Formato.data(fechamento)
+              + ".");
+    }
+    Stream<VideoDaCampanha> emAnalise =
+        participantes.stream()
+            .flatMap(participante -> participante.videos().stream())
+            .filter(video -> video.status() == StatusVideo.EM_ANALISE);
+    Stream<VideoDaCampanha> semLeituraDeFechamento =
+        RegrasDoRanking.calcularRanking(participantes).stream()
+            .flatMap(posicao -> posicao.videos().stream())
+            .filter(
+                video ->
+                    RegrasDaLeitura.leituraDeFechamento(video.leituras(), fechamento).isEmpty());
+    List<Integer> pendentes =
+        Stream.concat(emAnalise, semLeituraDeFechamento).map(VideoDaCampanha::idVideo).toList();
+    if (!pendentes.isEmpty()) {
+      throw new RegraVioladaException(
+          Recusa.ENCERRAMENTO_COM_PENDENCIA,
+          "Há vídeo em análise, ou vídeo que conta sem leitura de fechamento.",
+          pendentes);
     }
   }
 

@@ -283,7 +283,7 @@ recebem dados e devolvem valores.
 | `leituraDeFechamento`, `numeroAtual` | RN-41, RN-43 |
 | `calcularRanking` | RN-45, RN-46 |
 | `totalPorData` | RN-49 |
-| `pendenciasDoEncerramento` | RN-50 |
+| `validarEncerramento` | RN-50 |
 | `validarGanhador` | RN-52 |
 | `validarRemocaoDeAcesso` | RN-06 |
 

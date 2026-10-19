@@ -2,6 +2,7 @@ package ecoa.regras;
 
 import static ecoa.regras.RegrasDaCampanha.statusDaCampanha;
 import static ecoa.regras.RegrasDaCampanha.validarDatasDaCampanha;
+import static ecoa.regras.RegrasDaCampanha.validarEncerramento;
 import static ecoa.regras.RegrasDaCampanha.validarEntrada;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
@@ -172,6 +173,90 @@ class RegrasDaCampanhaTest {
       names = {"EM_APURACAO", "ENCERRADA"})
   void recusaEntradaEmCampanhaEmApuracaoOuEncerrada(StatusCampanha campanha) {
     recusado(() -> validarEntrada(StatusCriador.APROVADA, campanha), Recusa.ENTRADA_ENCERRADA);
+  }
+
+  @Test
+  void aceitaEncerrarNoDiaDoFechamento() {
+    assertThatCode(
+            () ->
+                validarEncerramento(
+                    List.of(participante(StatusCriador.APROVADA, aprovado(10, FECHAMENTO))),
+                    FECHAMENTO,
+                    FECHAMENTO))
+        .doesNotThrowAnyException();
+  }
+
+  @Test
+  void recusaEncerrarNaVesperaDoFechamento() {
+    recusado(
+        () -> validarEncerramento(List.of(), FECHAMENTO, FECHAMENTO.minusDays(1)),
+        Recusa.ENCERRAMENTO_ANTES_DO_FECHAMENTO);
+  }
+
+  @Test
+  void videoEmAnalisePendeMesmoDeCriadorBloqueado() {
+    List<ParticipanteDaCampanha> participantes =
+        List.of(
+            participante(StatusCriador.APROVADA, emAnalise(10)),
+            participante(StatusCriador.BLOQUEADA, emAnalise(20)));
+    assertThatThrownBy(() -> validarEncerramento(participantes, FECHAMENTO, FECHAMENTO))
+        .isInstanceOfSatisfying(
+            RegraVioladaException.class,
+            e -> {
+              assertThat(e.recusa()).isEqualTo(Recusa.ENCERRAMENTO_COM_PENDENCIA);
+              assertThat(e.itens()).containsExactlyInAnyOrder(10, 20);
+            });
+  }
+
+  @Test
+  void videoQueContaSemLeituraDeFechamentoPende() {
+    // O vídeo 10 só tem leitura parcial, da véspera do fechamento.
+    List<ParticipanteDaCampanha> participantes =
+        List.of(
+            participante(
+                StatusCriador.APROVADA,
+                aprovado(10, FECHAMENTO.minusDays(1)),
+                aprovado(11, FECHAMENTO)));
+    assertThatThrownBy(() -> validarEncerramento(participantes, FECHAMENTO, FECHAMENTO))
+        .isInstanceOfSatisfying(
+            RegraVioladaException.class,
+            e -> {
+              assertThat(e.recusa()).isEqualTo(Recusa.ENCERRAMENTO_COM_PENDENCIA);
+              assertThat(e.itens()).containsExactly(10);
+            });
+  }
+
+  @Test
+  void videoQueNaoContaNaoPedeLeituraDeFechamento() {
+    // Aprovado de criador bloqueado e desqualificado não contam (RN-45, UC-14 2d).
+    List<ParticipanteDaCampanha> participantes =
+        List.of(
+            participante(StatusCriador.BLOQUEADA, aprovado(10, FECHAMENTO.minusDays(1))),
+            participante(
+                StatusCriador.APROVADA,
+                desqualificado(20, FECHAMENTO.minusDays(1)),
+                aprovado(21, FECHAMENTO)));
+    assertThatCode(() -> validarEncerramento(participantes, FECHAMENTO, FECHAMENTO))
+        .doesNotThrowAnyException();
+  }
+
+  private static ParticipanteDaCampanha participante(
+      StatusCriador criador, VideoDaCampanha... videos) {
+    return new ParticipanteDaCampanha(1, criador, List.of(videos));
+  }
+
+  private static VideoDaCampanha aprovado(int idVideo, LocalDate dataDaLeitura) {
+    return new VideoDaCampanha(
+        idVideo, StatusVideo.APROVADO, List.of(new LeituraDoVideo(dataDaLeitura, 100)));
+  }
+
+  private static VideoDaCampanha desqualificado(int idVideo, LocalDate dataDaLeitura) {
+    return new VideoDaCampanha(
+        idVideo, StatusVideo.DESQUALIFICADO, List.of(new LeituraDoVideo(dataDaLeitura, 100)));
+  }
+
+  private static VideoDaCampanha emAnalise(int idVideo) {
+    return new VideoDaCampanha(idVideo, StatusVideo.EM_ANALISE, List.of());
   }
 
   private static void recusado(ThrowingCallable chamada, Recusa recusa) {
