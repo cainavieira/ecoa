@@ -148,7 +148,7 @@ Derivado das regras. Todo código novo entra aqui junto com a regra que o gera.
 | `USUARIO_TIKTOK_FIXO` | 409 | criador tentando mudar o @ da conta aprovada ou bloqueada | RN-15 |
 | `CONTA_NAO_PENDENTE` | 409 | aprovar ou recusar conta que não está pendente | RN-13 |
 | `CONTA_SEM_USUARIO_TIKTOK` | 409 | aprovar ou recusar conta pendente que ainda não informou o @ | RN-13 |
-| `CONTA_NAO_APROVADA` | 409 | entrar em campanha, ou bloquear, com conta que não está aprovada | RN-16, RN-17 |
+| `CONTA_NAO_APROVADA` | 409 | entrar em campanha, ou bloquear, com conta que não está aprovada; ou o operador corrigir o @ de conta pendente ou recusada | RN-15, RN-16, RN-17 |
 | `CONTA_NAO_BLOQUEADA` | 409 | desbloquear conta que não está bloqueada | RN-21 |
 | `MOTIVO_AUSENTE` | 400 | recusa, bloqueio, desbloqueio ou desqualificação sem motivo | RN-13, RN-17, RN-21, RN-37, RN-38 |
 | `LINK_REFERENCIA_AUSENTE` | 400 | campanha sem link de referência | RN-22 |

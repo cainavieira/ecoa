@@ -272,7 +272,9 @@ recebem dados e devolvem valores.
 | Método | Regras |
 |:--|:--|
 | `normalizarEmail`, `normalizarUsuarioTiktok` | RN-01, RN-11 |
-| `transicaoDaConta` (aprovar, recusar, corrigir o @, bloquear, desbloquear) | RN-11, RN-13, RN-14, RN-15, RN-17, RN-21 |
+| `validarAprovacaoDaConta`, `validarRecusaDaConta` | RN-11, RN-13 |
+| `validarCorrecaoDoUsuarioTiktokPeloCriador`, `validarCorrecaoDoUsuarioTiktokPeloOperador` | RN-11, RN-14, RN-15 |
+| `validarBloqueioDaConta`, `validarDesbloqueioDaConta` | RN-17, RN-21 |
 | `statusDaCampanha` | RN-25 |
 | `validarDatasDaCampanha` | RN-24, RN-26, RN-27 |
 | `validarEntrada` | RN-16, RN-32 |
