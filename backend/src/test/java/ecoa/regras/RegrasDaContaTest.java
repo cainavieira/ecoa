@@ -8,6 +8,7 @@ import static ecoa.regras.RegrasDaConta.validarCorrecaoDoUsuarioTiktokPeloCriado
 import static ecoa.regras.RegrasDaConta.validarCorrecaoDoUsuarioTiktokPeloOperador;
 import static ecoa.regras.RegrasDaConta.validarDesbloqueioDaConta;
 import static ecoa.regras.RegrasDaConta.validarRecusaDaConta;
+import static ecoa.regras.RegrasDaConta.validarRemocaoDeAcesso;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -135,6 +136,29 @@ class RegrasDaContaTest {
   @EnumSource(value = StatusCriador.class, names = "BLOQUEADA", mode = EnumSource.Mode.EXCLUDE)
   void recusaDesbloquearContaQueNaoEstaBloqueada(StatusCriador conta) {
     recusado(() -> validarDesbloqueioDaConta(conta), Recusa.CONTA_NAO_BLOQUEADA);
+  }
+
+  @Test
+  void recusaRemoverAPropriaConta() {
+    recusado(() -> validarRemocaoDeAcesso(1, 1, Funcao.OPERADOR, 2), Recusa.PROPRIA_CONTA);
+  }
+
+  @Test
+  void aceitaRemoverOOutroOperadorQuandoHaDois() {
+    assertThatCode(() -> validarRemocaoDeAcesso(1, 2, Funcao.OPERADOR, 2))
+        .doesNotThrowAnyException();
+  }
+
+  @Test
+  void recusaRemoverOUltimoOperador() {
+    // Dois operadores removendo um ao outro ao mesmo tempo: o segundo já conta um só (UC-18 4d).
+    recusado(() -> validarRemocaoDeAcesso(2, 1, Funcao.OPERADOR, 1), Recusa.ULTIMO_OPERADOR);
+  }
+
+  @Test
+  void aceitaRemoverGravadoraComUmOperadorSo() {
+    assertThatCode(() -> validarRemocaoDeAcesso(1, 5, Funcao.GRAVADORA, 1))
+        .doesNotThrowAnyException();
   }
 
   private static void recusado(ThrowingCallable chamada, Recusa recusa) {

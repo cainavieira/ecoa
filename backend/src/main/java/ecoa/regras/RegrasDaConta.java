@@ -86,6 +86,24 @@ public final class RegrasDaConta {
     }
   }
 
+  /**
+   * O operador não remove a própria conta, nem a do último operador (RN-06).
+   *
+   * @param operadores quantos operadores existem, contados na mesma transação da remoção, com as
+   *     linhas de operador bloqueadas
+   */
+  public static void validarRemocaoDeAcesso(
+      int idQuemRemove, int idRemovida, Funcao funcaoDaRemovida, long operadores) {
+    if (idQuemRemove == idRemovida) {
+      throw new RegraVioladaException(
+          Recusa.PROPRIA_CONTA, "O operador não remove a própria conta.");
+    }
+    if (funcaoDaRemovida == Funcao.OPERADOR && operadores <= 1) {
+      throw new RegraVioladaException(
+          Recusa.ULTIMO_OPERADOR, "A remoção deixaria o sistema sem nenhum operador.");
+    }
+  }
+
   private static void validarPendenteComUsuarioTiktok(
       StatusCriador conta, boolean temUsuarioTiktok) {
     if (conta != StatusCriador.PENDENTE) {
