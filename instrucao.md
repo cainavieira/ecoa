@@ -286,7 +286,7 @@ recebem dados e devolvem valores.
 | `calcularRanking` | RN-45, RN-46 |
 | `totalPorData` | RN-49 |
 | `validarEncerramento` | RN-50 |
-| `validarGanhador` | RN-52 |
+| `validarGanhador`, `validarEntregaDoPremio` | RN-52 |
 | `validarRemocaoDeAcesso` | RN-06 |
 
 As fronteiras onde a regra decide, e que por isso precisam de teste:
