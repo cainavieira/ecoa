@@ -143,7 +143,7 @@ Derivado das regras. Todo código novo entra aqui junto com a regra que o gera.
 | `EMAIL_JA_CADASTRADO` | 409 | cadastrar operador ou gravadora com e-mail que já tem conta | RN-04 |
 | `PROPRIA_CONTA` | 409 | operador removendo a própria conta | RN-06 |
 | `ULTIMO_OPERADOR` | 409 | remoção que deixaria o sistema sem nenhum operador | RN-06 |
-| `USUARIO_TIKTOK_INVALIDO` | 400 | @ vazio ou com espaço | RN-11 |
+| `USUARIO_TIKTOK_INVALIDO` | 400 | @ vazio ou com espaço no meio | RN-11 |
 | `USUARIO_TIKTOK_EM_USO` | 409 | aprovar conta, ou corrigir @, quando o @ já é de outra conta aprovada ou bloqueada | RN-11, RN-13, RN-15 |
 | `USUARIO_TIKTOK_FIXO` | 409 | criador tentando mudar o @ da conta aprovada ou bloqueada | RN-15 |
 | `CONTA_NAO_PENDENTE` | 409 | aprovar ou recusar conta que não está pendente | RN-13 |

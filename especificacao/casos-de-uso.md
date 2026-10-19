@@ -67,7 +67,7 @@ Atores em `atores.md`, requisitos em `requisitos-funcionais.md`, regras em
 
 - **1a** O @ vem com arroba ou com maiúsculas: aceito, e guardado sem o arroba e
   em minúsculas. (RN-11)
-- **1b** O @ está vazio ou tem espaço: recusado. (RN-11)
+- **1b** O @ está vazio ou tem espaço no meio: recusado. (RN-11)
 - **1c** O @ já pertence a outra conta: aceito, porque a posse se prova pelo
   código na bio, e a conferência decide (UC-03 3a e 3b). (RN-11)
 - **1d** A conta está recusada: corrigir o @ a devolve a pendente, e ela volta à
