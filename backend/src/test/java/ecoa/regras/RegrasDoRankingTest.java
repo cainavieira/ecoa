@@ -1,6 +1,7 @@
 package ecoa.regras;
 
 import static ecoa.regras.RegrasDoRanking.calcularRanking;
+import static ecoa.regras.RegrasDoRanking.totalPorData;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 
@@ -74,6 +75,27 @@ class RegrasDoRankingTest {
     assertThat(calcularRanking(List.of(participante(1, semLeitura))))
         .extracting(PosicaoNoRanking::idParticipacao, PosicaoNoRanking::soma)
         .containsExactly(tuple(1, 0L));
+  }
+
+  @Test
+  void totalDeCadaDataSomaALeituraMaisRecenteDeCadaVideo() {
+    // O vídeo 10 caiu de 100 para 80; o 20 só tem leitura a partir de 15/11; os dois têm em 20/11.
+    LocalDate dia10 = LocalDate.of(2026, 11, 10);
+    LocalDate dia15 = LocalDate.of(2026, 11, 15);
+    LocalDate dia20 = LocalDate.of(2026, 11, 20);
+    VideoDaCampanha caiu =
+        new VideoDaCampanha(
+            10,
+            StatusVideo.APROVADO,
+            List.of(new LeituraDoVideo(dia10, 100), new LeituraDoVideo(dia20, 80)));
+    VideoDaCampanha tardio =
+        new VideoDaCampanha(
+            20,
+            StatusVideo.APROVADO,
+            List.of(new LeituraDoVideo(dia20, 60), new LeituraDoVideo(dia15, 50)));
+    assertThat(totalPorData(List.of(caiu, tardio)))
+        .extracting(TotalNaData::data, TotalNaData::total)
+        .containsExactly(tuple(dia10, 100L), tuple(dia15, 150L), tuple(dia20, 140L));
   }
 
   private static ParticipanteDaCampanha participante(

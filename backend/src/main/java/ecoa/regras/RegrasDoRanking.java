@@ -1,5 +1,6 @@
 package ecoa.regras;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -47,5 +48,33 @@ public final class RegrasDoRanking {
           new PosicaoNoRanking(posicao, atual.idParticipacao(), atual.soma(), atual.videos()));
     }
     return ranking;
+  }
+
+  /**
+   * Um ponto por data com leitura, com a soma, de cada vídeo, da leitura mais recente até aquela
+   * data; vídeo sem leitura até a data não soma (RN-49). Recebe só os vídeos que contam: na
+   * campanha encerrada, os do ranking final, mesmo de criador bloqueado depois (RN-48).
+   */
+  public static List<TotalNaData> totalPorData(List<VideoDaCampanha> videosQueContam) {
+    return videosQueContam.stream()
+        .flatMap(video -> video.leituras().stream())
+        .map(LeituraDoVideo::data)
+        .distinct()
+        .sorted()
+        .map(data -> new TotalNaData(data, totalNaData(videosQueContam, data)))
+        .toList();
+  }
+
+  private static long totalNaData(List<VideoDaCampanha> videos, LocalDate data) {
+    return videos.stream()
+        .mapToLong(
+            video ->
+                RegrasDaLeitura.numeroAtual(
+                        video.leituras().stream()
+                            .filter(leitura -> !leitura.data().isAfter(data))
+                            .toList())
+                    .map(LeituraDoVideo::views)
+                    .orElse(0L))
+        .sum();
   }
 }
