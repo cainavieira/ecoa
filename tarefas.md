@@ -76,7 +76,7 @@ ADR-0013, RNF-28).
 | T-04 | `statusDaCampanha`, `validarDatasDaCampanha`, `validarEntrada`, `validarEnvioDeVideo`, `validarAprovacaoDeVideo`, e o teste de arquitetura com o ArchUnit | feito |
 | T-05 | `validarVideoAprovado`, `validarLeitura`, `leituraDeFechamento`, `numeroAtual` | feito |
 | T-06 | `calcularRanking`, `totalPorData`, `validarEncerramento` | feito |
-| T-07 | `normalizarEmail`, `normalizarUsuarioTiktok`, `validarAprovacaoDaConta`, `validarRecusaDaConta`, `validarCorrecaoDoUsuarioTiktokPeloCriador`, `validarCorrecaoDoUsuarioTiktokPeloOperador`, `validarBloqueioDaConta`, `validarDesbloqueioDaConta`, `validarGanhador`, `validarEntregaDoPremio`, `validarRemocaoDeAcesso` | a fazer |
+| T-07 | `normalizarEmail`, `normalizarUsuarioTiktok`, `validarAprovacaoDaConta`, `validarRecusaDaConta`, `validarCorrecaoDoUsuarioTiktokPeloCriador`, `validarCorrecaoDoUsuarioTiktokPeloOperador`, `validarBloqueioDaConta`, `validarDesbloqueioDaConta`, `validarGanhador`, `validarEntregaDoPremio`, `validarRemocaoDeAcesso` | feito |
 
 ## Etapa 3: base das rotas e autenticação
 
