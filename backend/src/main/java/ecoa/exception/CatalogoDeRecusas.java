@@ -1,0 +1,44 @@
+package ecoa.exception;
+
+import ecoa.regras.Recusa;
+import org.springframework.http.HttpStatus;
+
+/** O status e a regra de cada código, como no catálogo (convencoes-backend.md). */
+final class CatalogoDeRecusas {
+
+  record Descricao(HttpStatus status, String regra) {}
+
+  private CatalogoDeRecusas() {}
+
+  static Descricao descricao(Recusa recusa) {
+    return switch (recusa) {
+      case DATAS_FORA_DE_ORDEM -> new Descricao(HttpStatus.BAD_REQUEST, "RN-24");
+      case FECHAMENTO_NAO_FUTURO -> new Descricao(HttpStatus.BAD_REQUEST, "RN-26");
+      case DATAS_EXCLUEM_VIDEO -> new Descricao(HttpStatus.CONFLICT, "RN-27");
+      case CONTA_NAO_APROVADA -> new Descricao(HttpStatus.CONFLICT, "RN-15, RN-16, RN-17");
+      case ENTRADA_ENCERRADA -> new Descricao(HttpStatus.CONFLICT, "RN-32");
+      case CAMPANHA_NAO_ABERTA -> new Descricao(HttpStatus.CONFLICT, "RN-34");
+      case LINK_NAO_TIKTOK -> new Descricao(HttpStatus.BAD_REQUEST, "RN-34");
+      case LINK_JA_ENVIADO -> new Descricao(HttpStatus.CONFLICT, "RN-35");
+      case VIDEO_NAO_EM_ANALISE -> new Descricao(HttpStatus.CONFLICT, "RN-36, RN-37");
+      case PUBLICACAO_FORA_DO_PRAZO -> new Descricao(HttpStatus.CONFLICT, "RN-36");
+      case CRIADOR_BLOQUEADO -> new Descricao(HttpStatus.CONFLICT, "RN-19, RN-52");
+      case VIDEO_NAO_APROVADO -> new Descricao(HttpStatus.CONFLICT, "RN-38, RN-39");
+      case DATA_FUTURA -> new Descricao(HttpStatus.BAD_REQUEST, "RN-40, RN-52");
+      case LEITURA_ANTES_DA_PUBLICACAO -> new Descricao(HttpStatus.BAD_REQUEST, "RN-40");
+      case LEITURA_DEPOIS_DO_FECHAMENTO -> new Descricao(HttpStatus.CONFLICT, "RN-41");
+      case ENCERRAMENTO_ANTES_DO_FECHAMENTO -> new Descricao(HttpStatus.CONFLICT, "RN-50");
+      case ENCERRAMENTO_COM_PENDENCIA -> new Descricao(HttpStatus.CONFLICT, "RN-50");
+      case USUARIO_TIKTOK_INVALIDO -> new Descricao(HttpStatus.BAD_REQUEST, "RN-11");
+      case USUARIO_TIKTOK_FIXO -> new Descricao(HttpStatus.CONFLICT, "RN-15");
+      case CONTA_NAO_PENDENTE -> new Descricao(HttpStatus.CONFLICT, "RN-13");
+      case CONTA_SEM_USUARIO_TIKTOK -> new Descricao(HttpStatus.CONFLICT, "RN-13");
+      case USUARIO_TIKTOK_EM_USO -> new Descricao(HttpStatus.CONFLICT, "RN-11, RN-13, RN-15");
+      case CONTA_NAO_BLOQUEADA -> new Descricao(HttpStatus.CONFLICT, "RN-21");
+      case GANHADOR_ANTES_DO_INICIO -> new Descricao(HttpStatus.CONFLICT, "RN-52");
+      case GANHADOR_NAO_PARTICIPANTE -> new Descricao(HttpStatus.CONFLICT, "RN-52");
+      case PROPRIA_CONTA -> new Descricao(HttpStatus.CONFLICT, "RN-06");
+      case ULTIMO_OPERADOR -> new Descricao(HttpStatus.CONFLICT, "RN-06");
+    };
+  }
+}
