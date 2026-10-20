@@ -139,7 +139,9 @@ Derivado das regras. Todo código novo entra aqui junto com a regra que o gera.
 | `EMAIL_NAO_VERIFICADO` | redirecionamento | o Google não devolveu o e-mail como verificado; vai como `motivo` | RN-01 |
 | `SEM_PERMISSAO` | 403 | a função não permite a rota | RN-02 |
 | `CONTA_BLOQUEADA` | 403 | criador bloqueado chamando rota que não seja a da própria conta ou as de autenticação | RN-18 |
-| `NAO_ENCONTRADO` | 404 | recurso inexistente, ou de outro criador, sem distinguir os dois | RN-02 |
+| `NAO_ENCONTRADO` | 404 | recurso inexistente, ou de outro criador, sem distinguir os dois; rota inexistente, ou que não aceita o método | RN-02 |
+| `CORPO_INVALIDO` | 422 | corpo malformado, ou valor que não tem o tipo do campo, como views com parte decimal, antes de chegar à regra | |
+| `ERRO_INTERNO` | 500 | erro que nenhuma regra previu; a mensagem é genérica, e o log guarda só a classe e o lugar de cada causa (RNF-16) | |
 | `EMAIL_JA_CADASTRADO` | 409 | cadastrar operador ou gravadora com e-mail que já tem conta | RN-04 |
 | `PROPRIA_CONTA` | 409 | operador removendo a própria conta | RN-06 |
 | `ULTIMO_OPERADOR` | 409 | remoção que deixaria o sistema sem nenhum operador | RN-06 |

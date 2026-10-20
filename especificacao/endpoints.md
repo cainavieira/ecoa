@@ -197,3 +197,4 @@ renovação uma vez e repete a chamada.
 | 404 | recurso que não existe, ou de outro criador, sem distinguir os dois |
 | 409 | o status atual não permite a ação (conta, vídeo, campanha encerrada, prazo, leitura de fechamento, pendência de encerramento, @ ou link em uso) |
 | 422 | corpo malformado, antes de chegar à regra de negócio |
+| 500 | erro inesperado, com `ERRO_INTERNO` |

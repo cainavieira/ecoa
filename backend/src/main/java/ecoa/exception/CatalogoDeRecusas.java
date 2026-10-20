@@ -39,6 +39,9 @@ final class CatalogoDeRecusas {
       case GANHADOR_NAO_PARTICIPANTE -> new Descricao(HttpStatus.CONFLICT, "RN-52");
       case PROPRIA_CONTA -> new Descricao(HttpStatus.CONFLICT, "RN-06");
       case ULTIMO_OPERADOR -> new Descricao(HttpStatus.CONFLICT, "RN-06");
+      case NAO_ENCONTRADO -> new Descricao(HttpStatus.NOT_FOUND, "RN-02");
+      case CORPO_INVALIDO -> new Descricao(HttpStatus.UNPROCESSABLE_CONTENT, null);
+      case ERRO_INTERNO -> new Descricao(HttpStatus.INTERNAL_SERVER_ERROR, null);
     };
   }
 }
