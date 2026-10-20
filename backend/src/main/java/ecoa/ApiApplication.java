@@ -1,6 +1,7 @@
 package ecoa;
 
 import ecoa.comando.Migrar;
+import ecoa.config.VariaveisObrigatorias;
 import java.util.Arrays;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,6 +14,13 @@ public class ApiApplication {
       Migrar.executar(Arrays.copyOfRange(args, 1, args.length));
       return;
     }
-    SpringApplication.run(ApiApplication.class, args);
+    aplicacao().run(args);
+  }
+
+  /** A api e o modo migrar sobem por aqui, com a conferência das variáveis obrigatórias. */
+  public static SpringApplication aplicacao() {
+    SpringApplication aplicacao = new SpringApplication(ApiApplication.class);
+    aplicacao.addListeners(new VariaveisObrigatorias());
+    return aplicacao;
   }
 }

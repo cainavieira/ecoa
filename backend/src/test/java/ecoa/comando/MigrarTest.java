@@ -15,9 +15,9 @@ class MigrarTest {
       postgres.start();
 
       Migrar.executar(
-          "--spring.datasource.url=" + postgres.getJdbcUrl(),
-          "--spring.datasource.username=" + postgres.getUsername(),
-          "--spring.datasource.password=" + postgres.getPassword());
+          "--ECOA_DB_URL=" + postgres.getJdbcUrl(),
+          "--ECOA_DB_USUARIO=" + postgres.getUsername(),
+          "--ECOA_DB_SENHA=" + postgres.getPassword());
 
       var pendentes =
           Flyway.configure()
