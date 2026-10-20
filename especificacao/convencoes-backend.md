@@ -137,6 +137,7 @@ Derivado das regras. Todo código novo entra aqui junto com a regra que o gera.
 |:--|:--|:--|:--|
 | `LOGIN_NAO_CONCLUIDO` | redirecionamento | cancelamento no Google ou verificação do retorno falha; vai como `motivo` na URL da tela de entrada | RN-01 |
 | `EMAIL_NAO_VERIFICADO` | redirecionamento | o Google não devolveu o e-mail como verificado; vai como `motivo` | RN-01 |
+| `NAO_AUTENTICADO` | 401 | sem token de acesso válido: ausente, vencido ou com assinatura que não confere | ADR-0008 |
 | `SEM_PERMISSAO` | 403 | a função não permite a rota | RN-02 |
 | `CONTA_BLOQUEADA` | 403 | criador bloqueado chamando rota que não seja a da própria conta ou as de autenticação | RN-18 |
 | `NAO_ENCONTRADO` | 404 | recurso inexistente, ou de outro criador, sem distinguir os dois; rota inexistente, ou que não aceita o método | RN-02 |

@@ -42,6 +42,8 @@ final class CatalogoDeRecusas {
       case NAO_ENCONTRADO -> new Descricao(HttpStatus.NOT_FOUND, "RN-02");
       case CORPO_INVALIDO -> new Descricao(HttpStatus.UNPROCESSABLE_CONTENT, null);
       case ERRO_INTERNO -> new Descricao(HttpStatus.INTERNAL_SERVER_ERROR, null);
+      case NAO_AUTENTICADO -> new Descricao(HttpStatus.UNAUTHORIZED, "ADR-0008");
+      case SEM_PERMISSAO -> new Descricao(HttpStatus.FORBIDDEN, "RN-02");
     };
   }
 }
