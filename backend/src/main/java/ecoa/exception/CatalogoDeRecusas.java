@@ -44,6 +44,7 @@ final class CatalogoDeRecusas {
       case ERRO_INTERNO -> new Descricao(HttpStatus.INTERNAL_SERVER_ERROR, null);
       case NAO_AUTENTICADO -> new Descricao(HttpStatus.UNAUTHORIZED, "ADR-0008");
       case SEM_PERMISSAO -> new Descricao(HttpStatus.FORBIDDEN, "RN-02");
+      case CONTA_BLOQUEADA -> new Descricao(HttpStatus.FORBIDDEN, "RN-18");
     };
   }
 }
