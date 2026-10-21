@@ -45,6 +45,7 @@ final class CatalogoDeRecusas {
       case NAO_AUTENTICADO -> new Descricao(HttpStatus.UNAUTHORIZED, "ADR-0008");
       case SEM_PERMISSAO -> new Descricao(HttpStatus.FORBIDDEN, "RN-02");
       case CONTA_BLOQUEADA -> new Descricao(HttpStatus.FORBIDDEN, "RN-18");
+      case EMAIL_JA_CADASTRADO -> new Descricao(HttpStatus.CONFLICT, "RN-04");
     };
   }
 }

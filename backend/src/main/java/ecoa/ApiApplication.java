@@ -1,5 +1,6 @@
 package ecoa;
 
+import ecoa.comando.CadastrarOperador;
 import ecoa.comando.Migrar;
 import ecoa.config.VariaveisObrigatorias;
 import java.util.Arrays;
@@ -14,10 +15,14 @@ public class ApiApplication {
       Migrar.executar(Arrays.copyOfRange(args, 1, args.length));
       return;
     }
+    if (args.length > 0 && args[0].equals("cadastrar-operador")) {
+      // O código de saída diz a quem rodou se a conta foi criada (UC-20 2a)
+      System.exit(CadastrarOperador.executar(Arrays.copyOfRange(args, 1, args.length)));
+    }
     aplicacao().run(args);
   }
 
-  /** A api e o modo migrar sobem por aqui, com a conferência das variáveis obrigatórias. */
+  /** A api e os modos do .jar sobem por aqui, com a conferência das variáveis obrigatórias. */
   public static SpringApplication aplicacao() {
     SpringApplication aplicacao = new SpringApplication(ApiApplication.class);
     aplicacao.addListeners(new VariaveisObrigatorias());

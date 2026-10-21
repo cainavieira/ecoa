@@ -20,4 +20,10 @@ public class Conta {
   private Instant criadoEm;
 
   protected Conta() {}
+
+  public Conta(String email, Funcao funcao, Instant criadoEm) {
+    this.email = email;
+    this.funcao = funcao;
+    this.criadoEm = criadoEm;
+  }
 }
