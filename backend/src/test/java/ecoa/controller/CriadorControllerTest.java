@@ -57,7 +57,13 @@ class CriadorControllerTest {
             .content("{\"motivo\": \"motivo\"}"),
         put("/criadores/1/usuario-tiktok")
             .contentType(MediaType.APPLICATION_JSON)
-            .content("{\"usuarioTiktok\": \"fulana\"}"));
+            .content("{\"usuarioTiktok\": \"fulana\"}"),
+        post("/criadores/1/bloqueio")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"motivo\": \"motivo\"}"),
+        post("/criadores/1/desbloqueio")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"motivo\": \"motivo\"}"));
   }
 
   @ParameterizedTest
@@ -183,6 +189,98 @@ class CriadorControllerTest {
     mvc.perform(post("/criadores/{id}/aprovacao", operadora).cookie(operador()))
         .andExpect(status().isNotFound())
         .andExpect(jsonPath("$.erro.codigo").value("NAO_ENCONTRADO"));
+  }
+
+  @Test
+  void bloqueioValeNaRequisicaoSeguinteDoCriador() throws Exception {
+    int fulana = criador("fulana@exemplo.com", "aprovada", "fulana");
+
+    comMotivo("bloqueio", fulana, "{\"motivo\": \"vídeo comprado\"}")
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.status").value("bloqueada"));
+
+    Cookie daFulana = acesso(Funcao.CRIADOR, fulana);
+    mvc.perform(
+            put("/eu/usuario-tiktok")
+                .cookie(daFulana)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"usuarioTiktok\": \"outra\"}"))
+        .andExpect(status().isForbidden())
+        .andExpect(jsonPath("$.erro.codigo").value("CONTA_BLOQUEADA"));
+    mvc.perform(get("/eu").cookie(daFulana))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.criador.motivoBloqueio").value("vídeo comprado"));
+  }
+
+  @Test
+  void bloquearContaPendenteEhRecusado() throws Exception {
+    int fulana = criador("fulana@exemplo.com", "pendente", "fulana");
+
+    comMotivo("bloqueio", fulana, "{\"motivo\": \"motivo\"}")
+        .andExpect(status().isConflict())
+        .andExpect(jsonPath("$.erro.codigo").value("CONTA_NAO_APROVADA"));
+  }
+
+  @Test
+  void bloquearSemMotivoNaoEhAceito() throws Exception {
+    int fulana = criador("fulana@exemplo.com", "aprovada", "fulana");
+
+    comMotivo("bloqueio", fulana, "{}")
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.erro.codigo").value("MOTIVO_AUSENTE"));
+  }
+
+  @Test
+  void desbloqueioDevolveAAprovadaEGuardaOsDoisMotivos() throws Exception {
+    int fulana = bloqueada("fulana@exemplo.com", "fulana", "vídeo comprado");
+
+    comMotivo("desbloqueio", fulana, "{\"motivo\": \"contestação aceita\"}")
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.status").value("aprovada"));
+
+    entidades.flush();
+    assertThat(
+            jdbc.sql(
+                    "select motivo_bloqueio || ' / ' || motivo_desbloqueio from criador"
+                        + " where id_criador = ?")
+                .param(fulana)
+                .query(String.class)
+                .single())
+        .isEqualTo("vídeo comprado / contestação aceita");
+  }
+
+  @Test
+  void desbloquearContaAprovadaEhRecusado() throws Exception {
+    int fulana = criador("fulana@exemplo.com", "aprovada", "fulana");
+
+    comMotivo("desbloqueio", fulana, "{\"motivo\": \"motivo\"}")
+        .andExpect(status().isConflict())
+        .andExpect(jsonPath("$.erro.codigo").value("CONTA_NAO_BLOQUEADA"));
+  }
+
+  @Test
+  void desbloquearSemMotivoNaoEhAceito() throws Exception {
+    int fulana = bloqueada("fulana@exemplo.com", "fulana", "vídeo comprado");
+
+    comMotivo("desbloqueio", fulana, "{\"motivo\": \"\"}")
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.erro.codigo").value("MOTIVO_AUSENTE"));
+  }
+
+  private ResultActions comMotivo(String acao, int conta, String corpo) throws Exception {
+    return mvc.perform(
+        post("/criadores/{id}/" + acao, conta)
+            .cookie(operador())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(corpo));
+  }
+
+  private int bloqueada(String email, String usuarioTiktok, String motivo) {
+    int conta = criador(email, "aprovada", usuarioTiktok);
+    jdbc.sql("update criador set status = 'bloqueada', motivo_bloqueio = ? where id_criador = ?")
+        .params(motivo, conta)
+        .update();
+    return conta;
   }
 
   private ResultActions recusar(int conta, String corpo) throws Exception {

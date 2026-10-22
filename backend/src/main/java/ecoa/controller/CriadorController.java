@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-/** A verificação das contas de criador, pelo operador (UC-03). */
+/**
+ * A verificação, o bloqueio e o desbloqueio das contas de criador, pelo operador (UC-03, UC-04).
+ */
 @RestController
 @RequestMapping("/criadores")
 public class CriadorController {
@@ -52,5 +54,17 @@ public class CriadorController {
   public CriadorDto corrigirUsuarioTiktok(
       @PathVariable int id, @Valid @RequestBody UsuarioTiktokDto corpo) {
     return criadores.corrigirUsuarioTiktok(id, corpo.usuarioTiktok());
+  }
+
+  @PostMapping("/{id}/bloqueio")
+  @PreAuthorize("hasRole('OPERADOR')")
+  public CriadorDto bloquear(@PathVariable int id, @Valid @RequestBody MotivoDto corpo) {
+    return criadores.bloquear(id, corpo.motivo());
+  }
+
+  @PostMapping("/{id}/desbloqueio")
+  @PreAuthorize("hasRole('OPERADOR')")
+  public CriadorDto desbloquear(@PathVariable int id, @Valid @RequestBody MotivoDto corpo) {
+    return criadores.desbloquear(id, corpo.motivo());
   }
 }

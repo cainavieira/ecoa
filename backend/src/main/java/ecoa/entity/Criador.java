@@ -84,4 +84,22 @@ public class Criador {
     this.status = StatusCriador.RECUSADA;
     this.motivoRecusa = motivo;
   }
+
+  /**
+   * O motivo aparece na tela de bloqueio (RN-18). O par de motivos guarda o último ciclo: um
+   * bloqueio novo apaga o motivo do desbloqueio anterior.
+   */
+  public void bloquear(String motivo) {
+    this.status = StatusCriador.BLOQUEADA;
+    this.motivoBloqueio = motivo;
+    this.motivoDesbloqueio = null;
+  }
+
+  /**
+   * A conta volta a aprovada, e o motivo do bloqueio fica guardado junto do desbloqueio (RN-21).
+   */
+  public void desbloquear(String motivo) {
+    this.status = StatusCriador.APROVADA;
+    this.motivoDesbloqueio = motivo;
+  }
 }

@@ -80,6 +80,27 @@ public class CriadorService {
   }
 
   /**
+   * Só a aprovada é bloqueada (RN-17). O bloqueio vale na requisição seguinte do criador, porque o
+   * status é lido do banco a cada uma (ADR-0008).
+   */
+  @Transactional
+  public CriadorDto bloquear(int id, String motivo) {
+    Criador criador = criador(id);
+    RegrasDaConta.validarBloqueioDaConta(criador.status());
+    criador.bloquear(motivo);
+    return paraOperador(criador);
+  }
+
+  /** Só a bloqueada é desbloqueada, e volta a aprovada (RN-21). */
+  @Transactional
+  public CriadorDto desbloquear(int id, String motivo) {
+    Criador criador = criador(id);
+    RegrasDaConta.validarDesbloqueioDaConta(criador.status());
+    criador.desbloquear(motivo);
+    return paraOperador(criador);
+  }
+
+  /**
    * O operador corrige o @ da conta aprovada ou bloqueada, depois de conferir o código na bio do @
    * novo, que não pode ser de outra aprovada ou bloqueada (RN-15, UC-03 4a).
    */
