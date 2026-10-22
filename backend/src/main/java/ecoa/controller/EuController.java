@@ -27,18 +27,13 @@ public class EuController {
   @GetMapping
   @PreAuthorize("isAuthenticated()")
   public EuDto eu(@AuthenticationPrincipal Jwt token) {
-    return contas.eu(idDaConta(token));
+    return contas.eu(ContaDoToken.id(token));
   }
 
   @PutMapping("/usuario-tiktok")
   @PreAuthorize("hasRole('CRIADOR')")
   public EuDto informarUsuarioTiktok(
       @AuthenticationPrincipal Jwt token, @Valid @RequestBody UsuarioTiktokDto corpo) {
-    return contas.informarUsuarioTiktok(idDaConta(token), corpo.usuarioTiktok());
-  }
-
-  /** O "sub" do token é o id da conta (ADR-0008). */
-  private static int idDaConta(Jwt token) {
-    return Integer.parseInt(token.getSubject());
+    return contas.informarUsuarioTiktok(ContaDoToken.id(token), corpo.usuarioTiktok());
   }
 }

@@ -1,8 +1,9 @@
 package ecoa.comando;
 
 import ecoa.ApiApplication;
+import ecoa.regras.Funcao;
 import ecoa.regras.RegraVioladaException;
-import ecoa.service.ContaService;
+import ecoa.service.AcessoService;
 import java.util.Arrays;
 import java.util.stream.Stream;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -27,7 +28,7 @@ public final class CadastrarOperador {
                 Arrays.stream(argumentos, 1, argumentos.length))
             .toArray(String[]::new);
     try (ConfigurableApplicationContext contexto = ApiApplication.aplicacao().run(propriedades)) {
-      contexto.getBean(ContaService.class).cadastrarOperador(argumentos[0]);
+      contexto.getBean(AcessoService.class).cadastrar(argumentos[0], Funcao.OPERADOR);
       System.out.println(
           "Conta de operador cadastrada. A pessoa entra pelo Google com esse e-mail.");
       return 0;
