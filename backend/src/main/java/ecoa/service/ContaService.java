@@ -1,7 +1,9 @@
 package ecoa.service;
 
+import ecoa.dto.EuDto;
 import ecoa.entity.Conta;
 import ecoa.entity.Criador;
+import ecoa.mapper.EuMapper;
 import ecoa.regras.Funcao;
 import ecoa.regras.Recusa;
 import ecoa.regras.RegraVioladaException;
@@ -11,6 +13,7 @@ import ecoa.repository.CriadorRepository;
 import java.security.SecureRandom;
 import java.time.Clock;
 import java.time.Instant;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,6 +60,42 @@ public class ContaService {
     Conta conta = contas.findByEmail(normalizado).orElseGet(() -> criarCriador(normalizado));
     conta.completarNome(nome);
     return conta;
+  }
+
+  /** A própria conta, com o bloco do criador quando ela é de criador (RF-05, RF-13, RF-17). */
+  @Transactional(readOnly = true)
+  public EuDto eu(int idConta) {
+    Conta conta = contaDoToken(idConta);
+    return criadores
+        .findById(idConta)
+        .map(criador -> EuMapper.deCriador(conta, criador))
+        .orElseGet(() -> EuMapper.deConta(conta));
+  }
+
+  /**
+   * O criador informa ou corrige o @ da conta pendente ou recusada, e ela fica pendente (RN-11,
+   * RN-14, RN-15). O @ de outra conta é aceito: quem prova a posse é o código na bio (UC-02 1c).
+   */
+  @Transactional
+  public EuDto informarUsuarioTiktok(int idConta, String usuarioTiktok) {
+    Conta conta = contaDoToken(idConta);
+    Criador criador = criadores.findById(idConta).orElseThrow(ContaService::contaApagada);
+    criador.corrigirUsuarioTiktok(
+        RegrasDaConta.normalizarUsuarioTiktok(usuarioTiktok),
+        RegrasDaConta.statusDepoisDaCorrecaoPeloCriador(criador.status()));
+    return EuMapper.deCriador(conta, criador);
+  }
+
+  private Conta contaDoToken(int idConta) {
+    return contas.findById(idConta).orElseThrow(ContaService::contaApagada);
+  }
+
+  /**
+   * A conta foi apagada, e o token de acesso dela ainda vale por até 15 minutos (ADR-0008): a
+   * resposta pede para entrar de novo, e não diz que algo não existe.
+   */
+  private static BadCredentialsException contaApagada() {
+    return new BadCredentialsException("A conta do token não existe mais.");
   }
 
   private Conta criarCriador(String email) {

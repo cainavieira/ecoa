@@ -37,12 +37,6 @@ class BloqueioTest {
     String criador() {
       return "ok";
     }
-
-    @GetMapping("/eu")
-    @PreAuthorize("isAuthenticated()")
-    String eu() {
-      return "ok";
-    }
   }
 
   private final MockMvc mvc;
@@ -70,7 +64,9 @@ class BloqueioTest {
   @Test
   void criadorBloqueadoAindaVeAPropriaConta() throws Exception {
     int conta = criador("bloqueada");
-    mvc.perform(get("/eu").cookie(acesso(conta))).andExpect(status().isOk());
+    mvc.perform(get("/eu").cookie(acesso(conta)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.criador.status").value("bloqueada"));
   }
 
   private int criador(String status) {

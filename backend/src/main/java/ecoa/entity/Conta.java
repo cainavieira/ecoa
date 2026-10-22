@@ -35,6 +35,14 @@ public class Conta {
     return funcao;
   }
 
+  public String email() {
+    return email;
+  }
+
+  public String nome() {
+    return nome;
+  }
+
   /**
    * O nome vem do Google e só preenche o que falta: o da conta cadastrada pelo operador (RF-03).
    */

@@ -36,4 +36,33 @@ public class Criador {
     this.status = StatusCriador.PENDENTE;
     this.aceiteTermosEm = aceiteTermosEm;
   }
+
+  public StatusCriador status() {
+    return status;
+  }
+
+  public String usuarioTiktok() {
+    return usuarioTiktok;
+  }
+
+  public String codigoVerificacao() {
+    return codigoVerificacao;
+  }
+
+  public String motivoRecusa() {
+    return motivoRecusa;
+  }
+
+  public String motivoBloqueio() {
+    return motivoBloqueio;
+  }
+
+  /** O @ novo e o status que a regra decidiu. O motivo da recusa só vale enquanto ela durar. */
+  public void corrigirUsuarioTiktok(String usuarioTiktok, StatusCriador status) {
+    this.usuarioTiktok = usuarioTiktok;
+    this.status = status;
+    if (status != StatusCriador.RECUSADA) {
+      this.motivoRecusa = null;
+    }
+  }
 }
