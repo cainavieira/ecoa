@@ -2,6 +2,7 @@ package ecoa.exception;
 
 import ecoa.regras.Recusa;
 import ecoa.regras.RegraVioladaException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.StringJoiner;
 import org.slf4j.Logger;
@@ -10,7 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.ErrorResponse;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -55,6 +58,24 @@ public class TratadorGlobal {
       campo = jackson.getPath().getLast().getPropertyName();
     }
     return resposta(Recusa.CORPO_INVALIDO, campo, CORPO_INVALIDO, List.of());
+  }
+
+  /**
+   * Campo do corpo que não passa no Bean Validation: a anotação traz o código do catálogo, e a
+   * frase que a pessoa lê vem do catálogo. Anotação sem código sai como CORPO_INVALIDO, com o
+   * campo.
+   */
+  @ExceptionHandler
+  ResponseEntity<RespostaDeErro> campoInvalido(MethodArgumentNotValidException excecao) {
+    FieldError erro = excecao.getBindingResult().getFieldError();
+    String campo = erro == null ? null : erro.getField();
+    String codigo = erro == null ? null : erro.getDefaultMessage();
+    return Arrays.stream(Recusa.values())
+        .filter(recusa -> recusa.name().equals(codigo))
+        .findFirst()
+        .map(
+            recusa -> resposta(recusa, campo, CatalogoDeRecusas.mensagemDoCampo(recusa), List.of()))
+        .orElseGet(() -> resposta(Recusa.CORPO_INVALIDO, campo, CORPO_INVALIDO, List.of()));
   }
 
   /** Id que não é número: o recurso não pode existir. */

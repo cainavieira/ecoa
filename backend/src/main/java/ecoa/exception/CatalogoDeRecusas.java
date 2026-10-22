@@ -46,6 +46,19 @@ final class CatalogoDeRecusas {
       case SEM_PERMISSAO -> new Descricao(HttpStatus.FORBIDDEN, "RN-02");
       case CONTA_BLOQUEADA -> new Descricao(HttpStatus.FORBIDDEN, "RN-18");
       case EMAIL_JA_CADASTRADO -> new Descricao(HttpStatus.CONFLICT, "RN-04");
+      case MOTIVO_AUSENTE ->
+          new Descricao(HttpStatus.BAD_REQUEST, "RN-13, RN-17, RN-21, RN-37, RN-38");
+    };
+  }
+
+  /**
+   * A frase que a pessoa lê quando a recusa vem de um campo do corpo: a anotação do DTO traz só o
+   * código, e a frase mora aqui, uma vez por código.
+   */
+  static String mensagemDoCampo(Recusa recusa) {
+    return switch (recusa) {
+      case MOTIVO_AUSENTE -> "Informe o motivo.";
+      default -> "Confira o campo destacado.";
     };
   }
 }
