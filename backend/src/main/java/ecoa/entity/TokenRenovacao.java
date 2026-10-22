@@ -25,4 +25,17 @@ public class TokenRenovacao {
   private Instant expiraEm;
 
   protected TokenRenovacao() {}
+
+  public Conta conta() {
+    return conta;
+  }
+
+  public Instant expiraEm() {
+    return expiraEm;
+  }
+
+  /** Cada uso empurra a validade, sem trocar o token (ADR-0008). */
+  public void prorrogarAte(Instant expiraEm) {
+    this.expiraEm = expiraEm;
+  }
 }

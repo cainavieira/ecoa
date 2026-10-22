@@ -1,5 +1,7 @@
 package ecoa.config;
 
+import com.nimbusds.jose.jwk.JWKSet;
+import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import jakarta.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,11 +12,15 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.util.WebUtils;
 
@@ -27,7 +33,9 @@ import org.springframework.web.util.WebUtils;
 @ConditionalOnWebApplication
 public class SegurancaConfig {
 
-  static final String COOKIE_DE_ACESSO = "acesso";
+  /** As rotas de auth/ funcionam sem token de acesso (endpoints.md). */
+  private static final RequestMatcher ROTAS_DE_AUTH =
+      PathPatternRequestMatcher.pathPattern("/auth/**");
 
   @Bean
   SecurityFilterChain seguranca(
@@ -39,13 +47,19 @@ public class SegurancaConfig {
         // Sem token contra CSRF: o cookie é SameSite=Lax, e nenhum GET muda dado (ADR-0008)
         .csrf(csrf -> csrf.disable())
         .sessionManagement(sessao -> sessao.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .authorizeHttpRequests(rotas -> rotas.anyRequest().authenticated())
+        .authorizeHttpRequests(
+            rotas -> rotas.requestMatchers(ROTAS_DE_AUTH).permitAll().anyRequest().authenticated())
         .oauth2ResourceServer(
             recurso ->
                 recurso
                     .bearerTokenResolver(
                         pedido -> {
-                          Cookie cookie = WebUtils.getCookie(pedido, COOKIE_DE_ACESSO);
+                          // Nas rotas de auth/, o cookie de acesso é ignorado: um token vencido
+                          // ou de chave trocada não pode impedir a renovação nem o login.
+                          if (ROTAS_DE_AUTH.matches(pedido)) {
+                            return null;
+                          }
+                          Cookie cookie = WebUtils.getCookie(pedido, CookiesDaSessao.ACESSO);
                           return cookie == null ? null : cookie.getValue();
                         })
                     .jwt(jwt -> jwt.jwtAuthenticationConverter(conversorDaFuncao()))
@@ -57,6 +71,11 @@ public class SegurancaConfig {
   @Bean
   JwtDecoder decodificadorDoToken(@Value("${ECOA_JWT_CHAVE}") String chave) {
     return NimbusJwtDecoder.withPublicKey(ChaveDoToken.publica(chave)).build();
+  }
+
+  @Bean
+  JwtEncoder emissorDoToken(@Value("${ECOA_JWT_CHAVE}") String chave) {
+    return new NimbusJwtEncoder(new ImmutableJWKSet<>(new JWKSet(ChaveDoToken.par(chave))));
   }
 
   /**

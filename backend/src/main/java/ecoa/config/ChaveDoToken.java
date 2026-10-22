@@ -1,5 +1,6 @@
 package ecoa.config;
 
+import com.nimbusds.jose.jwk.RSAKey;
 import java.security.GeneralSecurityException;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
@@ -22,17 +23,37 @@ final class ChaveDoToken {
 
   /** A metade pública, que confere a assinatura, calculada a partir da privada. */
   static RSAPublicKey publica(String chaveEmBase64) {
+    return publica(privada(chaveEmBase64));
+  }
+
+  /** As duas metades, para assinar o token na emissão. */
+  static RSAKey par(String chaveEmBase64) {
+    RSAPrivateCrtKey privada = privada(chaveEmBase64);
+    return new RSAKey.Builder(publica(privada)).privateKey(privada).build();
+  }
+
+  private static RSAPrivateCrtKey privada(String chaveEmBase64) {
     try {
-      KeyFactory fabrica = KeyFactory.getInstance("RSA");
       PrivateKey privada =
-          fabrica.generatePrivate(
-              new PKCS8EncodedKeySpec(Base64.getMimeDecoder().decode(chaveEmBase64)));
+          KeyFactory.getInstance("RSA")
+              .generatePrivate(
+                  new PKCS8EncodedKeySpec(Base64.getMimeDecoder().decode(chaveEmBase64)));
       if (!(privada instanceof RSAPrivateCrtKey rsa)) {
         throw new IllegalStateException(INVALIDA);
       }
-      return (RSAPublicKey)
-          fabrica.generatePublic(new RSAPublicKeySpec(rsa.getModulus(), rsa.getPublicExponent()));
+      return rsa;
     } catch (GeneralSecurityException | IllegalArgumentException e) {
+      throw new IllegalStateException(INVALIDA, e);
+    }
+  }
+
+  private static RSAPublicKey publica(RSAPrivateCrtKey privada) {
+    try {
+      return (RSAPublicKey)
+          KeyFactory.getInstance("RSA")
+              .generatePublic(
+                  new RSAPublicKeySpec(privada.getModulus(), privada.getPublicExponent()));
+    } catch (GeneralSecurityException e) {
       throw new IllegalStateException(INVALIDA, e);
     }
   }

@@ -26,4 +26,12 @@ public class Conta {
     this.funcao = funcao;
     this.criadoEm = criadoEm;
   }
+
+  public Integer idConta() {
+    return idConta;
+  }
+
+  public Funcao funcao() {
+    return funcao;
+  }
 }

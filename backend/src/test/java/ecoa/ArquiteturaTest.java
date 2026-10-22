@@ -33,8 +33,7 @@ class ArquiteturaTest {
           .resideInAPackage("ecoa.controller..")
           .should()
           .dependOnClassesThat()
-          .resideInAPackage("ecoa.repository..")
-          .allowEmptyShould(true);
+          .resideInAPackage("ecoa.repository..");
 
   @ArchTest
   static final ArchRule hojeSoPeloRelogio =
@@ -55,6 +54,5 @@ class ArquiteturaTest {
           .arePublic()
           .should()
           .beAnnotatedWith(PreAuthorize.class)
-          .because("cada rota declara a função que a aceita (ADR-0009)")
-          .allowEmptyShould(true);
+          .because("cada rota declara a função que a aceita (ADR-0009)");
 }
