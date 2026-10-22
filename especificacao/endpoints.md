@@ -158,8 +158,11 @@ apóstrofo na frente, para a planilha não a executar como fórmula.
 O `GET /auth/callback` não é chamado pela aplicação: o navegador chega nele
 vindo do Google, numa navegação de página inteira, e um erro em JSON ali
 apareceria cru na tela. Por isso o retorno sempre termina em redirecionamento:
-no caminho feliz, para a aplicação; em qualquer falha, para a tela de entrada
-com o motivo na URL.
+no caminho feliz, para a raiz da aplicação, `/`; em qualquer falha, para a tela
+de entrada, `/entrar`, com o motivo no parâmetro `motivo`, como em
+`/entrar?motivo=EMAIL_NAO_VERIFICADO`. Os dois caminhos são do frontend, fora do
+prefixo `/api/v1`. A tela de entrada tem caminho próprio para mostrar o motivo
+sem adivinhar de onde a pessoa veio.
 
 | Motivo | Quando | Caso de uso |
 |:--|:--|:--|
