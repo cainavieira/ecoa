@@ -37,6 +37,14 @@ public class Criador {
     this.aceiteTermosEm = aceiteTermosEm;
   }
 
+  public Integer idCriador() {
+    return idCriador;
+  }
+
+  public Conta conta() {
+    return conta;
+  }
+
   public StatusCriador status() {
     return status;
   }
@@ -64,5 +72,16 @@ public class Criador {
     if (status != StatusCriador.RECUSADA) {
       this.motivoRecusa = null;
     }
+  }
+
+  /** A conferência achou o código na bio (RN-13). */
+  public void aprovar() {
+    this.status = StatusCriador.APROVADA;
+  }
+
+  /** O motivo aparece na tela do criador (RN-13). */
+  public void recusar(String motivo) {
+    this.status = StatusCriador.RECUSADA;
+    this.motivoRecusa = motivo;
   }
 }

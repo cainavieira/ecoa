@@ -12,4 +12,12 @@ public class ContaBloqueadaApagada {
   private Instant apagadaEm;
 
   protected ContaBloqueadaApagada() {}
+
+  public String usuarioTiktok() {
+    return usuarioTiktok;
+  }
+
+  public Instant apagadaEm() {
+    return apagadaEm;
+  }
 }
