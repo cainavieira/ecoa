@@ -2,6 +2,7 @@ package ecoa.regras;
 
 import static ecoa.regras.RegrasDaConta.normalizarEmail;
 import static ecoa.regras.RegrasDaConta.normalizarUsuarioTiktok;
+import static ecoa.regras.RegrasDaConta.statusDepoisDaCorrecaoPeloCriador;
 import static ecoa.regras.RegrasDaConta.validarAprovacaoDaConta;
 import static ecoa.regras.RegrasDaConta.validarBloqueioDaConta;
 import static ecoa.regras.RegrasDaConta.validarCorrecaoDoUsuarioTiktokPeloCriador;
@@ -55,6 +56,12 @@ class RegrasDaContaTest {
       names = {"APROVADA", "BLOQUEADA"})
   void recusaCriadorCorrigindoOUsuarioTiktokDaContaAprovadaOuBloqueada(StatusCriador conta) {
     recusado(() -> validarCorrecaoDoUsuarioTiktokPeloCriador(conta), Recusa.USUARIO_TIKTOK_FIXO);
+  }
+
+  @Test
+  void contaRecusadaVoltaAPendenteQuandoOCriadorCorrigeOUsuarioTiktok() {
+    assertThat(statusDepoisDaCorrecaoPeloCriador(StatusCriador.RECUSADA))
+        .isEqualTo(StatusCriador.PENDENTE);
   }
 
   @ParameterizedTest

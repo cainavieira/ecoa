@@ -37,6 +37,15 @@ public final class RegrasDaConta {
   }
 
   /**
+   * Depois que o criador informa ou corrige o @, a conta fica pendente, na fila da verificação: a
+   * recusada volta a pendente (RN-14). A aprovada ou bloqueada é recusada (RN-15).
+   */
+  public static StatusCriador statusDepoisDaCorrecaoPeloCriador(StatusCriador conta) {
+    validarCorrecaoDoUsuarioTiktokPeloCriador(conta);
+    return StatusCriador.PENDENTE;
+  }
+
+  /**
    * Só a conta pendente que já informou o @, e o @ sem outra conta aprovada ou bloqueada (RN-11,
    * RN-13).
    *
