@@ -7,4 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface CriadorRepository extends JpaRepository<Criador, Integer> {
 
   boolean existsByIdCriadorAndStatus(Integer idCriador, StatusCriador status);
+
+  boolean existsByCodigoVerificacao(String codigoVerificacao);
 }

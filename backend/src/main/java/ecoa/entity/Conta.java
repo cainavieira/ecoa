@@ -34,4 +34,13 @@ public class Conta {
   public Funcao funcao() {
     return funcao;
   }
+
+  /**
+   * O nome vem do Google e só preenche o que falta: o da conta cadastrada pelo operador (RF-03).
+   */
+  public void completarNome(String nome) {
+    if (this.nome == null) {
+      this.nome = nome;
+    }
+  }
 }

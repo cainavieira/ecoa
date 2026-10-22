@@ -26,6 +26,13 @@ public class TokenRenovacao {
 
   protected TokenRenovacao() {}
 
+  public TokenRenovacao(Conta conta, String hash, Instant criadoEm, Instant expiraEm) {
+    this.conta = conta;
+    this.hash = hash;
+    this.criadoEm = criadoEm;
+    this.expiraEm = expiraEm;
+  }
+
   public Conta conta() {
     return conta;
   }

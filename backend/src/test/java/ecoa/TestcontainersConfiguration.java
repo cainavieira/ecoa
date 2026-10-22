@@ -7,9 +7,15 @@ import org.springframework.test.context.DynamicPropertyRegistrar;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 import org.testcontainers.utility.DockerImageName;
 
-/** O banco do Testcontainers e a chave do token de teste, que toda subida da api precisa. */
+/**
+ * O banco do Testcontainers, a chave do token de teste e um cliente do Google de mentira, que toda
+ * subida da api precisa.
+ */
 @TestConfiguration(proxyBeanMethods = false)
 public class TestcontainersConfiguration {
+
+  /** O client id do Google nos testes; o id_token fabricado o traz como destinatário. */
+  public static final String ID_DO_GOOGLE = "id-de-teste";
 
   @Bean
   @ServiceConnection
@@ -18,7 +24,11 @@ public class TestcontainersConfiguration {
   }
 
   @Bean
-  DynamicPropertyRegistrar chaveDoToken() {
-    return registro -> registro.add("ECOA_JWT_CHAVE", ChaveDeTeste::emBase64);
+  DynamicPropertyRegistrar variaveisDaApi() {
+    return registro -> {
+      registro.add("ECOA_JWT_CHAVE", ChaveDeTeste::emBase64);
+      registro.add("ECOA_GOOGLE_ID", () -> ID_DO_GOOGLE);
+      registro.add("ECOA_GOOGLE_SEGREDO", () -> "segredo-de-teste");
+    };
   }
 }

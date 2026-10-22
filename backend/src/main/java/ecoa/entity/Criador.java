@@ -28,4 +28,12 @@ public class Criador {
   private Instant aceiteTermosEm;
 
   protected Criador() {}
+
+  /** A conta de criador nasce pendente (RN-10). */
+  public Criador(Conta conta, String codigoVerificacao, Instant aceiteTermosEm) {
+    this.conta = conta;
+    this.codigoVerificacao = codigoVerificacao;
+    this.status = StatusCriador.PENDENTE;
+    this.aceiteTermosEm = aceiteTermosEm;
+  }
 }
