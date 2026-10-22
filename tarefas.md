@@ -99,7 +99,7 @@ revertida (ADR-0013).
 | Tarefa | Entrega | Estado |
 |:--|:--|:--|
 | T-12 | `GET /criadores`, `POST /criadores/{id}/aprovacao`, `POST /criadores/{id}/recusa` e `PUT /criadores/{id}/usuario-tiktok` (UC-03) | feito |
-| T-13 | `POST /criadores/{id}/bloqueio` e `POST /criadores/{id}/desbloqueio` (UC-04) | a fazer |
+| T-13 | `POST /criadores/{id}/bloqueio` e `POST /criadores/{id}/desbloqueio` (UC-04) | feito |
 | T-14 | `GET /acessos`, `POST /acessos` e `DELETE /acessos/{id}` (UC-18) | a fazer |
 
 ## Etapa 5: campanhas
