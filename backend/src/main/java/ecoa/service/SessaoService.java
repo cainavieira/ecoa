@@ -55,6 +55,15 @@ public class SessaoService {
     return new Sessao(acesso(renovacao.conta(), agora), tokenDeRenovacao);
   }
 
+  /**
+   * Apaga o token de renovação. O de acesso que já existia vale até vencer, em no máximo 15 minutos
+   * (RF-04, ADR-0008).
+   */
+  @Transactional
+  public void sair(String tokenDeRenovacao) {
+    renovacoes.findByHash(hash(tokenDeRenovacao)).ifPresent(renovacoes::delete);
+  }
+
   private String acesso(Conta conta, Instant agora) {
     JwtClaimsSet claims =
         JwtClaimsSet.builder()

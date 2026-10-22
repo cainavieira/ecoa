@@ -42,4 +42,19 @@ public class AutenticacaoController {
             CookiesDaSessao.renovacao(pedido, sessao.renovacao()).toString())
         .build();
   }
+
+  /** Sem cookie, ou com o token já apagado, os dois cookies expiram do mesmo jeito (RF-04). */
+  @PostMapping("/logout")
+  @PreAuthorize("permitAll()")
+  public ResponseEntity<Void> sair(
+      @CookieValue(name = CookiesDaSessao.RENOVACAO, defaultValue = "") String renovacao,
+      HttpServletRequest pedido) {
+    sessoes.sair(renovacao);
+    return ResponseEntity.noContent()
+        .header(
+            HttpHeaders.SET_COOKIE,
+            CookiesDaSessao.acessoExpirado(pedido).toString(),
+            CookiesDaSessao.renovacaoExpirada(pedido).toString())
+        .build();
+  }
 }

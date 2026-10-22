@@ -114,6 +114,20 @@ class AutenticacaoControllerTest {
         .andExpect(status().isNoContent());
   }
 
+  @Test
+  void logoutApagaARenovacaoEExpiraOsDoisCookies() throws Exception {
+    renovacaoQueVenceEm("1 day");
+
+    mvc.perform(post("/auth/logout").cookie(renovacao()))
+        .andExpect(status().isNoContent())
+        .andExpect(cookie().maxAge("acesso", 0))
+        .andExpect(cookie().path("acesso", "/"))
+        .andExpect(cookie().maxAge("renovacao", 0))
+        .andExpect(cookie().path("renovacao", "/auth"));
+
+    mvc.perform(post("/auth/renovacao").cookie(renovacao())).andExpect(status().isUnauthorized());
+  }
+
   private void renovacaoQueVenceEm(String intervalo) {
     int conta =
         jdbc.sql(

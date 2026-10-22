@@ -26,6 +26,16 @@ public final class CookiesDaSessao {
     return cookie(RENOVACAO, token, caminho(pedido, "/auth"), SessaoService.VALIDADE_DA_RENOVACAO);
   }
 
+  /** Vencido no mesmo caminho em que nasceu: só assim o navegador o apaga. */
+  public static ResponseCookie acessoExpirado(HttpServletRequest pedido) {
+    return cookie(ACESSO, "", caminho(pedido, ""), Duration.ZERO);
+  }
+
+  /** Vencido no mesmo caminho em que nasceu: só assim o navegador o apaga. */
+  public static ResponseCookie renovacaoExpirada(HttpServletRequest pedido) {
+    return cookie(RENOVACAO, "", caminho(pedido, "/auth"), Duration.ZERO);
+  }
+
   private static ResponseCookie cookie(
       String nome, String valor, String caminho, Duration validade) {
     return ResponseCookie.from(nome, valor)
