@@ -85,7 +85,7 @@ ADR-0013, RNF-28).
 | T-08 | o que toda rota usa: o formato único de erro num tratador global, o relógio do sistema no horário de Brasília, a guarda de função e a recusa do criador bloqueado (ADR-0009, ADR-0014) | feito |
 | T-09 | modo `cadastrar-operador <e-mail>` do `.jar` (UC-20) | feito |
 | T-10 | `GET /auth/login`, `GET /auth/callback`, `POST /auth/renovacao` e `POST /auth/logout`, pelo Spring Security: só e-mail verificado, conta de criador criada no primeiro acesso, os dois tokens em cookie, a renovação, e a falha redirecionando com o motivo (UC-01, ADR-0007, ADR-0008, RNF-22, RNF-23) | feito |
-| T-11 | `GET /eu` e `PUT /eu/usuario-tiktok` (UC-02) | a fazer |
+| T-11 | `GET /eu` e `PUT /eu/usuario-tiktok` (UC-02) | feito |
 
 A T-08 vem antes de qualquer rota porque, sem ela, as recusas saem no formato
 do framework e as verificações passam assim mesmo. A T-10 depende do console do
