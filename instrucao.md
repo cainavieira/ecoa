@@ -273,7 +273,7 @@ recebem dados e devolvem valores.
 |:--|:--|
 | `normalizarEmail`, `normalizarUsuarioTiktok` | RN-01, RN-11 |
 | `validarAprovacaoDaConta`, `validarRecusaDaConta` | RN-11, RN-13 |
-| `validarCorrecaoDoUsuarioTiktokPeloCriador`, `validarCorrecaoDoUsuarioTiktokPeloOperador` | RN-11, RN-14, RN-15 |
+| `validarCorrecaoDoUsuarioTiktokPeloCriador`, `statusDepoisDaCorrecaoPeloCriador`, `validarCorrecaoDoUsuarioTiktokPeloOperador` | RN-11, RN-14, RN-15 |
 | `validarBloqueioDaConta`, `validarDesbloqueioDaConta` | RN-17, RN-21 |
 | `statusDaCampanha` | RN-25 |
 | `validarDatasDaCampanha` | RN-24, RN-26, RN-27 |
