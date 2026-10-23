@@ -277,6 +277,7 @@ recebem dados e devolvem valores.
 | `validarBloqueioDaConta`, `validarDesbloqueioDaConta` | RN-17, RN-21 |
 | `statusDaCampanha` | RN-25 |
 | `validarDatasDaCampanha` | RN-24, RN-26, RN-27 |
+| `validarMudancaNaCampanha` | RN-28 |
 | `validarEntrada` | RN-16, RN-32 |
 | `validarEnvioDeVideo` | RN-34, RN-35 |
 | `validarAprovacaoDeVideo` | RN-19, RN-36 |
