@@ -1,11 +1,13 @@
 package ecoa.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -13,12 +15,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ecoa.ChaveDeTeste;
 import ecoa.TestcontainersConfiguration;
 import ecoa.regras.Funcao;
+import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.Cookie;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
@@ -28,7 +33,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
-/** O resultado da campanha numa resposta só (UC-13, UC-16, RF-34, RF-38, RF-39). */
+/**
+ * O resultado da campanha numa resposta só (UC-13, UC-16, RF-34, RF-38, RF-39), e o encerramento,
+ * que grava o ranking final (UC-14, RF-24).
+ */
 @Import(TestcontainersConfiguration.class)
 @SpringBootTest(properties = "spring.flyway.enabled=true")
 @AutoConfigureMockMvc
@@ -37,14 +45,112 @@ class ResultadoControllerTest {
 
   private final MockMvc mvc;
   private final JdbcClient jdbc;
+  private final EntityManager entidades;
   private final LocalDate hoje;
   private int videos;
 
   ResultadoControllerTest(
-      @Autowired MockMvc mvc, @Autowired JdbcClient jdbc, @Autowired Clock relogio) {
+      @Autowired MockMvc mvc,
+      @Autowired JdbcClient jdbc,
+      @Autowired EntityManager entidades,
+      @Autowired Clock relogio) {
     this.mvc = mvc;
     this.jdbc = jdbc;
+    this.entidades = entidades;
     this.hoje = LocalDate.now(relogio);
+  }
+
+  @ParameterizedTest
+  @EnumSource(value = Funcao.class, names = "OPERADOR", mode = EnumSource.Mode.EXCLUDE)
+  void soOOperadorEncerra(Funcao funcao) throws Exception {
+    mvc.perform(post("/campanhas/1/encerramento").cookie(acesso(funcao, 1)))
+        .andExpect(status().isForbidden())
+        .andExpect(jsonPath("$.erro.codigo").value("SEM_PERMISSAO"));
+  }
+
+  @Test
+  void encerraEGravaORankingFinalComAsLeiturasDeFechamento() throws Exception {
+    // Fechamento ontem: as leituras de ontem e de hoje são as de fechamento.
+    int campanha = campanha(hoje.minusDays(20), hoje.minusDays(5), hoje.minusDays(1));
+    int daFulana = participacao(campanha, criador("fulana@exemplo.com", "aprovada"));
+    int deFulana = video(daFulana, "aprovado");
+    leitura(deFulana, hoje.minusDays(3), 100);
+    leitura(deFulana, hoje, 300);
+    int daBeltrana = participacao(campanha, criador("beltrana@exemplo.com", "aprovada"));
+    leitura(video(daBeltrana, "aprovado"), hoje.minusDays(1), 500);
+    // O bloqueado não conta e não pede leitura de fechamento (UC-14 2d).
+    int daCiclana = participacao(campanha, criador("ciclana@exemplo.com", "bloqueada"));
+    leitura(video(daCiclana, "aprovado"), hoje.minusDays(3), 1_000);
+
+    encerrar(campanha)
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.rankingFinal").value(true))
+        .andExpect(jsonPath("$.ranking[*].usuarioTiktok").value(contains("beltrana", "fulana")))
+        .andExpect(jsonPath("$.ranking[*].soma").value(contains(500, 300)));
+
+    entidades.flush();
+    assertThat(
+            jdbc.sql(
+                    "select coalesce(posicao_final || ' ' || total_final, 'fora') from participacao"
+                        + " where xid_campanha = ? order by id_participacao")
+                .param(campanha)
+                .query(String.class)
+                .list())
+        .containsExactly("2 300", "1 500", "fora");
+    assertThat(
+            jdbc.sql("select encerrada_em is not null from campanha where id_campanha = ?")
+                .param(campanha)
+                .query(Boolean.class)
+                .single())
+        .isTrue();
+  }
+
+  @Test
+  void encerrarAntesDoFechamentoEhRecusado() throws Exception {
+    int campanha = campanha(hoje.minusDays(20), hoje.minusDays(5), hoje.plusDays(1));
+
+    encerrar(campanha)
+        .andExpect(status().isConflict())
+        .andExpect(jsonPath("$.erro.codigo").value("ENCERRAMENTO_ANTES_DO_FECHAMENTO"));
+  }
+
+  @Test
+  void encerrarComPendenciaListaOsVideos() throws Exception {
+    int campanha = campanha(hoje.minusDays(20), hoje.minusDays(5), hoje.minusDays(1));
+    int daFulana = participacao(campanha, criador("fulana@exemplo.com", "aprovada"));
+    int emAnalise = video(daFulana, "em_analise");
+    // Só leitura parcial, de antes do fechamento.
+    int semFechamento = video(daFulana, "aprovado");
+    leitura(semFechamento, hoje.minusDays(3), 100);
+
+    encerrar(campanha)
+        .andExpect(status().isConflict())
+        .andExpect(jsonPath("$.erro.codigo").value("ENCERRAMENTO_COM_PENDENCIA"))
+        .andExpect(jsonPath("$.erro.itens").value(contains(emAnalise, semFechamento)));
+  }
+
+  @Test
+  void campanhaEncerradaNaoEncerraDeNovo() throws Exception {
+    int campanha = campanha(hoje.minusDays(20), hoje.minusDays(5), hoje.minusDays(1));
+    jdbc.sql("update campanha set encerrada_em = now() where id_campanha = ?")
+        .param(campanha)
+        .update();
+
+    encerrar(campanha)
+        .andExpect(status().isConflict())
+        .andExpect(jsonPath("$.erro.codigo").value("CAMPANHA_ENCERRADA"));
+  }
+
+  @Test
+  void encerrarCampanhaQueNaoExisteRespondeNaoEncontrado() throws Exception {
+    encerrar(999_999)
+        .andExpect(status().isNotFound())
+        .andExpect(jsonPath("$.erro.codigo").value("NAO_ENCONTRADO"));
+  }
+
+  private ResultActions encerrar(int campanha) throws Exception {
+    return mvc.perform(
+        post("/campanhas/{id}/encerramento", campanha).cookie(acesso(Funcao.OPERADOR, 1)));
   }
 
   @Test

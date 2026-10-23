@@ -12,6 +12,7 @@ import ecoa.regras.ParticipanteDoRankingFinal;
 import ecoa.regras.PosicaoNoRanking;
 import ecoa.regras.Recusa;
 import ecoa.regras.RegraVioladaException;
+import ecoa.regras.RegrasDaCampanha;
 import ecoa.regras.RegrasDoRanking;
 import ecoa.regras.StatusCampanha;
 import ecoa.regras.TotalNaData;
@@ -22,6 +23,7 @@ import ecoa.repository.LeituraRepository;
 import ecoa.repository.ParticipacaoRepository;
 import ecoa.repository.VideoRepository;
 import java.time.Clock;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,62 +59,57 @@ public class ResultadoService {
     this.relogio = relogio;
   }
 
-  /**
-   * O resultado que o participante, a gravadora e o operador veem, igual para os três (RN-47). Na
-   * campanha encerrada, o ranking é o que o encerramento gravou, e não o do estado atual (RN-48). O
-   * total de hoje é o último ponto do gráfico, porque leitura não tem data futura (RN-40, RN-61).
-   */
+  /** O resultado que o participante, a gravadora e o operador veem, igual para os três (RN-47). */
   @Transactional(readOnly = true)
   public ResultadoDto resultado(int idCampanha, int idConta, Funcao funcao) {
-    Campanha campanha =
-        campanhas
-            .findById(idCampanha)
-            .orElseThrow(
-                () -> new RegraVioladaException(Recusa.NAO_ENCONTRADO, "Campanha não encontrada."));
+    Campanha campanha = campanha(idCampanha);
     if (funcao == Funcao.CRIADOR
         && !participacoes.existsByCampanhaIdCampanhaAndCriadorIdCriador(idCampanha, idConta)) {
       throw new RegraVioladaException(
           Recusa.NAO_PARTICIPANTE, "Só quem participa da campanha vê o ranking.");
     }
+    return montar(campanha, retratar(idCampanha));
+  }
+
+  /**
+   * Encerra a campanha a partir do fechamento, sem vídeo em análise e com leitura de fechamento em
+   * todo vídeo que conta (RN-50), e grava o ranking final, calculado uma última vez (RN-48). Com as
+   * leituras de fechamento presentes, o número atual de cada vídeo que conta é a dele (RN-41).
+   * Encerrar é definitivo (RN-28).
+   */
+  @Transactional
+  public ResultadoDto encerrar(int idCampanha) {
+    Campanha campanha = campanha(idCampanha);
+    LocalDate hoje = LocalDate.now(relogio);
+    RegrasDaCampanha.validarMudancaNaCampanha(campanha.status(hoje));
+    Retrato retrato = retratar(idCampanha);
+    List<ParticipanteDaCampanha> participantes = retrato.participantes();
+    RegrasDaCampanha.validarEncerramento(participantes, campanha.datas().fechamento(), hoje);
+    for (PosicaoNoRanking posicao : RegrasDoRanking.calcularRanking(participantes)) {
+      retrato
+          .participacao(posicao.idParticipacao())
+          .gravarRankingFinal(posicao.posicao(), posicao.soma());
+    }
+    campanha.encerrar(Instant.now(relogio));
+    return montar(campanha, retrato);
+  }
+
+  /**
+   * Na campanha encerrada, o ranking é o que o encerramento gravou, e não o do estado atual
+   * (RN-48). O total de hoje é o último ponto do gráfico, porque leitura não tem data futura
+   * (RN-40, RN-61).
+   */
+  private ResultadoDto montar(Campanha campanha, Retrato retrato) {
     boolean encerrada = campanha.status(LocalDate.now(relogio)) == StatusCampanha.ENCERRADA;
-    List<Participacao> daCampanha = participacoes.daCampanha(idCampanha);
-    List<Video> videosDaCampanha = videos.daCampanha(idCampanha);
-    Map<Integer, List<VideoDaCampanha>> videosPorParticipacao =
-        videosPorParticipacao(videosDaCampanha);
     List<PosicaoNoRanking> ranking =
         encerrada
-            ? RegrasDoRanking.rankingFinal(
-                daCampanha.stream()
-                    .filter(participacao -> participacao.posicaoFinal() != null)
-                    .map(
-                        participacao ->
-                            new ParticipanteDoRankingFinal(
-                                participacao.idParticipacao(),
-                                participacao.posicaoFinal(),
-                                participacao.totalFinal(),
-                                videosPorParticipacao.getOrDefault(
-                                    participacao.idParticipacao(), List.of())))
-                    .toList())
-            : RegrasDoRanking.calcularRanking(
-                daCampanha.stream()
-                    // O participante removido só existe na campanha encerrada (RN-59).
-                    .filter(participacao -> participacao.criador() != null)
-                    .map(
-                        participacao ->
-                            new ParticipanteDaCampanha(
-                                participacao.idParticipacao(),
-                                participacao.criador().status(),
-                                videosPorParticipacao.getOrDefault(
-                                    participacao.idParticipacao(), List.of())))
-                    .toList());
+            ? RegrasDoRanking.rankingFinal(retrato.doRankingFinal())
+            : RegrasDoRanking.calcularRanking(retrato.participantes());
     List<VideoDaCampanha> queContam =
         ranking.stream().flatMap(posicao -> posicao.videos().stream()).toList();
     List<TotalNaData> grafico = RegrasDoRanking.totalPorData(queContam);
-    Map<Integer, Participacao> participacaoPorId =
-        daCampanha.stream()
-            .collect(Collectors.toMap(Participacao::idParticipacao, Function.identity()));
     Map<Integer, Video> videoPorId =
-        videosDaCampanha.stream().collect(Collectors.toMap(Video::idVideo, Function.identity()));
+        retrato.videos().stream().collect(Collectors.toMap(Video::idVideo, Function.identity()));
     return new ResultadoDto(
         encerrada,
         grafico.isEmpty() ? 0 : grafico.getLast().total(),
@@ -122,14 +119,17 @@ public class ResultadoService {
             .map(
                 posicao ->
                     ResultadoMapper.posicao(
-                        posicao, participacaoPorId.get(posicao.idParticipacao()), videoPorId))
+                        posicao, retrato.participacao(posicao.idParticipacao()), videoPorId))
             .toList(),
         grafico.stream().map(ResultadoMapper::ponto).toList(),
-        ganhadores.daCampanha(idCampanha).stream().map(ResultadoMapper::ganhador).toList());
+        ganhadores.daCampanha(campanha.idCampanha()).stream()
+            .map(ResultadoMapper::ganhador)
+            .toList());
   }
 
-  /** Os vídeos de cada participação, com as leituras, como a regra do ranking os recebe. */
-  private Map<Integer, List<VideoDaCampanha>> videosPorParticipacao(List<Video> videosDaCampanha) {
+  /** As participações e os vídeos da campanha, com as leituras, lidos de uma vez. */
+  private Retrato retratar(int idCampanha) {
+    List<Video> videosDaCampanha = videos.daCampanha(idCampanha);
     Map<Integer, List<LeituraDoVideo>> leiturasPorVideo =
         leituras.porVideo(videosDaCampanha.stream().map(Video::idVideo).toList());
     Map<Integer, List<VideoDaCampanha>> porParticipacao = new HashMap<>();
@@ -142,6 +142,61 @@ public class ResultadoService {
                   video.status(),
                   leiturasPorVideo.getOrDefault(video.idVideo(), List.of())));
     }
-    return porParticipacao;
+    return new Retrato(participacoes.daCampanha(idCampanha), videosDaCampanha, porParticipacao);
+  }
+
+  private Campanha campanha(int id) {
+    return campanhas
+        .findById(id)
+        .orElseThrow(
+            () -> new RegraVioladaException(Recusa.NAO_ENCONTRADO, "Campanha não encontrada."));
+  }
+
+  /**
+   * A campanha como a regra do ranking a recebe. As participações vêm na ordem do ranking final e
+   * do @, que desempata o ranking calculado.
+   */
+  private record Retrato(
+      List<Participacao> participacoes,
+      List<Video> videos,
+      Map<Integer, List<VideoDaCampanha>> videosPorParticipacao) {
+
+    List<ParticipanteDaCampanha> participantes() {
+      return participacoes.stream()
+          // O participante removido só existe na campanha encerrada (RN-59).
+          .filter(participacao -> participacao.criador() != null)
+          .map(
+              participacao ->
+                  new ParticipanteDaCampanha(
+                      participacao.idParticipacao(),
+                      participacao.criador().status(),
+                      videosDe(participacao)))
+          .toList();
+    }
+
+    /** Quem ficou fora do ranking final não tem posição gravada. */
+    List<ParticipanteDoRankingFinal> doRankingFinal() {
+      return participacoes.stream()
+          .filter(participacao -> participacao.posicaoFinal() != null)
+          .map(
+              participacao ->
+                  new ParticipanteDoRankingFinal(
+                      participacao.idParticipacao(),
+                      participacao.posicaoFinal(),
+                      participacao.totalFinal(),
+                      videosDe(participacao)))
+          .toList();
+    }
+
+    Participacao participacao(int idParticipacao) {
+      return participacoes.stream()
+          .filter(participacao -> participacao.idParticipacao() == idParticipacao)
+          .findFirst()
+          .orElseThrow();
+    }
+
+    private List<VideoDaCampanha> videosDe(Participacao participacao) {
+      return videosPorParticipacao.getOrDefault(participacao.idParticipacao(), List.of());
+    }
   }
 }

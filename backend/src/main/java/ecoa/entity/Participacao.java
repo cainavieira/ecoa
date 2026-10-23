@@ -55,4 +55,10 @@ public class Participacao {
   public Long totalFinal() {
     return totalFinal;
   }
+
+  /** A posição e a soma no encerramento, que não mudam mais (RN-48). */
+  public void gravarRankingFinal(int posicao, long total) {
+    this.posicaoFinal = posicao;
+    this.totalFinal = total;
+  }
 }

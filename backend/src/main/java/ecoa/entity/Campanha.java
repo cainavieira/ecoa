@@ -77,6 +77,11 @@ public class Campanha {
     return Collections.unmodifiableList(links);
   }
 
+  /** Definitivo: a campanha encerrada não muda mais, fora os ganhadores (RN-28, RN-50). */
+  public void encerrar(Instant encerradaEm) {
+    this.encerradaEm = encerradaEm;
+  }
+
   /** Os textos e as datas depois da edição, com as datas já conferidas pela regra (UC-06). */
   public void editar(String musica, String artista, String regulamento, DatasDaCampanha datas) {
     this.musica = musica;
