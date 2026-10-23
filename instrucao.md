@@ -286,6 +286,7 @@ recebem dados e devolvem valores.
 | `validarLeitura` | RN-40, RN-41 |
 | `leituraDeFechamento`, `numeroAtual` | RN-41, RN-43 |
 | `calcularRanking` | RN-45, RN-46 |
+| `rankingFinal` | RN-48 |
 | `totalPorData` | RN-49 |
 | `validarEncerramento` | RN-50 |
 | `validarGanhador`, `validarEntregaDoPremio` | RN-52 |
