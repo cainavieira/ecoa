@@ -51,6 +51,26 @@ public final class RegrasDoRanking {
   }
 
   /**
+   * O ranking da campanha encerrada, como o encerramento o gravou: a posição e a soma de cada
+   * participante, com os vídeos que contavam, os aprovados. Bloqueio, desbloqueio e exclusão de
+   * conta depois do encerramento não o mudam (RN-48).
+   */
+  public static List<PosicaoNoRanking> rankingFinal(List<ParticipanteDoRankingFinal> gravados) {
+    return gravados.stream()
+        .sorted(Comparator.comparingInt(ParticipanteDoRankingFinal::posicao))
+        .map(
+            gravado ->
+                new PosicaoNoRanking(
+                    gravado.posicao(),
+                    gravado.idParticipacao(),
+                    gravado.soma(),
+                    gravado.videos().stream()
+                        .filter(video -> video.status() == StatusVideo.APROVADO)
+                        .toList()))
+        .toList();
+  }
+
+  /**
    * Um ponto por data com leitura, com a soma, de cada vídeo, da leitura mais recente até aquela
    * data; vídeo sem leitura até a data não soma (RN-49). Recebe só os vídeos que contam: na
    * campanha encerrada, os do ranking final, mesmo de criador bloqueado depois (RN-48).

@@ -1,6 +1,7 @@
 package ecoa.regras;
 
 import static ecoa.regras.RegrasDoRanking.calcularRanking;
+import static ecoa.regras.RegrasDoRanking.rankingFinal;
 import static ecoa.regras.RegrasDoRanking.totalPorData;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
@@ -12,6 +13,23 @@ import org.junit.jupiter.api.Test;
 class RegrasDoRankingTest {
 
   private static final LocalDate DIA = LocalDate.of(2026, 11, 20);
+
+  @Test
+  void rankingFinalTemAPosicaoEASomaGravadasESoOsVideosAprovados() {
+    // O desqualificado antes do encerramento não contava; a soma gravada não é refeita (RN-48).
+    List<ParticipanteDoRankingFinal> gravados =
+        List.of(
+            new ParticipanteDoRankingFinal(2, 2, 200, List.of(aprovado(20, 999))),
+            new ParticipanteDoRankingFinal(
+                1, 1, 500, List.of(aprovado(10, 500), desqualificado(11, 900))));
+    assertThat(rankingFinal(gravados))
+        .extracting(
+            PosicaoNoRanking::idParticipacao,
+            PosicaoNoRanking::posicao,
+            PosicaoNoRanking::soma,
+            posicao -> posicao.videos().stream().map(VideoDaCampanha::idVideo).toList())
+        .containsExactly(tuple(1, 1, 500L, List.of(10)), tuple(2, 2, 200L, List.of(20)));
+  }
 
   @Test
   void empateDivideAPosicaoEPulaAsEmpatadas() {
