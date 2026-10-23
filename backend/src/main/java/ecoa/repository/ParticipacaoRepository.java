@@ -12,4 +12,6 @@ public interface ParticipacaoRepository extends JpaRepository<Participacao, Inte
   List<Integer> campanhasDoCriador(Integer idCriador);
 
   boolean existsByCampanhaIdCampanhaAndCriadorIdCriador(Integer idCampanha, Integer idCriador);
+
+  boolean existsByCampanhaIdCampanha(Integer idCampanha);
 }

@@ -2,6 +2,7 @@ package ecoa.controller;
 
 import ecoa.dto.CampanhaDto;
 import ecoa.dto.CampanhaResumoDto;
+import ecoa.dto.EdicaoDaCampanhaDto;
 import ecoa.dto.NovaCampanhaDto;
 import ecoa.service.CampanhaService;
 import jakarta.validation.Valid;
@@ -10,7 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,5 +49,18 @@ public class CampanhaController {
   @PreAuthorize("hasRole('OPERADOR')")
   public CampanhaDto criar(@Valid @RequestBody NovaCampanhaDto corpo) {
     return campanhas.criar(corpo);
+  }
+
+  @PatchMapping("/{id}")
+  @PreAuthorize("hasRole('OPERADOR')")
+  public CampanhaDto editar(@PathVariable int id, @Valid @RequestBody EdicaoDaCampanhaDto corpo) {
+    return campanhas.editar(id, corpo);
+  }
+
+  @DeleteMapping("/{id}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  @PreAuthorize("hasRole('OPERADOR')")
+  public void apagar(@PathVariable int id) {
+    campanhas.apagar(id);
   }
 }

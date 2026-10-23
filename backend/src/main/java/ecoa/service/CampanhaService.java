@@ -1,7 +1,10 @@
 package ecoa.service;
 
+import static java.util.Objects.requireNonNullElse;
+
 import ecoa.dto.CampanhaDto;
 import ecoa.dto.CampanhaResumoDto;
+import ecoa.dto.EdicaoDaCampanhaDto;
 import ecoa.dto.NovaCampanhaDto;
 import ecoa.entity.Campanha;
 import ecoa.mapper.CampanhaMapper;
@@ -11,8 +14,10 @@ import ecoa.regras.Recusa;
 import ecoa.regras.RegraVioladaException;
 import ecoa.regras.RegrasDaCampanha;
 import ecoa.regras.StatusCampanha;
+import ecoa.regras.StatusVideo;
 import ecoa.repository.CampanhaRepository;
 import ecoa.repository.ParticipacaoRepository;
+import ecoa.repository.VideoRepository;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -27,12 +32,17 @@ public class CampanhaService {
 
   private final CampanhaRepository campanhas;
   private final ParticipacaoRepository participacoes;
+  private final VideoRepository videos;
   private final Clock relogio;
 
   public CampanhaService(
-      CampanhaRepository campanhas, ParticipacaoRepository participacoes, Clock relogio) {
+      CampanhaRepository campanhas,
+      ParticipacaoRepository participacoes,
+      VideoRepository videos,
+      Clock relogio) {
     this.campanhas = campanhas;
     this.participacoes = participacoes;
+    this.videos = videos;
     this.relogio = relogio;
   }
 
@@ -83,6 +93,46 @@ public class CampanhaService {
             nova.musica(), nova.artista(), nova.regulamento(), datas, Instant.now(relogio));
     campanha.trocarLinks(CampanhaMapper.links(campanha, nova.links()));
     return CampanhaMapper.paraDto(campanhas.save(campanha), status(campanha, hoje), null);
+  }
+
+  /**
+   * Muda o que veio, na campanha não encerrada (RN-28). As datas ficam em ordem, o fechamento que
+   * muda é futuro, e nenhum vídeo aprovado sai do início e do fim (RN-24, RN-26, RN-27). O status
+   * sai das datas novas: adiar o fim reabre o envio, e antecipá-lo o fecha (UC-06 2f, 2g).
+   */
+  @Transactional
+  public CampanhaDto editar(int id, EdicaoDaCampanhaDto edicao) {
+    Campanha campanha = campanha(id);
+    LocalDate hoje = LocalDate.now(relogio);
+    RegrasDaCampanha.validarMudancaNaCampanha(status(campanha, hoje));
+    DatasDaCampanha atuais = campanha.datas();
+    DatasDaCampanha novas =
+        new DatasDaCampanha(
+            requireNonNullElse(edicao.dataInicio(), atuais.inicio()),
+            requireNonNullElse(edicao.dataFim(), atuais.fim()),
+            requireNonNullElse(edicao.dataFechamento(), atuais.fechamento()));
+    RegrasDaCampanha.validarDatasDaCampanha(
+        atuais, novas, videos.publicacoesNaCampanha(id, StatusVideo.APROVADO), hoje);
+    campanha.editar(
+        requireNonNullElse(edicao.musica(), campanha.musica()),
+        requireNonNullElse(edicao.artista(), campanha.artista()),
+        requireNonNullElse(edicao.regulamento(), campanha.regulamento()),
+        novas);
+    if (edicao.links() != null) {
+      campanha.trocarLinks(CampanhaMapper.links(campanha, edicao.links()));
+    }
+    return CampanhaMapper.paraDto(campanha, status(campanha, hoje), null);
+  }
+
+  /** Só a campanha sem participante, e os links saem com ela (RN-30). */
+  @Transactional
+  public void apagar(int id) {
+    Campanha campanha = campanha(id);
+    if (participacoes.existsByCampanhaIdCampanha(id)) {
+      throw new RegraVioladaException(
+          Recusa.CAMPANHA_COM_PARTICIPANTE, "A campanha tem participante e não pode ser apagada.");
+    }
+    campanhas.delete(campanha);
   }
 
   private Campanha campanha(int id) {

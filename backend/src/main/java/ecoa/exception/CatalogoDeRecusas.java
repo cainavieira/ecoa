@@ -16,6 +16,7 @@ final class CatalogoDeRecusas {
       case FECHAMENTO_NAO_FUTURO -> new Descricao(HttpStatus.BAD_REQUEST, "RN-26");
       case DATAS_EXCLUEM_VIDEO -> new Descricao(HttpStatus.CONFLICT, "RN-27");
       case CAMPANHA_ENCERRADA -> new Descricao(HttpStatus.CONFLICT, "RN-28");
+      case CAMPANHA_COM_PARTICIPANTE -> new Descricao(HttpStatus.CONFLICT, "RN-30");
       case LINK_REFERENCIA_AUSENTE -> new Descricao(HttpStatus.BAD_REQUEST, "RN-22");
       case LINK_INVALIDO -> new Descricao(HttpStatus.BAD_REQUEST, "RN-23");
       case CONTA_NAO_APROVADA -> new Descricao(HttpStatus.CONFLICT, "RN-15, RN-16, RN-17");

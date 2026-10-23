@@ -74,6 +74,14 @@ public class Campanha {
     return Collections.unmodifiableList(links);
   }
 
+  /** Os textos e as datas depois da edição, com as datas já conferidas pela regra (UC-06). */
+  public void editar(String musica, String artista, String regulamento, DatasDaCampanha datas) {
+    this.musica = musica;
+    this.artista = artista;
+    this.regulamento = regulamento;
+    mudarDatas(datas);
+  }
+
   /** Os links novos substituem os antigos: a lista vem inteira, e o que ficou de fora sai. */
   public void trocarLinks(List<LinkReferencia> novos) {
     links.clear();

@@ -3,7 +3,9 @@ package ecoa.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -46,6 +48,7 @@ class CampanhaControllerTest {
   private final JdbcClient jdbc;
   private final EntityManager entidades;
   private final LocalDate hoje;
+  private int videos;
 
   CampanhaControllerTest(
       @Autowired MockMvc mvc,
@@ -64,7 +67,9 @@ class CampanhaControllerTest {
     return Stream.of(
         post("/campanhas")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(corpo(inicio, inicio, inicio.plusDays(1), UM_LINK)));
+            .content(corpo(inicio, inicio, inicio.plusDays(1), UM_LINK)),
+        patch("/campanhas/1").contentType(MediaType.APPLICATION_JSON).content("{}"),
+        delete("/campanhas/1"));
   }
 
   @ParameterizedTest
@@ -194,6 +199,111 @@ class CampanhaControllerTest {
         .andExpect(jsonPath("$.erro.campo").value("musica"));
   }
 
+  @Test
+  void edicaoMudaSoOQueVeioMesmoDepoisDoFechamento() throws Exception {
+    // Em apuração, com o fechamento já passado: as datas que não vieram não são conferidas de novo.
+    int campanha = campanha(hoje.minusDays(20), hoje.minusDays(10), hoje.minusDays(5));
+    link(campanha, "https://exemplo.com/antigo");
+
+    editar(
+            campanha,
+            "{\"regulamento\": \"Regulamento novo.\", \"links\": [{\"url\": \"https://exemplo.com/novo\"}]}")
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.regulamento").value("Regulamento novo."))
+        .andExpect(jsonPath("$.musica").value("Som do Verão"))
+        .andExpect(jsonPath("$.status").value("em_apuracao"));
+
+    entidades.flush();
+    assertThat(jdbc.sql("select url from link_referencia").query(String.class).list())
+        .containsExactly("https://exemplo.com/novo");
+  }
+
+  @Test
+  void adiarOFimDeCampanhaEmApuracaoAReabre() throws Exception {
+    int campanha = campanha(hoje.minusDays(10), hoje.minusDays(1), hoje.plusDays(5));
+
+    editar(campanha, "{\"dataFim\": \"%s\"}".formatted(hoje.plusDays(2)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.status").value("aberta"));
+  }
+
+  @Test
+  void datasQueDeixamVideoAprovadoDeForaSaoRecusadasApontandoOVideo() throws Exception {
+    int campanha = campanha(hoje.minusDays(10), hoje.plusDays(10), hoje.plusDays(15));
+    int participacao = participacao(campanha, criador("fulana@exemplo.com"));
+    int aprovado = video(participacao, "aprovado", hoje.minusDays(5));
+    video(participacao, "em_analise", null);
+    // O vídeo da outra campanha fica fora das datas novas, e não é desta.
+    int outra = campanha(hoje.minusDays(30), hoje.plusDays(10), hoje.plusDays(15));
+    video(participacao(outra, criador("beltrana@exemplo.com")), "aprovado", hoje.minusDays(20));
+
+    editar(campanha, "{\"dataInicio\": \"%s\"}".formatted(hoje.minusDays(4)))
+        .andExpect(status().isConflict())
+        .andExpect(jsonPath("$.erro.codigo").value("DATAS_EXCLUEM_VIDEO"))
+        .andExpect(jsonPath("$.erro.itens").value(contains(aprovado)));
+  }
+
+  @Test
+  void campanhaEncerradaNaoMuda() throws Exception {
+    int campanha = campanha(hoje.minusDays(30), hoje.minusDays(20), hoje.minusDays(10));
+    jdbc.sql("update campanha set encerrada_em = now() where id_campanha = ?")
+        .param(campanha)
+        .update();
+
+    editar(campanha, "{\"regulamento\": \"Regulamento novo.\"}")
+        .andExpect(status().isConflict())
+        .andExpect(jsonPath("$.erro.codigo").value("CAMPANHA_ENCERRADA"));
+  }
+
+  @Test
+  void edicaoQueRemoveTodosOsLinksEhRecusada() throws Exception {
+    int campanha = campanha(hoje, hoje.plusDays(10), hoje.plusDays(15));
+
+    editar(campanha, "{\"links\": []}")
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.erro.codigo").value("LINK_REFERENCIA_AUSENTE"));
+  }
+
+  @Test
+  void edicaoComMusicaEmBrancoEhRecusada() throws Exception {
+    int campanha = campanha(hoje, hoje.plusDays(10), hoje.plusDays(15));
+
+    editar(campanha, "{\"musica\": \" \"}")
+        .andExpect(status().isUnprocessableContent())
+        .andExpect(jsonPath("$.erro.codigo").value("CORPO_INVALIDO"))
+        .andExpect(jsonPath("$.erro.campo").value("musica"));
+  }
+
+  @Test
+  void apagaCampanhaSemParticipante() throws Exception {
+    int campanha = campanha(hoje, hoje.plusDays(10), hoje.plusDays(15));
+    link(campanha, "https://exemplo.com/regras");
+
+    mvc.perform(delete("/campanhas/{id}", campanha).cookie(acesso(Funcao.OPERADOR, 1)))
+        .andExpect(status().isNoContent());
+
+    entidades.flush();
+    assertThat(jdbc.sql("select count(*) from campanha").query(Integer.class).single()).isZero();
+  }
+
+  @Test
+  void apagarCampanhaComParticipanteEhRecusado() throws Exception {
+    int campanha = campanha(hoje, hoje.plusDays(10), hoje.plusDays(15));
+    participacao(campanha, criador("fulana@exemplo.com"));
+
+    mvc.perform(delete("/campanhas/{id}", campanha).cookie(acesso(Funcao.OPERADOR, 1)))
+        .andExpect(status().isConflict())
+        .andExpect(jsonPath("$.erro.codigo").value("CAMPANHA_COM_PARTICIPANTE"));
+  }
+
+  private ResultActions editar(int campanha, String corpo) throws Exception {
+    return mvc.perform(
+        patch("/campanhas/{id}", campanha)
+            .cookie(acesso(Funcao.OPERADOR, 1))
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(corpo));
+  }
+
   private ResultActions criar(String corpo) throws Exception {
     return mvc.perform(
         post("/campanhas")
@@ -249,10 +359,27 @@ class CampanhaControllerTest {
     return conta;
   }
 
-  private void participacao(int campanha, int criador) {
-    jdbc.sql("insert into participacao (xid_campanha, xid_criador, aceite_em) values (?, ?, now())")
+  private int participacao(int campanha, int criador) {
+    return jdbc.sql(
+            "insert into participacao (xid_campanha, xid_criador, aceite_em) values (?, ?, now())"
+                + " returning id_participacao")
         .params(campanha, criador)
-        .update();
+        .query(Integer.class)
+        .single();
+  }
+
+  /** O link é único entre os envios não recusados (RN-35), e cada vídeo leva um número. */
+  private int video(int participacao, String status, LocalDate publicacao) {
+    videos++;
+    return jdbc.sql(
+            """
+            insert into video (xid_participacao, link, status, data_publicacao, enviado_em)
+            values (?, ?, ?, ?::date, now())
+            returning id_video
+            """)
+        .params(participacao, "https://www.tiktok.com/@exemplo/video/" + videos, status, publicacao)
+        .query(Integer.class)
+        .single();
   }
 
   private static Cookie acesso(Funcao funcao, int conta) {
