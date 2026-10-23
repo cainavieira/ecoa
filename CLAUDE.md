@@ -40,8 +40,9 @@ Ao mexer numa regra, leia todos os documentos que a citam, contra ela
 
 ## Como trabalhar aqui
 
-- Mostre o texto antes de gravar. Commit depois da mensagem aprovada. **Push é
-  sempre dele.**
+- Trabalhe direto, uma tarefa atrás da outra, cada uma no seu ramo, e commite
+  sem pedir aprovação. Pare só para decisão dele ou para o que só ele faz. Push,
+  PR e merge se resolvem com ele no fim da leva. **Push é sempre dele.**
 - Não busque na web sem ele pedir.
 - Teste só entra se pega defeito real, e quem o propõe diz qual em uma
   linha. O critério inteiro está na seção Testes do `fluxo-de-trabalho.md`.
