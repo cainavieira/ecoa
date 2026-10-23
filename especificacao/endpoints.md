@@ -131,8 +131,9 @@ linhas falha, e linha a linha a recusa aparece na linha certa.
 `POST /campanhas/{id}/participacao` de quem já participa responde 200 com a
 participação existente, em vez de recusar. O caso real é o duplo clique, ou duas
 abas: as duas requisições passam pela conferência antes de qualquer gravação, e
-a segunda esbarra na chave única do banco. O tratador traduz essa violação na
-mesma resposta, e nenhum código de erro novo é preciso.
+a segunda esbarra na chave única do banco. A gravação não faz nada quando a
+participação já existe, e a segunda requisição devolve a que a primeira gravou,
+na mesma resposta e sem código de erro novo.
 
 ### O status da campanha é calculado, não gravado
 
