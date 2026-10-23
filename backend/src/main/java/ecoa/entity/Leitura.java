@@ -7,6 +7,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Entity
 public class Leitura {
@@ -22,4 +23,16 @@ public class Leitura {
   private Instant registradaEm;
 
   protected Leitura() {}
+
+  public Integer idVideo() {
+    return id.xidVideo();
+  }
+
+  public LocalDate data() {
+    return id.data();
+  }
+
+  public long views() {
+    return views;
+  }
 }

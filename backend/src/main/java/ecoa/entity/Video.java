@@ -29,4 +29,24 @@ public class Video {
   private Instant enviadoEm;
 
   protected Video() {}
+
+  public Integer idVideo() {
+    return idVideo;
+  }
+
+  public String link() {
+    return link;
+  }
+
+  public StatusVideo status() {
+    return status;
+  }
+
+  public LocalDate dataPublicacao() {
+    return dataPublicacao;
+  }
+
+  public String motivo() {
+    return motivo;
+  }
 }

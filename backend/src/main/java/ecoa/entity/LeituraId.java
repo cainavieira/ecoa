@@ -13,6 +13,14 @@ public class LeituraId implements Serializable {
 
   protected LeituraId() {}
 
+  Integer xidVideo() {
+    return xidVideo;
+  }
+
+  LocalDate data() {
+    return data;
+  }
+
   @Override
   public boolean equals(Object outro) {
     return outro instanceof LeituraId id
