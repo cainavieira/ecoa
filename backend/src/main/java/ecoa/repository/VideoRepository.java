@@ -32,6 +32,12 @@ public interface VideoRepository extends JpaRepository<Video, Integer> {
 
   Optional<Video> findByLinkAndStatusNot(String link, StatusVideo status);
 
+  /** Todos os vídeos da campanha, inclusive os do participante removido, pela ordem de envio. */
+  @Query(
+      "select v from Video v join fetch v.participacao p"
+          + " where p.campanha.idCampanha = :idCampanha order by v.idVideo")
+  List<Video> daCampanha(Integer idCampanha);
+
   /**
    * Os vídeos da campanha de quem ainda tem conta, com o criador numa consulta só, na ordem da
    * planilha: pelo @ e pelo envio. Quais deles contam, quem decide é a regra (RN-45).

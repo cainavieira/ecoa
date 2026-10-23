@@ -46,4 +46,13 @@ public class Participacao {
   public Criador criador() {
     return criador;
   }
+
+  /** A posição no ranking final; nula antes do encerramento e para quem ficou fora (RN-48). */
+  public Integer posicaoFinal() {
+    return posicaoFinal;
+  }
+
+  public Long totalFinal() {
+    return totalFinal;
+  }
 }

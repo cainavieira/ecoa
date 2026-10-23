@@ -22,6 +22,16 @@ public interface ParticipacaoRepository extends JpaRepository<Participacao, Inte
   boolean existsByCampanhaIdCampanha(Integer idCampanha);
 
   /**
+   * As participações da campanha, com o criador, na ordem do ranking final e, dentro dela, do @.
+   * Antes do encerramento a posição é nula, e a ordem do @ desempata o ranking.
+   */
+  @Query(
+      "select p from Participacao p left join fetch p.criador c"
+          + " where p.campanha.idCampanha = :idCampanha"
+          + " order by p.posicaoFinal, c.usuarioTiktok, p.idParticipacao")
+  List<Participacao> daCampanha(Integer idCampanha);
+
+  /**
    * Grava a participação, ou nada, se ela já existe, e devolve quantas linhas entraram. A segunda
    * entrada do duplo clique espera a primeira terminar e não grava, em vez de falhar na chave
    * única.

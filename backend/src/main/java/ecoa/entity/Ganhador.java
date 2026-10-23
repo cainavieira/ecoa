@@ -26,4 +26,20 @@ public class Ganhador {
   private Instant registradoEm;
 
   protected Ganhador() {}
+
+  public Integer idGanhador() {
+    return idGanhador;
+  }
+
+  public Participacao participacao() {
+    return participacao;
+  }
+
+  public String premio() {
+    return premio;
+  }
+
+  public LocalDate entregueEm() {
+    return entregueEm;
+  }
 }
