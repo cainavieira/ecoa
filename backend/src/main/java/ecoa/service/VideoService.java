@@ -24,7 +24,6 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -84,17 +83,8 @@ public class VideoService {
   public List<MeuVideoDto> meusVideos(int idCampanha, int idConta) {
     campanha(idCampanha);
     List<Video> dele = videos.doCriadorNaCampanha(idCampanha, idConta);
-    if (dele.isEmpty()) {
-      return List.of();
-    }
     Map<Integer, List<LeituraDoVideo>> leiturasPorVideo =
-        leituras.dosVideos(dele.stream().map(Video::idVideo).toList()).stream()
-            .collect(
-                Collectors.groupingBy(
-                    Leitura::idVideo,
-                    Collectors.mapping(
-                        leitura -> new LeituraDoVideo(leitura.data(), leitura.views()),
-                        Collectors.toList())));
+        leituras.porVideo(dele.stream().map(Video::idVideo).toList());
     return dele.stream()
         .map(
             video -> {

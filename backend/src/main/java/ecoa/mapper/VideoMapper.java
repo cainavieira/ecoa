@@ -1,6 +1,5 @@
 package ecoa.mapper;
 
-import ecoa.dto.LeituraDto;
 import ecoa.dto.MeuVideoDto;
 import ecoa.dto.VideoDto;
 import ecoa.entity.Criador;
@@ -22,8 +21,8 @@ public final class VideoMapper {
         video.status(),
         video.dataPublicacao(),
         video.motivo(),
-        numeroAtual == null ? null : leitura(numeroAtual),
-        leituras.stream().map(VideoMapper::leitura).toList());
+        numeroAtual == null ? null : LeituraMapper.paraDto(numeroAtual),
+        leituras.stream().map(LeituraMapper::paraDto).toList());
   }
 
   public static VideoDto paraOperador(Video video) {
@@ -37,9 +36,5 @@ public final class VideoMapper {
         video.status(),
         video.dataPublicacao(),
         video.motivo());
-  }
-
-  private static LeituraDto leitura(LeituraDoVideo leitura) {
-    return new LeituraDto(leitura.data(), leitura.views());
   }
 }

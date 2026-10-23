@@ -33,6 +33,15 @@ public interface VideoRepository extends JpaRepository<Video, Integer> {
   Optional<Video> findByLinkAndStatusNot(String link, StatusVideo status);
 
   /**
+   * Os vídeos da campanha de quem ainda tem conta, com o criador numa consulta só, na ordem da
+   * planilha: pelo @ e pelo envio. Quais deles contam, quem decide é a regra (RN-45).
+   */
+  @Query(
+      "select v from Video v join fetch v.participacao p join fetch p.criador c"
+          + " where p.campanha.idCampanha = :idCampanha order by c.usuarioTiktok, v.idVideo")
+  List<Video> daCampanhaPeloCriador(Integer idCampanha);
+
+  /**
    * O vídeo, com a linha bloqueada até o fim da transação (select for update): duas mudanças de
    * status ao mesmo tempo, como o duplo clique na aprovação, acontecem uma depois da outra, e a
    * segunda vê o status que a primeira deixou.
