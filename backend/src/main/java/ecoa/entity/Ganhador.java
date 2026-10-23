@@ -27,6 +27,18 @@ public class Ganhador {
 
   protected Ganhador() {}
 
+  /** O prêmio em texto; o sistema não calcula prêmio (RN-51). */
+  public Ganhador(Participacao participacao, String premio, Instant registradoEm) {
+    this.participacao = participacao;
+    this.premio = premio;
+    this.registradoEm = registradoEm;
+  }
+
+  /** A gravadora entregou o prêmio, por fora do sistema (RN-55). */
+  public void registrarEntrega(LocalDate entregueEm) {
+    this.entregueEm = entregueEm;
+  }
+
   public Integer idGanhador() {
     return idGanhador;
   }

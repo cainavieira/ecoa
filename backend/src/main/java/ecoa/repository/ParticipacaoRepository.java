@@ -22,6 +22,15 @@ public interface ParticipacaoRepository extends JpaRepository<Participacao, Inte
   boolean existsByCampanhaIdCampanha(Integer idCampanha);
 
   /**
+   * Os participantes que ainda têm conta, com o criador, pela ordem do @: é de onde sai a escolha
+   * do ganhador, e o participante removido não ganha prêmio novo (RN-52, RN-59).
+   */
+  @Query(
+      "select p from Participacao p join fetch p.criador c"
+          + " where p.campanha.idCampanha = :idCampanha order by c.usuarioTiktok")
+  List<Participacao> comContaNaCampanha(Integer idCampanha);
+
+  /**
    * As participações da campanha, com o criador, na ordem do ranking final e, dentro dela, do @.
    * Antes do encerramento a posição é nula, e a ordem do @ desempata o ranking.
    */
