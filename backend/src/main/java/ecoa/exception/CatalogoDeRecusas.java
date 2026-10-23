@@ -19,6 +19,7 @@ final class CatalogoDeRecusas {
       case CAMPANHA_COM_PARTICIPANTE -> new Descricao(HttpStatus.CONFLICT, "RN-30");
       case ACEITE_AUSENTE -> new Descricao(HttpStatus.BAD_REQUEST, "RN-31");
       case NAO_PARTICIPANTE -> new Descricao(HttpStatus.FORBIDDEN, "RN-31, RN-47");
+      case VIEWS_INVALIDAS -> new Descricao(HttpStatus.BAD_REQUEST, "RN-39");
       case LINK_REFERENCIA_AUSENTE -> new Descricao(HttpStatus.BAD_REQUEST, "RN-22");
       case LINK_INVALIDO -> new Descricao(HttpStatus.BAD_REQUEST, "RN-23");
       case CONTA_NAO_APROVADA -> new Descricao(HttpStatus.CONFLICT, "RN-15, RN-16, RN-17");
@@ -68,6 +69,7 @@ final class CatalogoDeRecusas {
       case LINK_INVALIDO -> "O link precisa ser um endereço http ou https.";
       case ACEITE_AUSENTE ->
           "Para entrar, aceite o regulamento e a exibição do seu @ e das suas views.";
+      case VIEWS_INVALIDAS -> "As views precisam ser zero ou mais.";
       default -> "Confira o campo destacado.";
     };
   }

@@ -13,6 +13,11 @@ public class LeituraId implements Serializable {
 
   protected LeituraId() {}
 
+  LeituraId(Integer xidVideo, LocalDate data) {
+    this.xidVideo = xidVideo;
+    this.data = data;
+  }
+
   Integer xidVideo() {
     return xidVideo;
   }

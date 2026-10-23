@@ -24,6 +24,14 @@ public class Leitura {
 
   protected Leitura() {}
 
+  /** A leitura do vídeo na data, que é a chave dela junto com o vídeo (RN-40). */
+  public Leitura(Video video, LocalDate data, long views, Instant registradaEm) {
+    this.id = new LeituraId(video.idVideo(), data);
+    this.video = video;
+    this.views = views;
+    this.registradaEm = registradaEm;
+  }
+
   public Integer idVideo() {
     return id.xidVideo();
   }

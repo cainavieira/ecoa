@@ -37,4 +37,13 @@ public class Participacao {
   public Instant aceiteEm() {
     return aceiteEm;
   }
+
+  public Campanha campanha() {
+    return campanha;
+  }
+
+  /** Nulo para o participante removido, que só existe em campanha encerrada (RN-59). */
+  public Criador criador() {
+    return criador;
+  }
 }

@@ -49,4 +49,26 @@ public class Video {
   public String motivo() {
     return motivo;
   }
+
+  public Participacao participacao() {
+    return participacao;
+  }
+
+  /** Com a data de publicação que o operador conferiu na página do vídeo (RN-36). */
+  public void aprovar(LocalDate dataPublicacao) {
+    this.status = StatusVideo.APROVADO;
+    this.dataPublicacao = dataPublicacao;
+  }
+
+  /** O motivo aparece na tela do criador (RN-37). */
+  public void recusar(String motivo) {
+    this.status = StatusVideo.RECUSADO;
+    this.motivo = motivo;
+  }
+
+  /** Definitiva: o vídeo sai do ranking, e o motivo aparece na tela do criador (RN-38). */
+  public void desqualificar(String motivo) {
+    this.status = StatusVideo.DESQUALIFICADO;
+    this.motivo = motivo;
+  }
 }

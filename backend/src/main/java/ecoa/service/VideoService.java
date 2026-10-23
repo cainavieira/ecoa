@@ -1,14 +1,17 @@
 package ecoa.service;
 
 import ecoa.dto.MeuVideoDto;
+import ecoa.dto.VideoDto;
 import ecoa.entity.Campanha;
 import ecoa.entity.Leitura;
 import ecoa.entity.Participacao;
 import ecoa.entity.Video;
 import ecoa.mapper.VideoMapper;
+import ecoa.regras.DatasDaCampanha;
 import ecoa.regras.LeituraDoVideo;
 import ecoa.regras.Recusa;
 import ecoa.regras.RegraVioladaException;
+import ecoa.regras.RegrasDaCampanha;
 import ecoa.regras.RegrasDaLeitura;
 import ecoa.regras.RegrasDoVideo;
 import ecoa.regras.StatusVideo;
@@ -101,6 +104,73 @@ public class VideoService {
                   video, doVideo, RegrasDaLeitura.numeroAtual(doVideo).orElse(null));
             })
         .toList();
+  }
+
+  /** Todos os vídeos, do mais antigo ao mais novo, com o link e o @ (RF-27). */
+  @Transactional(readOnly = true)
+  public List<VideoDto> listar() {
+    return videos.listarParaOperador().stream().map(VideoMapper::paraOperador).toList();
+  }
+
+  /** Os vídeos de um status; com em análise, a fila de conferência (RF-27). */
+  @Transactional(readOnly = true)
+  public List<VideoDto> listar(StatusVideo status) {
+    return videos.listarParaOperador(status).stream().map(VideoMapper::paraOperador).toList();
+  }
+
+  /**
+   * Aprova o vídeo em análise de criador não bloqueado, com a publicação entre o início e o fim, e
+   * grava a primeira leitura, com a data de hoje (RN-19, RN-36, RN-39). Por isso a publicação não
+   * pode ser depois de hoje: a leitura ficaria antes dela (RN-40, UC-10 3d).
+   */
+  @Transactional
+  public VideoDto aprovar(int id, LocalDate dataPublicacao, long views) {
+    Video video = video(id);
+    LocalDate hoje = LocalDate.now(relogio);
+    Participacao participacao = video.participacao();
+    Campanha campanha = participacao.campanha();
+    // Na campanha encerrada pode haver participante removido, sem criador (RN-59).
+    RegrasDaCampanha.validarMudancaNaCampanha(campanha.status(hoje));
+    DatasDaCampanha datas = campanha.datas();
+    RegrasDoVideo.validarAprovacaoDeVideo(
+        video.status(),
+        participacao.criador().status(),
+        dataPublicacao,
+        datas.inicio(),
+        datas.fim());
+    RegrasDaLeitura.validarLeitura(dataPublicacao, datas.fechamento(), List.of(), hoje, hoje);
+    video.aprovar(dataPublicacao);
+    leituras.save(new Leitura(video, hoje, views, Instant.now(relogio)));
+    return VideoMapper.paraOperador(video);
+  }
+
+  /** Recusa o vídeo em análise, inclusive o de criador bloqueado (RN-37, UC-04 3a). */
+  @Transactional
+  public VideoDto recusar(int id, String motivo) {
+    Video video = video(id);
+    RegrasDaCampanha.validarMudancaNaCampanha(
+        video.participacao().campanha().status(LocalDate.now(relogio)));
+    RegrasDoVideo.validarRecusaDeVideo(video.status());
+    video.recusar(motivo);
+    return VideoMapper.paraOperador(video);
+  }
+
+  /** Desqualifica o vídeo aprovado, em campanha não encerrada (RN-28, RN-38). */
+  @Transactional
+  public VideoDto desqualificar(int id, String motivo) {
+    Video video = video(id);
+    RegrasDaCampanha.validarMudancaNaCampanha(
+        video.participacao().campanha().status(LocalDate.now(relogio)));
+    RegrasDoVideo.validarVideoAprovado(video.status());
+    video.desqualificar(motivo);
+    return VideoMapper.paraOperador(video);
+  }
+
+  private Video video(int id) {
+    return videos
+        .travar(id)
+        .orElseThrow(
+            () -> new RegraVioladaException(Recusa.NAO_ENCONTRADO, "Vídeo não encontrado."));
   }
 
   private Campanha campanha(int id) {
