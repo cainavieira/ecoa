@@ -23,4 +23,18 @@ public class LinkReferencia {
   private String descricao;
 
   protected LinkReferencia() {}
+
+  public LinkReferencia(Campanha campanha, String url, String descricao) {
+    this.campanha = campanha;
+    this.url = url;
+    this.descricao = descricao;
+  }
+
+  public String url() {
+    return url;
+  }
+
+  public String descricao() {
+    return descricao;
+  }
 }

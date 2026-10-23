@@ -16,6 +16,8 @@ final class CatalogoDeRecusas {
       case FECHAMENTO_NAO_FUTURO -> new Descricao(HttpStatus.BAD_REQUEST, "RN-26");
       case DATAS_EXCLUEM_VIDEO -> new Descricao(HttpStatus.CONFLICT, "RN-27");
       case CAMPANHA_ENCERRADA -> new Descricao(HttpStatus.CONFLICT, "RN-28");
+      case LINK_REFERENCIA_AUSENTE -> new Descricao(HttpStatus.BAD_REQUEST, "RN-22");
+      case LINK_INVALIDO -> new Descricao(HttpStatus.BAD_REQUEST, "RN-23");
       case CONTA_NAO_APROVADA -> new Descricao(HttpStatus.CONFLICT, "RN-15, RN-16, RN-17");
       case ENTRADA_ENCERRADA -> new Descricao(HttpStatus.CONFLICT, "RN-32");
       case CAMPANHA_NAO_ABERTA -> new Descricao(HttpStatus.CONFLICT, "RN-34");
@@ -59,6 +61,8 @@ final class CatalogoDeRecusas {
   static String mensagemDoCampo(Recusa recusa) {
     return switch (recusa) {
       case MOTIVO_AUSENTE -> "Informe o motivo.";
+      case LINK_REFERENCIA_AUSENTE -> "Informe ao menos um link de referência.";
+      case LINK_INVALIDO -> "O link precisa ser um endereço http ou https.";
       default -> "Confira o campo destacado.";
     };
   }

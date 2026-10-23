@@ -1,11 +1,18 @@
 package ecoa.entity;
 
+import ecoa.regras.DatasDaCampanha;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Entity
 public class Campanha {
@@ -23,5 +30,59 @@ public class Campanha {
   private Instant encerradaEm;
   private Instant criadoEm;
 
+  /** Os links não existem fora da campanha: entram, saem e somem com ela. */
+  @OneToMany(mappedBy = "campanha", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OrderBy("idLinkReferencia")
+  private List<LinkReferencia> links = new ArrayList<>();
+
   protected Campanha() {}
+
+  public Campanha(
+      String musica, String artista, String regulamento, DatasDaCampanha datas, Instant criadoEm) {
+    this.musica = musica;
+    this.artista = artista;
+    this.regulamento = regulamento;
+    mudarDatas(datas);
+    this.criadoEm = criadoEm;
+  }
+
+  public Integer idCampanha() {
+    return idCampanha;
+  }
+
+  public String musica() {
+    return musica;
+  }
+
+  public String artista() {
+    return artista;
+  }
+
+  public String regulamento() {
+    return regulamento;
+  }
+
+  public DatasDaCampanha datas() {
+    return new DatasDaCampanha(dataInicio, dataFim, dataFechamento);
+  }
+
+  public boolean encerrada() {
+    return encerradaEm != null;
+  }
+
+  public List<LinkReferencia> links() {
+    return Collections.unmodifiableList(links);
+  }
+
+  /** Os links novos substituem os antigos: a lista vem inteira, e o que ficou de fora sai. */
+  public void trocarLinks(List<LinkReferencia> novos) {
+    links.clear();
+    links.addAll(novos);
+  }
+
+  private void mudarDatas(DatasDaCampanha datas) {
+    this.dataInicio = datas.inicio();
+    this.dataFim = datas.fim();
+    this.dataFechamento = datas.fechamento();
+  }
 }
