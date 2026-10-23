@@ -62,6 +62,17 @@ public final class RegrasDoVideo {
     }
   }
 
+  /**
+   * Só o vídeo em análise é recusado, inclusive o de criador bloqueado (RN-37, UC-04 3a). O
+   * aprovado não volta atrás.
+   */
+  public static void validarRecusaDeVideo(StatusVideo video) {
+    if (video != StatusVideo.EM_ANALISE) {
+      throw new RegraVioladaException(
+          Recusa.VIDEO_NAO_EM_ANALISE, "Só o vídeo em análise pode ser recusado.");
+    }
+  }
+
   /** Só o vídeo aprovado é desqualificado ou recebe leitura (RN-38, RN-39). */
   public static void validarVideoAprovado(StatusVideo video) {
     if (video != StatusVideo.APROVADO) {

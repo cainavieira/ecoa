@@ -2,6 +2,7 @@ package ecoa.regras;
 
 import static ecoa.regras.RegrasDoVideo.validarAprovacaoDeVideo;
 import static ecoa.regras.RegrasDoVideo.validarEnvioDeVideo;
+import static ecoa.regras.RegrasDoVideo.validarRecusaDeVideo;
 import static ecoa.regras.RegrasDoVideo.validarVideoAprovado;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
@@ -101,6 +102,13 @@ class RegrasDoVideoTest {
   @EnumSource(value = StatusVideo.class, names = "APROVADO", mode = EnumSource.Mode.EXCLUDE)
   void recusaVideoQueNaoEstaAprovado(StatusVideo video) {
     recusado(() -> validarVideoAprovado(video), Recusa.VIDEO_NAO_APROVADO);
+  }
+
+  @ParameterizedTest
+  @EnumSource(value = StatusVideo.class, names = "EM_ANALISE", mode = EnumSource.Mode.EXCLUDE)
+  void recusaRecusarVideoQueNaoEstaEmAnalise(StatusVideo video) {
+    // O aprovado não volta atrás: sai do ranking só pela desqualificação (RN-37, RN-38).
+    recusado(() -> validarRecusaDeVideo(video), Recusa.VIDEO_NAO_EM_ANALISE);
   }
 
   private static void aprovar(LocalDate publicacao) {
