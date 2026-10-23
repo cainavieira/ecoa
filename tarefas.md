@@ -125,7 +125,7 @@ falta método na etapa 2.
 |:--|:--|:--|
 | T-19 | `GET /campanhas/{id}/leituras`, `GET /videos/{id}/leituras`, `PUT /videos/{id}/leituras/{data}` e `DELETE /videos/{id}/leituras/{data}` (UC-11, ADR-0001) | feito |
 | T-20 | `GET /campanhas/{id}/resultado`, montado no service chamando `regras/`, sem e-mail em campo nenhum (UC-13, UC-16, RNF-12) | feito |
-| T-21 | `POST /campanhas/{id}/encerramento`, gravando o ranking final (UC-14) | a fazer |
+| T-21 | `POST /campanhas/{id}/encerramento`, gravando o ranking final (UC-14) | feito |
 | T-22 | `GET /campanhas/{id}/participantes`, `POST /campanhas/{id}/ganhadores`, `PATCH /ganhadores/{id}` e `DELETE /ganhadores/{id}` (UC-15) | a fazer |
 | T-23 | `GET /campanhas/{id}/exportacao`, no formato da planilha brasileira (UC-17) | a fazer |
 
