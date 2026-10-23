@@ -106,7 +106,7 @@ revertida (ADR-0013).
 
 | Tarefa | Entrega | Estado |
 |:--|:--|:--|
-| T-15 | `GET /campanhas`, `GET /campanhas/{id}`, `POST /campanhas`, `PATCH /campanhas/{id}` e `DELETE /campanhas/{id}` (UC-05, UC-06, UC-07) | a fazer |
+| T-15 | `GET /campanhas`, `GET /campanhas/{id}`, `POST /campanhas`, `PATCH /campanhas/{id}` e `DELETE /campanhas/{id}` (UC-05, UC-06, UC-07) | feito |
 | T-16 | `POST /campanhas/{id}/participacao` (UC-08) | a fazer |
 
 ## Etapa 6: vídeos
