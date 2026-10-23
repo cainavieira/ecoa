@@ -1,6 +1,8 @@
 package ecoa.entity;
 
 import ecoa.regras.DatasDaCampanha;
+import ecoa.regras.RegrasDaCampanha;
+import ecoa.regras.StatusCampanha;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -66,8 +68,9 @@ public class Campanha {
     return new DatasDaCampanha(dataInicio, dataFim, dataFechamento);
   }
 
-  public boolean encerrada() {
-    return encerradaEm != null;
+  /** O status não é gravado: sai das datas e do encerramento, a cada leitura (RN-25). */
+  public StatusCampanha status(LocalDate hoje) {
+    return RegrasDaCampanha.statusDaCampanha(dataInicio, dataFim, encerradaEm != null, hoje);
   }
 
   public List<LinkReferencia> links() {

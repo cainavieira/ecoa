@@ -13,7 +13,6 @@ import ecoa.regras.Funcao;
 import ecoa.regras.Recusa;
 import ecoa.regras.RegraVioladaException;
 import ecoa.regras.RegrasDaCampanha;
-import ecoa.regras.StatusCampanha;
 import ecoa.regras.StatusVideo;
 import ecoa.repository.CampanhaRepository;
 import ecoa.repository.ParticipacaoRepository;
@@ -62,7 +61,7 @@ public class CampanhaService {
             campanha ->
                 CampanhaMapper.resumo(
                     campanha,
-                    status(campanha, hoje),
+                    campanha.status(hoje),
                     funcao == Funcao.CRIADOR ? dele.contains(campanha.idCampanha()) : null))
         .toList();
   }
@@ -75,7 +74,7 @@ public class CampanhaService {
         funcao == Funcao.CRIADOR
             ? participacoes.existsByCampanhaIdCampanhaAndCriadorIdCriador(id, idConta)
             : null;
-    return CampanhaMapper.paraDto(campanha, status(campanha, LocalDate.now(relogio)), participa);
+    return CampanhaMapper.paraDto(campanha, campanha.status(LocalDate.now(relogio)), participa);
   }
 
   /**
@@ -92,7 +91,7 @@ public class CampanhaService {
         new Campanha(
             nova.musica(), nova.artista(), nova.regulamento(), datas, Instant.now(relogio));
     campanha.trocarLinks(CampanhaMapper.links(campanha, nova.links()));
-    return CampanhaMapper.paraDto(campanhas.save(campanha), status(campanha, hoje), null);
+    return CampanhaMapper.paraDto(campanhas.save(campanha), campanha.status(hoje), null);
   }
 
   /**
@@ -104,7 +103,7 @@ public class CampanhaService {
   public CampanhaDto editar(int id, EdicaoDaCampanhaDto edicao) {
     Campanha campanha = campanha(id);
     LocalDate hoje = LocalDate.now(relogio);
-    RegrasDaCampanha.validarMudancaNaCampanha(status(campanha, hoje));
+    RegrasDaCampanha.validarMudancaNaCampanha(campanha.status(hoje));
     DatasDaCampanha atuais = campanha.datas();
     DatasDaCampanha novas =
         new DatasDaCampanha(
@@ -121,7 +120,7 @@ public class CampanhaService {
     if (edicao.links() != null) {
       campanha.trocarLinks(CampanhaMapper.links(campanha, edicao.links()));
     }
-    return CampanhaMapper.paraDto(campanha, status(campanha, hoje), null);
+    return CampanhaMapper.paraDto(campanha, campanha.status(hoje), null);
   }
 
   /** Só a campanha sem participante, e os links saem com ela (RN-30). */
@@ -140,11 +139,5 @@ public class CampanhaService {
         .findById(id)
         .orElseThrow(
             () -> new RegraVioladaException(Recusa.NAO_ENCONTRADO, "Campanha não encontrada."));
-  }
-
-  private static StatusCampanha status(Campanha campanha, LocalDate hoje) {
-    DatasDaCampanha datas = campanha.datas();
-    return RegrasDaCampanha.statusDaCampanha(
-        datas.inicio(), datas.fim(), campanha.encerrada(), hoje);
   }
 }
