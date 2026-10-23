@@ -114,7 +114,7 @@ revertida (ADR-0013).
 | Tarefa | Entrega | Estado |
 |:--|:--|:--|
 | T-17 | `POST /campanhas/{id}/videos` e `GET /campanhas/{id}/meus-videos` (UC-09, UC-13) | feito |
-| T-18 | `GET /videos`, `POST /videos/{id}/aprovacao`, `POST /videos/{id}/recusa` e `POST /videos/{id}/desqualificacao` (UC-10, UC-12) | a fazer |
+| T-18 | `GET /videos`, `POST /videos/{id}/aprovacao`, `POST /videos/{id}/recusa` e `POST /videos/{id}/desqualificacao` (UC-10, UC-12) | feito |
 
 ## Etapa 7: leituras e resultado
 
