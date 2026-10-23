@@ -58,6 +58,17 @@ public final class RegrasDaCampanha {
     }
   }
 
+  /**
+   * Campanha encerrada não muda: dados, datas, vídeos e leituras. Só os ganhadores continuam
+   * editáveis (RN-28).
+   */
+  public static void validarMudancaNaCampanha(StatusCampanha campanha) {
+    if (campanha == StatusCampanha.ENCERRADA) {
+      throw new RegraVioladaException(
+          Recusa.CAMPANHA_ENCERRADA, "A campanha está encerrada e não muda mais.");
+    }
+  }
+
   /** Só a conta aprovada entra, e só em campanha agendada ou aberta (RN-16, RN-32). */
   public static void validarEntrada(StatusCriador conta, StatusCampanha campanha) {
     if (conta != StatusCriador.APROVADA) {

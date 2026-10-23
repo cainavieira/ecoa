@@ -4,6 +4,7 @@ import static ecoa.regras.RegrasDaCampanha.statusDaCampanha;
 import static ecoa.regras.RegrasDaCampanha.validarDatasDaCampanha;
 import static ecoa.regras.RegrasDaCampanha.validarEncerramento;
 import static ecoa.regras.RegrasDaCampanha.validarEntrada;
+import static ecoa.regras.RegrasDaCampanha.validarMudancaNaCampanha;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -150,6 +151,18 @@ class RegrasDaCampanhaTest {
                 List.of(new VideoAprovado(1, publicacao)),
                 ANTES_DA_CAMPANHA),
         Recusa.DATAS_EXCLUEM_VIDEO);
+  }
+
+  @Test
+  void recusaMudancaEmCampanhaEncerrada() {
+    recusado(() -> validarMudancaNaCampanha(StatusCampanha.ENCERRADA), Recusa.CAMPANHA_ENCERRADA);
+  }
+
+  @Test
+  void aceitaMudancaEmCampanhaEmApuracao() {
+    // Depois do fim, a campanha ainda muda até ser encerrada: é como o fim se adia (UC-06 2f).
+    assertThatCode(() -> validarMudancaNaCampanha(StatusCampanha.EM_APURACAO))
+        .doesNotThrowAnyException();
   }
 
   @ParameterizedTest
