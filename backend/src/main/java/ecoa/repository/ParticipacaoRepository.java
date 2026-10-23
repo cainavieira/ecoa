@@ -1,8 +1,11 @@
 package ecoa.repository;
 
 import ecoa.entity.Participacao;
+import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 public interface ParticipacaoRepository extends JpaRepository<Participacao, Integer> {
@@ -11,7 +14,24 @@ public interface ParticipacaoRepository extends JpaRepository<Participacao, Inte
   @Query("select p.campanha.idCampanha from Participacao p where p.criador.idCriador = :idCriador")
   List<Integer> campanhasDoCriador(Integer idCriador);
 
+  Optional<Participacao> findByCampanhaIdCampanhaAndCriadorIdCriador(
+      Integer idCampanha, Integer idCriador);
+
   boolean existsByCampanhaIdCampanhaAndCriadorIdCriador(Integer idCampanha, Integer idCriador);
 
   boolean existsByCampanhaIdCampanha(Integer idCampanha);
+
+  /**
+   * Grava a participação, ou nada, se ela já existe, e devolve quantas linhas entraram. A segunda
+   * entrada do duplo clique espera a primeira terminar e não grava, em vez de falhar na chave
+   * única.
+   */
+  @Modifying
+  @Query(
+      value =
+          "insert into participacao (xid_campanha, xid_criador, aceite_em)"
+              + " values (:idCampanha, :idCriador, :aceiteEm)"
+              + " on conflict (xid_campanha, xid_criador) do nothing",
+      nativeQuery = true)
+  int entrar(Integer idCampanha, Integer idCriador, Instant aceiteEm);
 }

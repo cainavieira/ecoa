@@ -17,6 +17,7 @@ final class CatalogoDeRecusas {
       case DATAS_EXCLUEM_VIDEO -> new Descricao(HttpStatus.CONFLICT, "RN-27");
       case CAMPANHA_ENCERRADA -> new Descricao(HttpStatus.CONFLICT, "RN-28");
       case CAMPANHA_COM_PARTICIPANTE -> new Descricao(HttpStatus.CONFLICT, "RN-30");
+      case ACEITE_AUSENTE -> new Descricao(HttpStatus.BAD_REQUEST, "RN-31");
       case LINK_REFERENCIA_AUSENTE -> new Descricao(HttpStatus.BAD_REQUEST, "RN-22");
       case LINK_INVALIDO -> new Descricao(HttpStatus.BAD_REQUEST, "RN-23");
       case CONTA_NAO_APROVADA -> new Descricao(HttpStatus.CONFLICT, "RN-15, RN-16, RN-17");
@@ -64,6 +65,8 @@ final class CatalogoDeRecusas {
       case MOTIVO_AUSENTE -> "Informe o motivo.";
       case LINK_REFERENCIA_AUSENTE -> "Informe ao menos um link de referência.";
       case LINK_INVALIDO -> "O link precisa ser um endereço http ou https.";
+      case ACEITE_AUSENTE ->
+          "Para entrar, aceite o regulamento e a exibição do seu @ e das suas views.";
       default -> "Confira o campo destacado.";
     };
   }

@@ -29,4 +29,12 @@ public class Participacao {
   private Long totalFinal;
 
   protected Participacao() {}
+
+  public Integer idParticipacao() {
+    return idParticipacao;
+  }
+
+  public Instant aceiteEm() {
+    return aceiteEm;
+  }
 }
